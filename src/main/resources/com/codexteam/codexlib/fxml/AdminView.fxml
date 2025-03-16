@@ -49,42 +49,71 @@
 
 <VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.AdminController">
   <children>
-    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@style.css" VBox.vgrow="ALWAYS">
+    <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #262125;" stylesheets="@../css/style.css" VBox.vgrow="ALWAYS">
       <children>
             <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <left>
-                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="235.0" style="-fx-background-color: #1e1e1e;" BorderPane.alignment="CENTER">
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="235.0" BorderPane.alignment="CENTER">
                      <children>
-                        <Button fx:id="iniciButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showInici" prefHeight="50.0" styleClass="menu-button" text="Inici" VBox.vgrow="ALWAYS">
+                        <Button fx:id="iniciButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showInici" prefHeight="50.0" styleClass="menu-button" text=" Inici" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin></Button>
-                        <Button fx:id="usuarisButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showUsuaris" prefHeight="50.0" styleClass="menu-button" text="Usuaris" VBox.vgrow="ALWAYS">
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/home_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="usuarisButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showUsuaris" prefHeight="50.0" styleClass="menu-button" text=" Usuaris" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin></Button>
-                        <Button fx:id="llibresButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showLlibres" prefHeight="50.0" styleClass="menu-button" text="Llibres" VBox.vgrow="ALWAYS">
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/user_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button fx:id="llibresButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showLlibres" prefHeight="50.0" styleClass="menu-button" text=" Llibres" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin></Button>
-                        <Button fx:id="esdevenimentsButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showEsdeveniments" prefHeight="50.0" styleClass="menu-button" text="Esdeveniments" VBox.vgrow="ALWAYS">
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/book_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button fx:id="esdevenimentsButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showEsdeveniments" prefHeight="50.0" styleClass="menu-button" text=" Esdeveniments" VBox.vgrow="ALWAYS">
                            <VBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
-                           </VBox.margin></Button>
-                        <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #1e1e1e; -fx-background-radius: 0 0 10px 10px;" VBox.vgrow="ALWAYS">
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/calendar_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Region maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets></Region>
                      </children>
                      <BorderPane.margin>
-                        <Insets left="5.0" />
+                        <Insets />
                      </BorderPane.margin>
                   </VBox>
                </left>
                <center>
                   <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="paneInici">
+                        <AnchorPane fx:id="paneInici" style="-fx-background-color: #f8f7f3;">
                            <children>
                               <Label text="Inici" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
@@ -92,8 +121,11 @@
                                  </font>
                               </Label>
                            </children>
+                           <StackPane.margin>
+                              <Insets right="10.0" />
+                           </StackPane.margin>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneUsuaris" layoutX="10.0" layoutY="10.0" visible="false">
+                        <AnchorPane fx:id="paneUsuaris" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" visible="false">
                            <children>
                               <Label text="Usuaris" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
@@ -101,8 +133,11 @@
                                  </font>
                               </Label>
                            </children>
+                           <StackPane.margin>
+                              <Insets right="10.0" />
+                           </StackPane.margin>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneLlibres" layoutX="10.0" layoutY="10.0" visible="false">
+                        <AnchorPane fx:id="paneLlibres" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" visible="false">
                            <children>
                               <Label text="Llibres" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
@@ -118,8 +153,11 @@
                               <Button layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text="Inserir nou llibre" AnchorPane.topAnchor="498.0" />
                               <Button layoutX="200.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text="Eliminar llibre" />
                            </children>
+                           <StackPane.margin>
+                              <Insets right="10.0" />
+                           </StackPane.margin>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneEsdeveniments" layoutX="10.0" layoutY="10.0" visible="false">
+                        <AnchorPane fx:id="paneEsdeveniments" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" visible="false">
                            <children>
                               <Label text="Esdeveniments" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
@@ -127,6 +165,9 @@
                                  </font>
                               </Label>
                            </children>
+                           <StackPane.margin>
+                              <Insets right="10.0" />
+                           </StackPane.margin>
                         </AnchorPane>
                      </children>
                   </StackPane>
@@ -134,19 +175,19 @@
                <top>
                   <HBox BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="235.0" style="-fx-background-color: #1e1e1e; -fx-background-radius: 10px 10px 0 0;">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="235.0">
                            <children>
-                              <Label layoutX="47.0" layoutY="24.0" text="CodexLib" textFill="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                              <Label layoutX="47.0" layoutY="24.0" text="CodexLibris" textFill="WHITE" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
                            </children>
                            <HBox.margin>
-                              <Insets left="5.0" right="5.0" top="5.0" />
+                              <Insets />
                            </HBox.margin>
                         </AnchorPane>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #f8f7f3; -fx-background-radius: 20px 20px 0 0;" HBox.hgrow="ALWAYS">
                            <children>
                               <Label fx:id="textBenvinguda" layoutX="14.0" layoutY="22.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
@@ -155,10 +196,18 @@
                               </Label>
                               <ImageView fx:id="configButton" fitHeight="25.0" fitWidth="26.0" layoutX="347.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
                                  <image>
-                                    <Image url="@config.png" />
+                                    <Image url="@../images/gear_icon.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fx:id="bellButton" fitHeight="22.0" fitWidth="22.0" layoutX="323.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="55.0">
+                                 <image>
+                                    <Image url="@../images/_bell_icon.png" />
                                  </image>
                               </ImageView>
                            </children>
+                           <HBox.margin>
+                              <Insets right="10.0" top="10.0" />
+                           </HBox.margin>
                         </AnchorPane>
                      </children>
                   </HBox>
@@ -166,15 +215,18 @@
                <bottom>
                   <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="235.0" style="-fx-background-color: #1e1e1e; -fx-background-radius: 0 0 10px 10px;">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="235.0">
                            <HBox.margin>
-                              <Insets bottom="5.0" left="5.0" right="5.0" />
+                              <Insets />
                            </HBox.margin>
                         </AnchorPane>
-                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                        <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #f8f7f3; -fx-background-radius: 0 0 20px 20px;" HBox.hgrow="ALWAYS">
                            <children>
                               <Button fx:id="logoutButton" layoutX="224.0" layoutY="33.0" mnemonicParsing="false" onAction="#tancarSessio" styleClass="logout-button" text="Tancar la sessió" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
                            </children>
+                           <HBox.margin>
+                              <Insets bottom="10.0" right="10.0" />
+                           </HBox.margin>
                         </AnchorPane>
                      </children>
                   </HBox>

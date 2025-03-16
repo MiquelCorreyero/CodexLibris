@@ -90,7 +90,7 @@ public class AdminController {
     //=====================================================
     private void obrirConfiguracio() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/ConfigView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/ConfigView.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
@@ -134,7 +134,7 @@ public class AdminController {
     // Tornar a obrir la pantalla de login en tancar la sessió
     private void recarregarLogin() {
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(PantallaInicial.class.getResource("LoginView.fxml"));
+            FXMLLoader fxmlLoader = new FXMLLoader(PantallaInicial.class.getResource("fxml/LoginView.fxml"));
             Parent root = fxmlLoader.load();
             String title = "Inici de sessió";
 
@@ -143,7 +143,7 @@ public class AdminController {
             stage.setScene(new Scene(root, 640, 500));
 
             // Icona de la finestra
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/enter.png")));
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/enter.png")));
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
