@@ -1,13 +1,17 @@
 package com.codexteam.codexlib;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import org.json.JSONArray;
+import javafx.stage.Stage;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -15,10 +19,10 @@ import java.net.URL;
 public class IsbnController {
 
     @FXML
-    private TextField campISBN;  // Campo de texto donde el usuario introduce el ISBN
+    private TextField campISBN;
 
     @FXML
-    private Button cercarISBNButton;  // Botón para iniciar la búsqueda
+    private Button cercarISBNButton;
 
     @FXML
     private void initialize() {
@@ -29,7 +33,7 @@ public class IsbnController {
     private void cercarPerIsbn() {
         String isbn = campISBN.getText().trim();
         if (isbn.isEmpty()) {
-            mostrarAlerta("Advertencia", "Por favor, introduce un ISBN.");
+            mostrarAlerta("Error", "Si us plau, introdueix un ISBN.");
             return;
         }
 
@@ -54,32 +58,51 @@ public class IsbnController {
             JSONObject jsonResponse = new JSONObject(response.toString());
 
             if (!jsonResponse.has("ISBN:" + isbn)) {
-                mostrarAlerta("ISBN no encontrado", "No se ha encontrado un libro con el ISBN " + isbn);
+                mostrarAlerta("Error", "No sha trobat cap llibre amb l'ISBN " + isbn);
                 return;
             }
 
             JSONObject bookInfo = jsonResponse.getJSONObject("ISBN:" + isbn);
 
-            String titulo = bookInfo.optString("title", "Título desconocido");
-            String autor = bookInfo.has("authors") ? bookInfo.getJSONArray("authors").getJSONObject(0).getString("name") : "Autor desconocido";
-            String publicacion = bookInfo.optString("publish_date", "Fecha no disponible");
-            String portada = bookInfo.has("cover") ? bookInfo.getJSONObject("cover").optString("medium", "Sin portada") : "Sin portada";
+            String titol = bookInfo.optString("title", "Títol desconegut");
+            String autor = bookInfo.has("authors") ? bookInfo.getJSONArray("authors").getJSONObject(0).getString("name") : "Autor desconegut";
+            String publicacio = bookInfo.optString("publish_date", "Data no disponible");
+            String portada = bookInfo.has("cover") ? bookInfo.getJSONObject("cover").optString("medium", "Sense portada") : "Sense portada";
 
-            // Mostrar los datos obtenidos
-            mostrarAlerta("Libro Encontrado", "Título: " + titulo + "\nAutor: " + autor + "\nPublicado en: " + publicacion + "\nPortada: " + portada);
+            obrirFinestraDetalls(titol, autor, publicacio, isbn, portada);
 
         } catch (Exception e) {
-            mostrarAlerta("Error", "No se pudo conectar con Open Library.");
+            mostrarAlerta("Error", "No s'ha pogut connectar amb Open Library.");
             e.printStackTrace();
         }
     }
 
-    private void mostrarAlerta(String titulo, String mensaje) {
+    private void obrirFinestraDetalls(String titol, String autor, String publicacio, String isbn, String portada) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detallsLlibreView.fxml"));
+            Parent root = loader.load();
+
+            DetallsLlibreController controller = loader.getController();
+            controller.mostrarDetallsLlibre(titol, autor, publicacio, isbn, portada);
+
+            Stage stage = new Stage();
+            stage.setTitle("Detalls del Llibre");
+            stage.setScene(new Scene(root));
+            stage.show();
+
+        } catch (IOException e) {
+            mostrarAlerta("Error", "No s'ha pogut obrir la finestra amb els detalls del llibre.");
+            e.printStackTrace();
+        }
+    }
+
+    private void mostrarAlerta(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titulo);
+        alert.setTitle(titol);
         alert.setHeaderText(null);
-        alert.setContentText(mensaje);
+        alert.setContentText(missatge);
         alert.showAndWait();
     }
+
 }
 

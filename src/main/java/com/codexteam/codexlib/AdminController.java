@@ -86,12 +86,12 @@ public class AdminController {
 
         // Mostrar finestra per a cercar llibre per ISBN
         inserirNouLlibreButton.setOnAction(event ->
-                obrirNovaFinestra("/com/codexteam/codexlib/fxml/IsbnView.fxml", "Cercar llibre per ISBN", "/com/codexteam/codexlib/images/isbn.png")
+                obrirNovaFinestra("/com/codexteam/codexlib/fxml/isbnView.fxml", "Cercar llibre per ISBN", "/com/codexteam/codexlib/images/isbn.png")
         );
 
         // Mostrar finestra de configuració
         configButton.setOnMouseClicked(event ->
-                obrirNovaFinestra("/com/codexteam/codexlib/fxml/ConfigView.fxml", "Configuració", "/com/codexteam/codexlib/images/config_.png")
+                obrirNovaFinestra("/com/codexteam/codexlib/fxml/configView.fxml", "Configuració", "/com/codexteam/codexlib/images/config_.png")
         );
         configButton.setCursor(javafx.scene.Cursor.HAND);
 
@@ -144,7 +144,7 @@ public class AdminController {
         // Tancar la finestra actual
         tancarFinestraActual();
         // Tornar a la pantalla de login
-        obrirNovaFinestra("/com/codexteam/codexlib/fxml/LoginView.fxml", "Inici de sessió", "/com/codexteam/codexlib/images/enter.png");
+        obrirNovaFinestra("/com/codexteam/codexlib/fxml/loginView.fxml", "Inici de sessió", "/com/codexteam/codexlib/images/enter.png");
     }
 
     // Tancar la finestra actual un cop s'ha fet logout

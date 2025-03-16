@@ -56,10 +56,10 @@ public class LoginController {
 
             if (ConnexioServidor.getTipusUsuari() == 1) {
                 // Obrir el panell d'administració
-                obrirNovaFinestra("/com/codexteam/codexlib/fxml/AdminView.fxml", "CodexLibris - Administració");
+                obrirNovaFinestra("/com/codexteam/codexlib/fxml/adminView.fxml", "CodexLibris - Administració");
             } else {
                 // Obrir el panell d'usuari no administrador
-                obrirNovaFinestra("/com/codexteam/codexlib/fxml/UserView.fxml", "CodexLibris");
+                obrirNovaFinestra("/com/codexteam/codexlib/fxml/userView.fxml", "CodexLibris");
             }
 
             // Tancar la finestra del login si s'ha iniciat sessió correctament
@@ -105,7 +105,7 @@ public class LoginController {
     @FXML
     private void crearNouCompte() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/RegisterView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/registerView.fxml"));
             Parent root = loader.load();
 
             Stage stage = new Stage();
