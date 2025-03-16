@@ -1,0 +1,94 @@
+/* === BOTO GENERAL === */
+.button {
+    -fx-background-color: #E91E63;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 0 20px;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+}
+
+.button:hover {
+    -fx-background-color: #C2185B;
+}
+
+.button:pressed {
+    -fx-background-color: #e0e0e0;
+}
+
+/* === BOTO MENU === */
+.menu-button {
+    -fx-background-color: #262125;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-padding: 10px 20px;
+    -fx-border-radius: 15px;
+    -fx-background-radius: 15px;
+    -fx-border-width: 0;
+    -fx-alignment: CENTER_LEFT;
+    -fx-cursor: hand;
+}
+
+.menu-button:hover {
+    -fx-background-color: #E91E63;
+}
+
+.menu-button:pressed {
+    -fx-background-color: #AD1457;
+}
+
+/* === BOTO LOGOUT === */
+.logout-button {
+    -fx-background-color: #E91E63;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-padding: 10px 20px;
+    -fx-alignment: center;
+    -fx-cursor: hand;
+}
+
+.logout-button:hover {
+    -fx-background-color: #C2185B;
+}
+
+.logout-button:pressed {
+    -fx-background-color: #e0e0e0;
+}
+
+/* === INPUT TEXT (TextField & PasswordField) === */
+.text-field, .password-field {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-size: 13px;
+    -fx-border-color: #9E9E9E;
+    -fx-border-width: 2px;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 20px;
+    -fx-padding: 5px 15px;
+}
+
+/* === Foco en el Input (Cuando se hace clic) === */
+.text-field:focused, .password-field:focused {
+    -fx-border-color: #F48FB1;
+    -fx-background-color: #f9f9f9;
+}
+
+/* === Placeholder (Texto dentro del input) === */
+.text-field:prompt-text-visible, .password-field:prompt-text-visible {
+    -fx-text-fill: grey;
+}
+
+/* === Input Deshabilitado === */
+.text-field:disabled, .password-field:disabled {
+    -fx-opacity: 0.5;
+    -fx-background-color: #dddddd;
+    -fx-border-color: #aaaaaa;
+}
+
+
