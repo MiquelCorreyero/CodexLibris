@@ -69,8 +69,3 @@ Si quieres aportar ideas o reportar errores, puedes abrir un **issue** en GitHub
 ## 📝 Licencia
 Este proyecto está bajo la **Licencia MIT**. Puedes usarlo libremente con atribución.
 
-## 📬 Contacto
-📧 **Email:** contacto@codexlibris.com  
-🐦 **Twitter:** [@CodexLibris](https://twitter.com/CodexLibris)  
-🌐 **Sitio web:** [codexlibris.com](https://codexlibris.com)
-
