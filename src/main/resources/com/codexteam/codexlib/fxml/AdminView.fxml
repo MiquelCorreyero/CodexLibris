@@ -150,7 +150,7 @@
                                   <TableColumn prefWidth="75.0" text="C2" />
                                 </columns>
                               </TableView>
-                              <Button layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text="Inserir nou llibre" AnchorPane.topAnchor="498.0" />
+                              <Button fx:id="inserirNouLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text="Inserir nou llibre" AnchorPane.topAnchor="498.0" />
                               <Button layoutX="200.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text="Eliminar llibre" />
                            </children>
                            <StackPane.margin>

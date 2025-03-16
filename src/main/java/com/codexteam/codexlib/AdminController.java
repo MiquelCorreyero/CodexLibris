@@ -64,20 +64,37 @@ public class AdminController {
         paneEsdeveniments.setVisible(true);
     }
 
+
     //=====================================================
-    //                MISSATGE DE BENVINGUDA
+    //                       BOTONS
+    //=====================================================
+    @FXML
+    private Button inserirNouLlibreButton; // Cercar llibre per ISBN
+
+    //=====================================================
+    //                ELEMENTS PRINCIPALS
     //=====================================================
     @FXML
     public void initialize() {
-        textBenvinguda.setText("Benvingut" + formatNomUsuari(getNomUsuariActual()));
 
-        // Assigna una acció al botó de configuració per obrir una nova finestra
-        configButton.setOnMouseClicked(event -> obrirConfiguracio());
-        configButton.setCursor(javafx.scene.Cursor.HAND);
+        // Mostrar el nom de l'usuari que inicia sessió
+        textBenvinguda.setText("Benvingut" + formatNomUsuari(getNomUsuariActual()));
 
         // Mostrar missatge al clicar sobre les notificacions
         bellButton.setOnMouseClicked(event -> mostrarMissatge("Alerta", "Ep! Sóc una notificació!"));
         bellButton.setCursor(javafx.scene.Cursor.HAND);
+
+        // Mostrar finestra per a cercar llibre per ISBN
+        inserirNouLlibreButton.setOnAction(event ->
+                obrirNovaFinestra("/com/codexteam/codexlib/fxml/IsbnView.fxml", "Cercar llibre per ISBN", "/com/codexteam/codexlib/images/isbn.png")
+        );
+
+        // Mostrar finestra de configuració
+        configButton.setOnMouseClicked(event ->
+                obrirNovaFinestra("/com/codexteam/codexlib/fxml/ConfigView.fxml", "Configuració", "/com/codexteam/codexlib/images/config_.png")
+        );
+        configButton.setCursor(javafx.scene.Cursor.HAND);
+
     }
 
     // Mostrar el nom de l'usuari que inicia sessió
@@ -86,17 +103,22 @@ public class AdminController {
     }
 
     //=====================================================
-    //          MOSTRAR FINESTRA DE CONFIGURACIÓ
+    //              OBRIR UNA NOVA FINESTRA
     //=====================================================
-    private void obrirConfiguracio() {
+    private void obrirNovaFinestra(String fxml, String nomFinestra, String icona) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/ConfigView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
 
             Stage stage = new Stage();
-            stage.setTitle("Configuració");
+            stage.setTitle(nomFinestra);
             stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // BloqueJa la finestra principal fins a tancar aquesta
+
+            // Icona de la finestra
+            stage.getIcons().add(new Image(getClass().getResourceAsStream(icona)));
+
+            // BloqueJa la finestra principal fins a tancar aquesta
+            stage.initModality(Modality.APPLICATION_MODAL);
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
@@ -122,32 +144,13 @@ public class AdminController {
         // Tancar la finestra actual
         tancarFinestraActual();
         // Tornar a la pantalla de login
-        recarregarLogin();
+        obrirNovaFinestra("/com/codexteam/codexlib/fxml/LoginView.fxml", "Inici de sessió", "/com/codexteam/codexlib/images/enter.png");
     }
 
     // Tancar la finestra actual un cop s'ha fet logout
     private void tancarFinestraActual() {
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.close();
-    }
-
-    // Tornar a obrir la pantalla de login en tancar la sessió
-    private void recarregarLogin() {
-        try {
-            FXMLLoader fxmlLoader = new FXMLLoader(PantallaInicial.class.getResource("fxml/LoginView.fxml"));
-            Parent root = fxmlLoader.load();
-            String title = "Inici de sessió";
-
-            Stage stage = new Stage();
-            stage.setTitle(title);
-            stage.setScene(new Scene(root, 640, 500));
-
-            // Icona de la finestra
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/enter.png")));
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     // Mostrar missatge
