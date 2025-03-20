@@ -35,15 +35,29 @@ This software is being built with JavaFX and Maven, using Scene Builder for the 
 ```
 CodexLibris/
 │── src/main/java/com/codexteam/codexlib/
-│   ├── MainScreen.java        # Application entry point
-│   ├── LoginController.java   # Login screen controller
-│   ├── AdminController.java   # Administration panel
-│   ├── ServerConnection.java  # HTTP connection with the server
+│   ├── AdminController.java   
+│   ├── ConnexioServidor.java  
+│   ├── DetallsLlibreController.java  
+│   ├── IsbnController.java  
+│   ├── LoginController.java  
+│   ├── PantallaInicial.java  
+│   ├── module-info.java  
 │── src/main/resources/com/codexteam/codexlib/
-│   ├── fxml/                  # FXML files for the interface
-│   ├── images/                # App icons and images
-│── pom.xml                    # Maven configuration
-│── README.md                  # This document
+│   ├── css/                   
+│   │   ├── style.css          
+│   ├── fonts/                 
+│   ├── fxml/                  
+│   │   ├── adminView.fxml     
+│   │   ├── configView.fxml    
+│   │   ├── detallsLlibreView.fxml  
+│   │   ├── isbnView.fxml      
+│   │   ├── loginView.fxml     
+│   │   ├── registerView.fxml  
+│   │   ├── userView.fxml      
+│   ├── images/                
+│── META-INF/                  
+│── pom.xml                    
+│── README.md                  
 ```
 
 ## 🎮 **Screenshots**  
