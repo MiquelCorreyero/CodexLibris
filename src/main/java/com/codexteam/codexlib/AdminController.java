@@ -167,7 +167,6 @@ public class AdminController {
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Tancar la sessió");
         confirmAlert.setHeaderText("Segur que vols tancar la sessió?");
-        // confirmAlert.setContentText("Si tanques la sessió, hauràs d'iniciar sessió de nou.");
 
         // Obtenim la resposta de l'usuari
         Optional<ButtonType> result = confirmAlert.showAndWait();

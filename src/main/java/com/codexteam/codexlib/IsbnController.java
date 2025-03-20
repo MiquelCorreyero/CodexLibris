@@ -40,7 +40,7 @@ public class IsbnController {
         // Open Library
         String url = "https://openlibrary.org/api/books?bibkeys=ISBN:" + isbn + "&format=json&jscmd=data";
 
-        // Google Books
+        // Google Books (no retorna gaires dades)
         // String url = "https://www.googleapis.com/books/v1/volumes?q=isbn:" + isbn;
 
         try {
