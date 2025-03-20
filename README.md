@@ -1,71 +1,81 @@
-# 📚 Codex Libris
-**Proyecto final del Ciclo Formativo de Grado Superior DAM - En Desarrollo**
+📚 **Codex Libris**  
 
-![Codex Libris](https://via.placeholder.com/800x400?text=Codex+Libris)
+Final Project for the Advanced Vocational Training Program in Multiplatform Application Development (DAM) - In Development  
 
-## 📌 Sobre el Proyecto
-**Codex Libris** es el proyecto final de mi **Ciclo Formativo de Grado Superior en Desarrollo de Aplicaciones Multiplataforma (DAM)**. Se trata de una aplicación de escritorio en desarrollo que busca facilitar la gestión de una biblioteca municipal.
+## **Codex Libris**  
+📌 **About the Project**  
 
-Este software está siendo construido con **JavaFX** y **Maven**, utilizando **Scene Builder** para la interfaz gráfica y conectándose a un servidor mediante HTTP para la autenticación y gestión de datos.
+Codex Libris is the final project for my Advanced Vocational Training Program in Multiplatform Application Development (DAM). It is a desktop application in development aimed at facilitating the management of a municipal library.  
 
-## 🚀 Funcionalidades (En Desarrollo)
-✅ **Gestión de usuarios**: Inicio de sesión, creación de cuentas y control de accesos según rol (administrador/usuario).  
-✅ **Administración de libros**: Agregar, editar y eliminar libros de la base de datos.  
-✅ **Gestión de préstamos**: Control de libros prestados y fechas de devolución.  
-✅ **Gestión de eventos**: Registro de actividades dentro de la biblioteca.  
-✅ **Panel de administración**: Sección exclusiva para administradores donde pueden gestionar todos los aspectos de la biblioteca.  
-✅ **Notificaciones**: Sistema de alertas para eventos y actividades.  
-✅ **Interfaz moderna y amigable**: Construida con JavaFX y Scene Builder.  
+This software is being built with JavaFX and Maven, using Scene Builder for the graphical interface and connecting to a server via HTTP for authentication and data management.  
 
-💡 *Nota:* Algunas funcionalidades aún están en fase de desarrollo y pueden estar sujetas a cambios.
+## 🚀 **Features (In Development)**  
 
-## 🛠️ Tecnologías Utilizadas
-- **Java 17**
-- **JavaFX** para la interfaz gráfica
-- **Maven** como gestor de dependencias
-- **Scene Builder** para la creación de interfaces
-- **GitHub** para control de versiones
-- **HTTP Requests** para conexión con el servidor
+✅ **User Management**: Login, account creation, and access control based on roles (admin/user).  
+✅ **Book Management**: Add, edit, and delete books from the database.  
+✅ **Loan Management**: Track borrowed books and return dates.  
+✅ **Event Management**: Register activities within the library.  
+✅ **Admin Panel**: Exclusive section for administrators to manage all aspects of the library.  
+✅ **Notifications**: Alert system for events and activities.  
+✅ **Modern and User-Friendly Interface**: Built with JavaFX and Scene Builder.  
 
-## 📂 Estructura del Proyecto
+💡 **Note**: Some features are still in development and may be subject to change.  
+
+## 🛠️ **Technologies Used**  
+
+- Java 17  
+- JavaFX for the graphical interface  
+- Maven as a dependency manager  
+- Scene Builder for UI creation  
+- GitHub for version control  
+- HTTP Requests for server communication  
+
+## 📂 **Project Structure**  
+
 ```
 CodexLibris/
 │── src/main/java/com/codexteam/codexlib/
-│   ├── PantallaInicial.java   # Punto de entrada de la aplicación
-│   ├── LoginController.java   # Controlador de la pantalla de login
-│   ├── AdminController.java   # Panel de administración
-│   ├── ConnexioServidor.java  # Conexión con el servidor mediante HTTP
+│   ├── MainScreen.java        # Application entry point
+│   ├── LoginController.java   # Login screen controller
+│   ├── AdminController.java   # Administration panel
+│   ├── ServerConnection.java  # HTTP connection with the server
 │── src/main/resources/com/codexteam/codexlib/
-│   ├── fxml/                  # Archivos FXML de la interfaz
-│   ├── images/                # Iconos e imágenes de la app
-│── pom.xml                    # Configuración de Maven
-│── README.md                  # Este documento
+│   ├── fxml/                  # FXML files for the interface
+│   ├── images/                # App icons and images
+│── pom.xml                    # Maven configuration
+│── README.md                  # This document
 ```
 
-## 🎮 Capturas de Pantalla
-🚧 *Próximamente* 🚧
+## 🎮 **Screenshots**  
 
-## 🔧 Instalación y Ejecución
-### **Requisitos previos**
-- Tener instalado **Java 17 o superior**
-- Tener **Maven** instalado y configurado
+🚧 Coming Soon 🚧  
 
-### **Clonar el repositorio**
-```bash
-git clone https://github.com/tuusuario/codex-libris.git
+## 🔧 **Installation and Execution**  
+
+### **Prerequisites**  
+
+- Java 17 or later installed  
+- Maven installed and configured  
+
+### **Clone the repository**  
+
+```sh
+git clone https://github.com/yourusername/codex-libris.git
 cd codex-libris
 ```
 
-### **Compilar y ejecutar**
-```bash
+### **Build and run**  
+
+```sh
 mvn clean javafx:run
 ```
 
-## 📌 Contribuciones
-Dado que **Codex Libris** es un proyecto académico en desarrollo, las contribuciones externas están limitadas. Sin embargo, cualquier sugerencia o comentario será bien recibido.
+## 📌 **Contributions**  
 
-Si quieres aportar ideas o reportar errores, puedes abrir un **issue** en GitHub.
+Since Codex Libris is an academic project in development, external contributions are limited. However, any suggestions or feedback are welcome.  
 
-## 📝 Licencia
-Este proyecto está bajo la **Licencia MIT**. Puedes usarlo libremente con atribución.
+If you want to contribute ideas or report bugs, feel free to open an issue on GitHub.  
 
+## 📝 **License**  
+
+This project is licensed under the MIT License. You are free to use it with proper attribution.  
