@@ -1,21 +1,28 @@
 package com.codexteam.codexlib;
 
+import javafx.application.Platform;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.control.Label;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.Optional;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.codexteam.codexlib.ConnexioServidor.getNomUsuariActual;
 
@@ -24,6 +31,7 @@ public class AdminController {
     @FXML private AnchorPane paneInici;
     @FXML private AnchorPane paneLlibres;
     @FXML private AnchorPane paneUsuaris;
+    @FXML private AnchorPane paneReserves;
     @FXML private AnchorPane paneEsdeveniments;
     @FXML private Label textBenvinguda;
     @FXML private ImageView configButton;
@@ -37,6 +45,7 @@ public class AdminController {
         paneInici.setVisible(false);
         paneLlibres.setVisible(false);
         paneUsuaris.setVisible(false);
+        paneReserves.setVisible(false);
         paneEsdeveniments.setVisible(false);
     }
 
@@ -59,10 +68,25 @@ public class AdminController {
     }
 
     @FXML
+    private void showReserves() {
+        hideAllPanes();
+        paneReserves.setVisible(true);
+    }
+
+    @FXML
     private void showEsdeveniments() {
         hideAllPanes();
         paneEsdeveniments.setVisible(true);
     }
+
+    //=====================================================
+    //            COLUMNES DE LA TAULA DE LLIBRES
+    //=====================================================
+    @FXML private TableView<Llibre> taulaLlibres;
+    @FXML private TableColumn<Llibre, String> colTitol;
+    @FXML private TableColumn<Llibre, String> colAutor;
+    @FXML private TableColumn<Llibre, String> colIsbn;
+    @FXML private TableColumn<Llibre, String> colDisponibilitat;
 
 
     //=====================================================
@@ -94,6 +118,19 @@ public class AdminController {
                 obrirNovaFinestra("/com/codexteam/codexlib/fxml/configView.fxml", "Configuració", "/com/codexteam/codexlib/images/config_.png")
         );
         configButton.setCursor(javafx.scene.Cursor.HAND);
+
+        //=====================================================
+        //              CARREGAR LLISTAT DE LLIBRES
+        //=====================================================
+        colTitol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        colAutor.setCellValueFactory(new PropertyValueFactory<>("authorName"));
+        colIsbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
+        colDisponibilitat.setCellValueFactory(cellData -> {
+            boolean disponible = cellData.getValue().isAvailable();
+            return new SimpleStringProperty(disponible ? "Sí" : "No");
+        });
+
+        carregarLlibres();
 
     }
 
@@ -173,6 +210,39 @@ public class AdminController {
 
         // Retorna true si l'usuari clica "OK", false si clica "Cancel"
         return result.isPresent() && result.get() == ButtonType.OK;
+    }
+
+    //=====================================================
+    //            OBTENIR LLISTAT DE LLIBRES
+    //=====================================================
+    private void carregarLlibres() {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/books"))
+                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
+                .header("Content-Type", "application/json")
+                .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(response -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        List<Llibre> llibres = mapper.readValue(
+                                response,
+                                new TypeReference<List<Llibre>>() {}
+                        );
+                        Platform.runLater(() -> {
+                            taulaLlibres.getItems().setAll(llibres);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    return null;
+                });
     }
 
 }
