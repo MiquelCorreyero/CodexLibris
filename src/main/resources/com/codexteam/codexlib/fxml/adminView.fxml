@@ -47,7 +47,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.AdminController">
+<VBox prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.AdminController">
   <children>
     <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #262125;" stylesheets="@../css/style.css" VBox.vgrow="ALWAYS">
       <children>
@@ -125,7 +125,7 @@
                <center>
                   <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="paneInici" style="-fx-background-color: #f8f7f3;">
+                        <AnchorPane fx:id="paneInici" style="-fx-background-color: #f8f7f3;" visible="false">
                            <children>
                               <Label text="Inici" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
@@ -149,14 +149,14 @@
                               <Insets right="10.0" />
                            </StackPane.margin>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneLlibres" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" visible="false">
+                        <AnchorPane fx:id="paneLlibres" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;">
                            <children>
                               <Label text="Llibres" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
-                              <TableView fx:id="taulaLlibres" layoutX="40.0" layoutY="148.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
+                              <TableView fx:id="taulaLlibres" layoutX="40.0" layoutY="148.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
                                 <columns>
                                   <TableColumn fx:id="colTitol" prefWidth="250.0" text="Títol" />
                                   <TableColumn fx:id="colAutor" prefWidth="150.0" text="Autor" />
@@ -164,9 +164,35 @@
                                     <TableColumn fx:id="colDisponibilitat" prefWidth="100.0" text="Estat" />
                                 </columns>
                               </TableView>
-                              <Button fx:id="inserirNouLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text="Inserir nou llibre" AnchorPane.topAnchor="498.0" />
-                              <Button layoutX="200.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text="Eliminar llibre" />
-                              <Button layoutX="380.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text="Editar llibre" />
+                              <Button fx:id="inserirNouLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nou llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="380.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button layoutX="200.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Eliminar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/delete_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button layoutX="380.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Editar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="200.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/edit_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Label layoutX="32.0" layoutY="60.0" text="Fes doble clic sobre un títol per veure'n els detalls:">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Label>
                            </children>
                            <StackPane.margin>
                               <Insets right="10.0" />
@@ -221,16 +247,24 @@
                                     <Font name="System Bold" size="20.0" />
                                  </font>
                               </Label>
-                              <ImageView fx:id="configButton" fitHeight="25.0" fitWidth="26.0" layoutX="347.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0">
+                              <ImageView fx:id="configButton" fitHeight="25.0" fitWidth="26.0" layoutX="347.0" layoutY="18.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="205.0" AnchorPane.topAnchor="15.0">
                                  <image>
                                     <Image url="@../images/gear_icon.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fx:id="bellButton" fitHeight="22.0" fitWidth="22.0" layoutX="323.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="55.0">
+                              <ImageView fx:id="bellButton" fitHeight="22.0" fitWidth="22.0" layoutX="323.0" layoutY="17.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="170.0">
                                  <image>
                                     <Image url="@../images/_bell_icon.png" />
                                  </image>
                               </ImageView>
+                              <Button fx:id="logoutButton" layoutX="714.0" layoutY="20.0" mnemonicParsing="false" onAction="#tancarSessio" styleClass="logout-button" text=" Tancar la sessió" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+                                 <graphic>
+                                    <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/exit_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
                            <HBox.margin>
                               <Insets right="10.0" top="10.0" />
@@ -248,9 +282,6 @@
                            </HBox.margin>
                         </AnchorPane>
                         <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #f8f7f3; -fx-background-radius: 0 0 20px 20px;" HBox.hgrow="ALWAYS">
-                           <children>
-                              <Button fx:id="logoutButton" layoutX="224.0" layoutY="33.0" mnemonicParsing="false" onAction="#tancarSessio" styleClass="logout-button" text="Tancar la sessió" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
-                           </children>
                            <HBox.margin>
                               <Insets bottom="10.0" right="10.0" />
                            </HBox.margin>

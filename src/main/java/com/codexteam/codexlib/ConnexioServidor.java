@@ -6,15 +6,28 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Scanner;
 
+/**
+ * Classe encarregada de gestionar la connexió amb el servidor,
+ * incloent l'autenticació mitjançant login i l'emmagatzematge del token JWT.
+ */
 public class ConnexioServidor {
 
-    // Token JWT del login
+    /** Token JWT obtingut després de fer login. */
     private static String tokenSessio = null;
-    // Nom de l'usuari que ha fet el login
+
+    /** Nom de l'usuari que ha iniciat sessió. */
     private static String nomUsuariActual = null;
-    // ID del rol (1 = admin, qualsevol altre valor = usuari normal)
+
+    /** Tipus d'usuari (1 = administrador, qualsevol altre = usuari normal). */
     private static int tipusUsuari = -1;
 
+    /**
+     * Realitza el procés de login amb el servidor.
+     *
+     * @param username Nom d'usuari.
+     * @param password Contrasenya.
+     * @return true si el login ha estat satisfactori, false en cas contrari.
+     */
     public static boolean login(String username, String password) {
         try {
             // URL endpoint del login
@@ -56,22 +69,36 @@ public class ConnexioServidor {
         return false;
     }
 
-    // Obtenir el token JWT
+    /**
+     * Retorna el token JWT obtingut després de l'autenticació.
+     *
+     * @return Token JWT de sessió.
+     */
     public static String getTokenSessio() {
         return tokenSessio;
     }
 
-    // Obtenir el nom de l'usuari
+    /**
+     * Retorna el nom de l'usuari que ha iniciat sessió.
+     *
+     * @return Nom de l'usuari actual.
+     */
     public static String getNomUsuariActual() {
         return nomUsuariActual;
     }
 
-    // Obtenir el tipus d'usuari
+    /**
+     * Retorna el tipus d'usuari (1 per a administradors).
+     *
+     * @return Codi del rol d'usuari.
+     */
     public static int getTipusUsuari() {
         return tipusUsuari;
     }
 
-    // Tancar la sessió
+    /**
+     * Elimina les dades de sessió actual (token, usuari i rol).
+     */
     public static void logout() {
         tokenSessio = null;
         nomUsuariActual = null;

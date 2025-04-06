@@ -1,5 +1,9 @@
 package com.codexteam.codexlib;
 
+/**
+ * Representa un llibre dins del sistema. Conté informació bàsica com títol, autor, ISBN, gènere,
+ * data de publicació, disponibilitat i dades de creació/modificació.
+ */
 public class Llibre {
     private int id;
     private String title;

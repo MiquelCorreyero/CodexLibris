@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.json.JSONObject;
 
@@ -16,6 +17,10 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * Controlador encarregat de cercar informació d'un llibre a partir del seu ISBN mitjançant l'API de Open Library.
+ * Mostra els resultats obtinguts en una finestra amb els detalls del llibre.
+ */
 public class IsbnController {
 
     @FXML
@@ -29,6 +34,10 @@ public class IsbnController {
         cercarISBNButton.setOnAction(event -> cercarPerIsbn());
     }
 
+    /**
+     * Realitza la consulta a Open Library amb l'ISBN introduït i, si troba un resultat,
+     * obre una nova finestra amb els detalls del llibre.
+     */
     @FXML
     private void cercarPerIsbn() {
         String isbn = campISBN.getText().trim();
@@ -77,6 +86,15 @@ public class IsbnController {
         }
     }
 
+    /**
+     * Obre una finestra modal mostrant els detalls del llibre obtingut de la cerca per ISBN.
+     *
+     * @param titol        Títol del llibre.
+     * @param autor        Autor del llibre.
+     * @param publicacio   Data de publicació.
+     * @param isbn         Codi ISBN.
+     * @param portada      URL de la portada del llibre.
+     */
     private void obrirFinestraDetalls(String titol, String autor, String publicacio, String isbn, String portada) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detallsLlibreView.fxml"));
@@ -88,6 +106,8 @@ public class IsbnController {
             Stage stage = new Stage();
             stage.setTitle("Detalls del Llibre");
             stage.setScene(new Scene(root));
+            // Icona de la finestra
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/details.png")));
             stage.show();
 
         } catch (IOException e) {
@@ -96,12 +116,22 @@ public class IsbnController {
         }
     }
 
+    /**
+     * Mostra una finestra d'alerta amb un missatge informatiu.
+     *
+     * @param titol    Títol de l'alerta.
+     * @param missatge Missatge a mostrar.
+     */
     private void mostrarAlerta(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titol);
         alert.setHeaderText(null);
         alert.setContentText(missatge);
         alert.showAndWait();
+    }
+
+    public void entradaLlibreManual(){
+
     }
 
 }

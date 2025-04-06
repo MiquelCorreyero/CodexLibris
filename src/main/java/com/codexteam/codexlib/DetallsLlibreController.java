@@ -6,6 +6,10 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
+/**
+ * Controlador de la finestra de detalls d'un llibre.
+ * Aquesta finestra mostra informació detallada d'un llibre obtinguda des de la API de Open Library.
+ */
 public class DetallsLlibreController {
 
     @FXML
@@ -25,7 +29,15 @@ public class DetallsLlibreController {
         this.stage = stage;
     }
 
-    // Mostrem els camps amb la informació obtinguda de la API
+    /**
+     * Mostra la informació detallada d’un llibre en els camps corresponents de la finestra.
+     *
+     * @param titol         Títol del llibre.
+     * @param autor         Nom de l’autor.
+     * @param dataPublicacio Data de publicació.
+     * @param isbn          Codi ISBN.
+     * @param portadaUrl    URL de la imatge de la portada (pot ser null o "Sense portada").
+     */
     public void mostrarDetallsLlibre(String titol, String autor, String dataPublicacio, String isbn, String portadaUrl) {
         titolTextField.setText(titol);
         autorTextField.setText(autor);
@@ -37,4 +49,5 @@ public class DetallsLlibreController {
             portadaImageView.setImage(new Image(portadaUrl));
         }
     }
+
 }

@@ -5,7 +5,6 @@ module com.codexteam.codexlib {
     requires java.net.http;
     requires com.fasterxml.jackson.databind;
 
-
     opens com.codexteam.codexlib to javafx.fxml;
     exports com.codexteam.codexlib;
 }

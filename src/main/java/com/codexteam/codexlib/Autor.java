@@ -1,5 +1,10 @@
 package com.codexteam.codexlib;
 
+/**
+ * Classe que representa un autor dins del sistema CodexLibris.
+ * Conté informació bàsica com el nom, la data de naixement, la nacionalitat
+ * i dades de creació/modificació del registre.
+ */
 public class Autor {
     private int id;
     private String name;

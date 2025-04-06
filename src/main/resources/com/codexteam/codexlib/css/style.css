@@ -1,3 +1,12 @@
+/*
+______    _   _    _____    _____    _____    _   _    _____
+| ___ \  | | | |  |_   _|  |_   _|  |  _  |  | \ | |  /  ___|
+| |_/ /  | | | |    | |      | |    | | | |  |  \| |  \ `--.
+| ___ \  | | | |    | |      | |    | | | |  | . ` |   `--. \
+| |_/ /  | |_| |    | |      | |    | |_| |  | |\  |  /\__/ /
+\____/    \___/     \_/      \_/    |_____|  \_| \_/  \____/
+*/
+
 /* === BOTO GENERAL === */
 .button {
     -fx-background-color: #E91E63;
@@ -42,13 +51,13 @@
 
 /* === BOTO LOGOUT === */
 .logout-button {
-    -fx-background-color: #E91E63;
+    -fx-background-color: black;
     -fx-text-fill: white;
     -fx-font-size: 13px;
     -fx-border-width: 2px;
     -fx-border-radius: 5px;
     -fx-background-radius: 5px;
-    -fx-padding: 10px 20px;
+    -fx-padding: 6px 10px;
     -fx-alignment: center;
     -fx-cursor: hand;
 }
@@ -61,7 +70,16 @@
     -fx-background-color: #e0e0e0;
 }
 
-/* === INPUT TEXT (TextField & PasswordField) === */
+/*
+_____    _   _   ______    _   _    _____    _____
+|_   _|  | \ | |  |  _  \  | | | |  |_   _|  /  ___|
+  | |    |  \| |  | | | |  | | | |    | |    \ `--.
+  | |    | . ` |  | | | |  | | | |    | |     `--. \
+ _| |_   | |\  |  | |/ /   | |_| |    | |    /\__/ /
+\_____/  \_| \_/  |___/     \___/     \_/    \____/
+*/
+
+/* === INPUT TEXT (TextField i PasswordField) === */
 .text-field, .password-field {
     -fx-background-color: white;
     -fx-text-fill: black;
@@ -73,22 +91,81 @@
     -fx-padding: 5px 15px;
 }
 
-/* === Foco en el Input (Cuando se hace clic) === */
+/* === Focus en el input (quan fem clic) === */
 .text-field:focused, .password-field:focused {
     -fx-border-color: #F48FB1;
     -fx-background-color: #f9f9f9;
 }
 
-/* === Placeholder (Texto dentro del input) === */
+/* === Placeholder (dintre del input) === */
 .text-field:prompt-text-visible, .password-field:prompt-text-visible {
     -fx-text-fill: grey;
 }
 
-/* === Input Deshabilitado === */
+/* === Input deshabilitat === */
 .text-field:disabled, .password-field:disabled {
     -fx-opacity: 0.5;
     -fx-background-color: #dddddd;
     -fx-border-color: #aaaaaa;
 }
 
+/*
+_____     ___    ______    _        _____    _____
+|_   _|   / _ \   | ___ \  | |      |  ___|  /  ___|
+  | |    / /_\ \  | |_/ /  | |      | |__    \ `--.
+  | |    |  _  |  | ___ \  | |      |  __|    `--. \
+  | |    | | | |  | |_/ /  | |____  | |___   /\__/ /
+  \_/    \_| |_/  \____/   \_____/  \____/   \____/
+*/
 
+/* ===== ESTILS TABLEVIEW ===== */
+.table-view {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: transparent;
+    -fx-padding: 10;
+    -fx-border-radius: 10;
+}
+
+/* ===== FILA SUPERIOR CAPÇALERA ===== */
+.table-view .column-header-background {
+    -fx-background-color: #2c2c2c;
+    -fx-border-radius: 10 10 0 0;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35px;
+    -fx-border-width: 0 0 1 0;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-view .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* ===== FILES NORMALS ===== */
+.table-row-cell {
+    -fx-background-color: #f4f4f4;
+    -fx-border-color: transparent;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: #eaeaea;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: #d0e7ff;
+}
+
+/* ===== FILA SELECCIONADA ===== */
+.table-row-cell:selected {
+    -fx-background-color: #2196F3;
+    -fx-text-fill: white;
+}
+
+.table-cell {
+    -fx-text-fill: black;
+}

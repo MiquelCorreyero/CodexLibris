@@ -15,14 +15,24 @@ import javafx.stage.Stage;
 import javafx.scene.Parent;
 import java.io.IOException;
 
+/**
+ * Controlador de la pantalla de login.
+ * S'encarrega de gestionar l'inici de sessió de l'usuari, validar credencials
+ * i obrir la interfície corresponent segons el seu rol.
+ * També permet accedir a la pantalla de registre per crear un nou compte.
+ */
 public class LoginController {
 
-    @FXML
-    private AnchorPane paneLogin;
+    @FXML private AnchorPane paneLogin;
+    @FXML private Button nouCompteButton;
+    @FXML private TextField campNomUsuari;
+    @FXML private PasswordField campContrasenya;
+    @FXML private Button loginButton;
 
-    @FXML
-    private Button nouCompteButton;
-
+    /**
+     * Inicialitza el controlador. Desactiva el focus inicial en els camps i
+     * configura el botó de "Nou compte".
+     */
     @FXML
     public void initialize() {
         // Evitar que hi hagi focus a algun camp de text
@@ -32,15 +42,10 @@ public class LoginController {
         nouCompteButton.setOnAction(event -> crearNouCompte());
     }
 
-    @FXML
-    private TextField campNomUsuari;
-
-    @FXML
-    private PasswordField campContrasenya;
-
-    @FXML
-    private Button loginButton;
-
+    /**
+     * Gestiona l'inici de sessió de l'usuari. Comprova les credencials
+     * i obre el panell d'administrador o d'usuari segons el seu rol.
+     */
     @FXML
     private void iniciarSessio() {
         String username = campNomUsuari.getText();
@@ -69,7 +74,12 @@ public class LoginController {
         }
     }
 
-    // Obrir la pantalla principal segons el tipus d'usuari
+    /**
+     * Obre una nova finestra segons el tipus d'usuari
+     *
+     * @param fxmlPath Ruta del fitxer FXML a carregar.
+     * @param title Títol de la finestra.
+     */
     private void obrirNovaFinestra(String fxmlPath, String title) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
@@ -92,7 +102,12 @@ public class LoginController {
         stage.close();
     }
 
-    // Mostrar un missatge d'error si el login no és correcte
+    /**
+     * Mostra un missatge d'error si el login no és correcte
+     *
+     * @param title Títol de l'alerta.
+     * @param message Contingut del missatge.
+     */
     private void mostrarAlerta(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -101,7 +116,9 @@ public class LoginController {
         alert.showAndWait();
     }
 
-    // Obrir la finestra de registre
+    /**
+     * Obre la finestra de registre per crear un nou compte d'usuari.
+     */
     @FXML
     private void crearNouCompte() {
         try {

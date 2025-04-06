@@ -1,5 +1,9 @@
 package com.codexteam.codexlib;
 
+/**
+ * Classe que representa un gènere literari dins de l'aplicació.
+ * Conté informació sobre el nom, la descripció i les dates de creació/modificació.
+ */
 public class Genere {
     private int id;
     private String name;

@@ -26,17 +26,41 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static com.codexteam.codexlib.ConnexioServidor.getNomUsuariActual;
 
+/**
+ * Controlador del panell d'administració, només visible per a usuaris de tipus admin.
+ * Gestiona la navegació entre diferents seccions com llibres, usuaris, reserves i esdeveniments.
+ * També s'encarrega de carregar les dades dels diferents apartats des del servidor i mostrar-les a les taules corresponents.
+ */
 public class AdminController {
 
+    //=====================================================
+    //            ELEMENTS DE LA INTERFÍCIE
+    //=====================================================
+
+    // PANELLS
     @FXML private AnchorPane paneInici;
     @FXML private AnchorPane paneLlibres;
     @FXML private AnchorPane paneUsuaris;
     @FXML private AnchorPane paneReserves;
     @FXML private AnchorPane paneEsdeveniments;
+
+    // LABEL USUARI ACTIU
     @FXML private Label textBenvinguda;
+
+    // IMATGES CLICABLES
     @FXML private ImageView configButton;
     @FXML private ImageView bellButton;
 
+    // COLUMNES DE LA TAULA DE LLIBRES
+    @FXML private TableView<Llibre> taulaLlibres;
+    @FXML private TableColumn<Llibre, String> colTitol;
+    @FXML private TableColumn<Llibre, String> colAutor;
+    @FXML private TableColumn<Llibre, String> colIsbn;
+    @FXML private TableColumn<Llibre, String> colDisponibilitat;
+
+    // BOTONS
+    @FXML private Button inserirNouLlibreButton; // Cercar llibre per ISBN
+    @FXML private Button logoutButton; // Logout
 
     //=====================================================
     //                VISIBILITAT PANELLS
@@ -49,30 +73,45 @@ public class AdminController {
         paneEsdeveniments.setVisible(false);
     }
 
+    /**
+     * Amaga tots els panells i mostra el panell d'inici.
+     */
     @FXML
     private void showInici() {
         hideAllPanes();
         paneInici.setVisible(true);
     }
 
+    /**
+     * Mostra el panell de llibres i amaga la resta.
+     */
     @FXML
     private void showLlibres() {
         hideAllPanes();
         paneLlibres.setVisible(true);
     }
 
+    /**
+     * Mostra el panell d'usuaris i amaga la resta.
+     */
     @FXML
     private void showUsuaris() {
         hideAllPanes();
         paneUsuaris.setVisible(true);
     }
 
+    /**
+     * Mostra el panell de reserves i amaga la resta.
+     */
     @FXML
     private void showReserves() {
         hideAllPanes();
         paneReserves.setVisible(true);
     }
 
+    /**
+     * Mostra el panell d'esdeveniments i amaga la resta.
+     */
     @FXML
     private void showEsdeveniments() {
         hideAllPanes();
@@ -80,24 +119,12 @@ public class AdminController {
     }
 
     //=====================================================
-    //            COLUMNES DE LA TAULA DE LLIBRES
+    //             INICIALITZAR ELS COMPONENTS
     //=====================================================
-    @FXML private TableView<Llibre> taulaLlibres;
-    @FXML private TableColumn<Llibre, String> colTitol;
-    @FXML private TableColumn<Llibre, String> colAutor;
-    @FXML private TableColumn<Llibre, String> colIsbn;
-    @FXML private TableColumn<Llibre, String> colDisponibilitat;
-
-
-    //=====================================================
-    //                       BOTONS
-    //=====================================================
-    @FXML
-    private Button inserirNouLlibreButton; // Cercar llibre per ISBN
-
-    //=====================================================
-    //                ELEMENTS PRINCIPALS
-    //=====================================================
+    /**
+     * Inicialitza el controlador després de carregar l'FXML.
+     * Configura el comportament dels botons i carrega la llista de llibres.
+     */
     @FXML
     public void initialize() {
 
@@ -119,9 +146,7 @@ public class AdminController {
         );
         configButton.setCursor(javafx.scene.Cursor.HAND);
 
-        //=====================================================
-        //              CARREGAR LLISTAT DE LLIBRES
-        //=====================================================
+        // CARREGAR LLISTAT DE LLIBRES
         colTitol.setCellValueFactory(new PropertyValueFactory<>("title"));
         colAutor.setCellValueFactory(new PropertyValueFactory<>("authorName"));
         colIsbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
@@ -142,6 +167,13 @@ public class AdminController {
     //=====================================================
     //              OBRIR UNA NOVA FINESTRA
     //=====================================================
+    /**
+     * Obre una nova finestra modal amb el FXML, títol i icona especificats.
+     *
+     * @param fxml Ruta del fitxer FXML.
+     * @param nomFinestra Títol de la finestra.
+     * @param icona Ruta de la icona de la finestra.
+     */
     private void obrirNovaFinestra(String fxml, String nomFinestra, String icona) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
@@ -163,11 +195,11 @@ public class AdminController {
     }
 
     //=====================================================
-    //                      LOGOUT
+    //                       LOGOUT
     //=====================================================
-    @FXML
-    private Button logoutButton;
-
+    /**
+     * Tanca la sessió de l'usuari actual i retorna al panell de login.
+     */
     @FXML
     private void tancarSessio() {
         // Mostrar alerta per confirmar si vol tancar la sessió
@@ -184,22 +216,19 @@ public class AdminController {
         obrirNovaFinestra("/com/codexteam/codexlib/fxml/loginView.fxml", "Inici de sessió", "/com/codexteam/codexlib/images/enter.png");
     }
 
-    // Tancar la finestra actual un cop s'ha fet logout
+    /**
+     * Tanca la finestra actual de l'aplicació.
+     */
     private void tancarFinestraActual() {
         Stage stage = (Stage) logoutButton.getScene().getWindow();
         stage.close();
     }
 
-    // Mostrar missatge
-    private void mostrarMissatge(String title, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    // Confirmació per tancar la sessió
+    /**
+     * Mostra una finestra de confirmació per tancar la sessió.
+     *
+     * @return true si l’usuari accepta tancar la sessió, false si ho cancel·la.
+     */
     private boolean confirmarTancarSessio() {
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Tancar la sessió");
@@ -215,6 +244,10 @@ public class AdminController {
     //=====================================================
     //            OBTENIR LLISTAT DE LLIBRES
     //=====================================================
+    /**
+     * Obté el llistat de llibres del servidor mitjançant una petició HTTP
+     * i els mostra a la taula de llibres.
+     */
     private void carregarLlibres() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -243,6 +276,23 @@ public class AdminController {
                     e.printStackTrace();
                     return null;
                 });
+    }
+
+    //=====================================================
+    //            MOSTRAR MISSATGES INFORMATIUS
+    //=====================================================
+    /**
+     * Mostra un missatge d’informació amb el títol i contingut especificats.
+     *
+     * @param title Títol de la finestra d’alerta.
+     * @param message Missatge que es mostrarà a l’usuari.
+     */
+    private void mostrarMissatge(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 
 }
