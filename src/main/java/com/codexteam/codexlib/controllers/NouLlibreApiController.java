@@ -26,7 +26,7 @@ import java.util.List;
  * Controlador de la finestra de detalls d'un llibre.
  * Aquesta finestra mostra informació detallada d'un llibre obtinguda des de la API de Open Library.
  */
-public class DetallsLlibreController {
+public class NouLlibreApiController {
 
     @FXML private ImageView portadaImageView;
     @FXML private TextField titolTextField;

@@ -100,7 +100,7 @@ public class IsbnController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detallsLlibreView.fxml"));
             Parent root = loader.load();
 
-            DetallsLlibreController controller = loader.getController();
+            NouLlibreApiController controller = loader.getController();
             controller.mostrarDetallsLlibre(titol, autor, publicacio, isbn, portada);
 
             Stage stage = new Stage();
@@ -135,7 +135,7 @@ public class IsbnController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detallsLlibreView.fxml"));
             Parent root = loader.load();
 
-            DetallsLlibreController controller = loader.getController();
+            NouLlibreApiController controller = loader.getController();
             // No passem cap dada → els camps es quedaran buits
             controller.mostrarDetallsLlibre("", "", "", "", null);
 

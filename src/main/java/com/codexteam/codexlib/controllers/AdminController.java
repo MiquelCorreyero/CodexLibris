@@ -480,7 +480,7 @@ public class AdminController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/usersView.fxml"));
             Parent root = loader.load();
 
-            GestionarUsuariController controller = loader.getController();
+            GestionarUsuarisController controller = loader.getController();
             controller.setUsuari(usuari); // null si és nou
 
             Stage stage = new Stage();

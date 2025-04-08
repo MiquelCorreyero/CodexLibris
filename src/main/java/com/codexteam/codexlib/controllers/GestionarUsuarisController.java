@@ -13,7 +13,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class GestionarUsuariController {
+public class GestionarUsuarisController {
 
     @FXML private Label titolLabel;
     @FXML private TextField usernameField;
