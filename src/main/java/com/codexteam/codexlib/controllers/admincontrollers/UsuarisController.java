@@ -36,7 +36,7 @@ public class UsuarisController {
     @FXML private TableColumn<Usuari, String> colRolUsuari;
 
     // BOTONS
-    @FXML private Button nouUsuariButton; // Inserir o editar usuari
+    @FXML private Button nouUsuariButton;
 
     @FXML
     public void initialize() {

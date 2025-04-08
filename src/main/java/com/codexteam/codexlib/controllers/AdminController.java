@@ -1,11 +1,9 @@
 package com.codexteam.codexlib.controllers;
 
 import com.codexteam.codexlib.models.Autor;
-import com.codexteam.codexlib.models.Llibre;
 import com.codexteam.codexlib.models.Reserva;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import javafx.application.Platform;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -57,13 +55,6 @@ public class AdminController {
     @FXML private ImageView configButton;
     @FXML private ImageView bellButton;
 
-    // COLUMNES DE LA TAULA DE LLIBRES
-    @FXML private TableView<Llibre> taulaLlibres;
-    @FXML private TableColumn<Llibre, String> colTitol;
-    @FXML private TableColumn<Llibre, String> colAutor;
-    @FXML private TableColumn<Llibre, String> colIsbn;
-    @FXML private TableColumn<Llibre, String> colDisponibilitat;
-
     // COLUMNES DE LA TAULA D'AUTORS
     @FXML private TableView<Autor> taulaAutors;
     @FXML private TableColumn<Autor, String> colIdAutor;
@@ -82,10 +73,8 @@ public class AdminController {
     @FXML private TableColumn<Reserva, String> colDataRetorn;
 
     // BOTONS
-    @FXML private Button inserirNouLlibreButton; // Cercar llibre per ISBN
     @FXML private Button logoutButton; // Logout
     @FXML private Button inserirNouAutorButton; // Inserir o editar autor
-
 
     //=====================================================
     //                VISIBILITAT PANELLS
@@ -139,7 +128,22 @@ public class AdminController {
     private void showLlibres() {
         hideAllPanes();
         paneLlibres.setVisible(true);
+
+        if (paneLlibres.getChildren().isEmpty()) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/panellLlibresView.fxml"));
+                Parent llibresContent = loader.load();
+                paneLlibres.getChildren().setAll(llibresContent);
+                AnchorPane.setTopAnchor(llibresContent, 0.0);
+                AnchorPane.setBottomAnchor(llibresContent, 0.0);
+                AnchorPane.setLeftAnchor(llibresContent, 0.0);
+                AnchorPane.setRightAnchor(llibresContent, 0.0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
+
 
     /**
      * Mostra el panell d'autors i amaga la resta.
@@ -194,39 +198,13 @@ public class AdminController {
         bellButton.setOnMouseClicked(event -> mostrarMissatge("Alerta", "Ep! Sóc una notificació!"));
         bellButton.setCursor(javafx.scene.Cursor.HAND);
 
-        // Mostrar finestra per a cercar llibre per ISBN
-        inserirNouLlibreButton.setOnAction(event ->
-                obrirNovaFinestra("/com/codexteam/codexlib/fxml/isbnView.fxml", "Cercar llibre per ISBN", "/com/codexteam/codexlib/images/isbn.png")
-        );
+
 
         // Mostrar finestra de configuració
         configButton.setOnMouseClicked(event ->
                 obrirNovaFinestra("/com/codexteam/codexlib/fxml/configView.fxml", "Configuració", "/com/codexteam/codexlib/images/config_.png")
         );
         configButton.setCursor(javafx.scene.Cursor.HAND);
-
-        // EDITA EL LLIBRE EN FER DOBLE CLIC SOBRE UNA FILA
-        taulaLlibres.setRowFactory(tv -> {
-            TableRow<Llibre> fila = new TableRow<>();
-            fila.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !fila.isEmpty()) {
-                    Llibre llibreSeleccionat = fila.getItem();
-                    obrirGestionarLlibre(llibreSeleccionat);
-                }
-            });
-            return fila;
-        });
-
-        // CARREGAR LLISTAT DE LLIBRES
-        colTitol.setCellValueFactory(new PropertyValueFactory<>("title"));
-        colAutor.setCellValueFactory(new PropertyValueFactory<>("authorName"));
-        colIsbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
-        colDisponibilitat.setCellValueFactory(cellData -> {
-            boolean disponible = cellData.getValue().isAvailable();
-            return new SimpleStringProperty(disponible ? "Sí" : "No");
-        });
-
-        carregarLlibres();
 
         // CARREGAR LLISTAT D'AUTORS
         colIdAutor.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -347,43 +325,6 @@ public class AdminController {
     }
 
     //=====================================================
-    //        OBTENIR LLISTAT DE LLIBRES DEL CATÀLEG
-    //=====================================================
-    /**
-     * Obté el llistat de llibres del servidor mitjançant una petició HTTP
-     * i els mostra a la taula de llibres.
-     */
-    private void carregarLlibres() {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/books"))
-                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
-                .header("Content-Type", "application/json")
-                .build();
-
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(response -> {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        List<Llibre> llibres = mapper.readValue(
-                                response,
-                                new TypeReference<List<Llibre>>() {}
-                        );
-                        Platform.runLater(() -> {
-                            taulaLlibres.getItems().setAll(llibres);
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                })
-                .exceptionally(e -> {
-                    e.printStackTrace();
-                    return null;
-                });
-    }
-
-    //=====================================================
     //            OBTENIR LLISTAT D'AUTORS
     //=====================================================
     private void carregarAutors() {
@@ -483,27 +424,6 @@ public class AdminController {
                     e.printStackTrace();
                     return null;
                 });
-    }
-
-    private void obrirGestionarLlibre(Llibre llibre) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestionarLlibresView.fxml"));
-            Parent root = loader.load();
-
-            GestionarLlibresController controller = loader.getController();
-            controller.setLlibre(llibre); // null si és nou
-
-            Stage stage = new Stage();
-            stage.setTitle(llibre == null ? "Nou llibre" : "Editar llibre");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book.png")));
-            stage.showAndWait();
-
-            carregarLlibres(); // Refrescar taula
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     //=====================================================

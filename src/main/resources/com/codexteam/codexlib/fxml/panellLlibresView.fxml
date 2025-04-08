@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" stylesheets="@../css/style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.codexteam.codexlib.controllers.admincontrollers.LlibresController">
+    <children>
+        <Label text="Catàleg" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <Label text="Fes doble clic sobre un títol per veure'n els detalls, editar-lo o eliminar-lo:" textFill="#e91e63" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="50.0">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+        <TableView fx:id="taulaLlibres" layoutX="40.0" layoutY="148.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
+            <columns>
+                <TableColumn fx:id="colTitol" prefWidth="250.0" text="Títol" />
+                <TableColumn fx:id="colAutor" prefWidth="150.0" text="Autor" />
+                <TableColumn fx:id="colIsbn" prefWidth="150.0" text="ISBN" />
+                <TableColumn fx:id="colDisponibilitat" prefWidth="100.0" text="Disponible" />
+            </columns>
+        </TableView>
+        <Button fx:id="inserirNouLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nou llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+            <graphic>
+                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../images/add_icon.png" />
+                    </image>
+                </ImageView>
+            </graphic></Button>
+    </children>
+</AnchorPane>
