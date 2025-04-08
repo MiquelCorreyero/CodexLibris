@@ -64,7 +64,7 @@ public class LoginController {
                 obrirNovaFinestra("/com/codexteam/codexlib/fxml/adminView.fxml", "CodexLibris - Administració");
             } else {
                 // Obrir el panell d'usuari no administrador
-                obrirNovaFinestra("/com/codexteam/codexlib/fxml/userView.fxml", "CodexLibris");
+                obrirNovaFinestra("/com/codexteam/codexlib/fxml/randomUserView.fxml", "CodexLibris");
             }
 
             // Tancar la finestra del login si s'ha iniciat sessió correctament

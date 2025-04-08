@@ -35,6 +35,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
@@ -78,7 +79,7 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                        <Button fx:id="llibresButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showLlibres" prefHeight="50.0" styleClass="menu-button" text=" Llibres" VBox.vgrow="ALWAYS">
+                        <Button fx:id="llibresButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showLlibres" prefHeight="50.0" styleClass="menu-button" text=" Catàleg" VBox.vgrow="ALWAYS">
                            <VBox.margin>
                               <Insets left="10.0" right="10.0" top="10.0" />
                            </VBox.margin>
@@ -89,6 +90,30 @@
                                  </image>
                               </ImageView>
                            </graphic></Button>
+                        <Button fx:id="autorsButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showAutors" prefHeight="50.0" styleClass="menu-button" text=" Autors">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/autors_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button fx:id="generesButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showGeneres" prefHeight="50.0" styleClass="menu-button" text=" Gèneres">
+                           <graphic>
+                              <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/generes_icon.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <VBox.margin>
+                              <Insets left="10.0" right="10.0" top="10.0" />
+                           </VBox.margin>
+                        </Button>
                         <Button fx:id="reservesButton" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#showReserves" prefHeight="50.0" styleClass="menu-button" text=" Reserves">
                            <graphic>
                               <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -123,15 +148,50 @@
                   </VBox>
                </left>
                <center>
-                  <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <StackPane BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="paneInici" style="-fx-background-color: #f8f7f3;" visible="false">
+                        <AnchorPane fx:id="paneInici" style="-fx-background-color: #f8f7f3;">
                            <children>
                               <Label text="Inici" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <ScrollPane AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
+                                 <content>
+                                    <VBox>
+                                       <children>
+                                          <HBox VBox.vgrow="ALWAYS">
+                                             <children>
+                                                <AnchorPane>
+                                                   <children>
+                                                      <ImageView fitHeight="394.0" fitWidth="488.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="20.0">
+                                                         <image>
+                                                            <Image url="@../images/books.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                </AnchorPane>
+                                                <AnchorPane HBox.hgrow="ALWAYS">
+                                                   <children>
+                                                      <Label text="Propers esdeveniments" AnchorPane.leftAnchor="50.0">
+                                                         <font>
+                                                            <Font size="18.0" />
+                                                         </font>
+                                                      </Label>
+                                                      <Label layoutX="50.0" layoutY="44.0" maxWidth="400.0" styleClass="cont_esdeveniment" text="La Biblioteca us convida a una nova trobada del Club de Lectura, que tindrà lloc el pròxim dijous 25 d’abril a les 18:00 h a la Sala d’Actes de la biblioteca.En aquesta sessió llegirem i comentarem el llibre &quot;El jardí secret&quot; de Frances Hodgson Burnett, una història plena de màgia, natura i transformació personal. Parlarem sobre el poder sanador de l’amistat, la importància del contacte amb la natura i com els espais amagats poden esdevenir refugis d’esperança. Activitat gratuïta amb inscripció prèvia. Al final de la sessió hi haurà un petit refrigeri amb te i galetes per compartir opinions de forma distesa. T’esperem per compartir lectures i fer créixer plegats aquest espai de paraules i emocions!" textAlignment="JUSTIFY" wrapText="true" AnchorPane.leftAnchor="50.0">
+                                                         <padding>
+                                                            <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                                                         </padding>
+                                                      </Label>
+                                                   </children>
+                                                </AnchorPane>
+                                             </children>
+                                          </HBox>
+                                       </children>
+                                    </VBox>
+                                 </content>
+                              </ScrollPane>
                            </children>
                            <StackPane.margin>
                               <Insets right="10.0" />
@@ -144,16 +204,40 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <TableView fx:id="taulaUsuaris" layoutX="156.0" layoutY="145.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
+                                <columns>
+                                  <TableColumn fx:id="colIdUsuari" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="colUsernameUsuari" prefWidth="75.0" text="Usuari" />
+                                    <TableColumn fx:id="colNomUsuari" prefWidth="75.0" text="Nom" />
+                                    <TableColumn fx:id="colEmailUsuari" prefWidth="75.0" text="Email" />
+                                    <TableColumn fx:id="colPasswordUsuari" prefWidth="75.0" text="Password" />
+                                    <TableColumn fx:id="colRolUsuari" prefWidth="75.0" text="Rol" />
+                                </columns>
+                              </TableView>
+                              <Button fx:id="nouUsuariButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nou usuari" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
                            <StackPane.margin>
                               <Insets right="10.0" />
                            </StackPane.margin>
                         </AnchorPane>
-                        <AnchorPane fx:id="paneLlibres" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;">
+                        <AnchorPane fx:id="paneLlibres" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" visible="false">
                            <children>
-                              <Label text="Llibres" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+                              <Label text="Catàleg" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="32.0" layoutY="60.0" text="Fes doble clic sobre un títol per veure'n els detalls:">
+                                 <font>
+                                    <Font size="14.0" />
                                  </font>
                               </Label>
                               <TableView fx:id="taulaLlibres" layoutX="40.0" layoutY="148.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
@@ -161,7 +245,7 @@
                                   <TableColumn fx:id="colTitol" prefWidth="250.0" text="Títol" />
                                   <TableColumn fx:id="colAutor" prefWidth="150.0" text="Autor" />
                                     <TableColumn fx:id="colIsbn" prefWidth="150.0" text="ISBN" />
-                                    <TableColumn fx:id="colDisponibilitat" prefWidth="100.0" text="Estat" />
+                                    <TableColumn fx:id="colDisponibilitat" prefWidth="100.0" text="Disponible" />
                                 </columns>
                               </TableView>
                               <Button fx:id="inserirNouLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nou llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="380.0">
@@ -169,14 +253,6 @@
                                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/add_icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic></Button>
-                              <Button layoutX="200.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Eliminar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
-                                 <graphic>
-                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/delete_icon.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
@@ -188,11 +264,76 @@
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
-                              <Label layoutX="32.0" layoutY="60.0" text="Fes doble clic sobre un títol per veure'n els detalls:">
+                              <Button layoutX="200.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Eliminar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/delete_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                           </children>
+                           <StackPane.margin>
+                              <Insets right="10.0" />
+                           </StackPane.margin>
+                        </AnchorPane>
+                        <AnchorPane fx:id="paneAutors" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f8f7f3;" visible="false">
+                           <children>
+                              <Label text="Autors" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <Label layoutX="30.0" layoutY="52.0" text="Fes doble clic sobre un autor per veure'n els detalls, editar-lo o eliminar-lo:" textFill="#e91e63" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
+                              <TableView fx:id="taulaAutors" layoutX="63.0" layoutY="114.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
+                                <columns>
+                                  <TableColumn fx:id="colIdAutor" prefWidth="58.0" text="ID" />
+                                  <TableColumn fx:id="colNomAutor" prefWidth="344.0" text="Nom" />
+                                    <TableColumn fx:id="colNacionalitatAutor" minWidth="0.0" prefWidth="197.0" text="Nacionalitat" />
+                                    <TableColumn fx:id="colDataAutor" prefWidth="126.5" text="Data de naixement" />
+                                </columns>
+                              </TableView>
+                              <Button fx:id="inserirNouAutorButton" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nou autor" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <StackPane.margin>
+                              <Insets right="10.0" />
+                           </StackPane.margin>
+                        </AnchorPane>
+                        <AnchorPane fx:id="paneGeneres" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f8f7f3;" visible="false">
+                           <children>
+                              <Label text="Gèneres" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+                                 <font>
+                                    <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
+                                 <columns>
+                                    <TableColumn fx:id="colIdGenere" prefWidth="75.0" text="ID" />
+                                    <TableColumn fx:id="colNomGenere" prefWidth="75.0" text="Nom" />
+                                    <TableColumn fx:id="colDescripcioGenere" prefWidth="75.0" text="Descripció" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="inserirNouAutorButton11" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nou gènere" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
                            <StackPane.margin>
                               <Insets right="10.0" />
@@ -208,6 +349,26 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <TableView fx:id="taulaReserves" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
+                                 <columns>
+                                    <TableColumn fx:id="colIdReserva" prefWidth="75.5" text="ID reserva" />
+                                    <TableColumn fx:id="colNomReserva" minWidth="0.0" prefWidth="129.0" text="Nom" />
+                                    <TableColumn fx:id="colCognomsReserva" prefWidth="143.0" text="Cognoms" />
+                                    <TableColumn fx:id="colEmailReserva" prefWidth="139.0" text="Email" />
+                                    <TableColumn fx:id="colLlibreReserva" prefWidth="161.5" text="Llibre reservat" />
+                                    <TableColumn fx:id="colDataReserva" maxWidth="126.0" prefWidth="119.5" text="Data reserva" />
+                                    <TableColumn fx:id="colDataRetorn" prefWidth="120.0" text="Data retorn" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="inserirNouAutorButton112" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nova reserva" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
                         </AnchorPane>
                         <AnchorPane fx:id="paneEsdeveniments" layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" visible="false">
@@ -217,6 +378,25 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
+                                 <columns>
+                                    <TableColumn prefWidth="75.0" text="ID" />
+                                    <TableColumn prefWidth="75.0" text="Títol" />
+                                    <TableColumn prefWidth="75.0" text="Contingut" />
+                                    <TableColumn prefWidth="75.0" text="Adreça" />
+                                    <TableColumn prefWidth="75.0" text="Data" />
+                                    <TableColumn prefWidth="75.0" text="Places" />
+                                 </columns>
+                              </TableView>
+                              <Button fx:id="inserirNouAutorButton111" mnemonicParsing="false" prefHeight="48.0" prefWidth="199.0" text=" Nou esdeveniment" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+                                 <graphic>
+                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/add_icon.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
                            </children>
                            <StackPane.margin>
                               <Insets right="10.0" />
@@ -261,7 +441,7 @@
                                  <graphic>
                                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../images/exit_icon.png" />
+                                          <Image url="@../images/close_icon.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>

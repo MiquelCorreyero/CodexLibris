@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="540.0" prefWidth="600.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.GestionarUsuariController">
+   <Label fx:id="titolLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="58.0" maxWidth="1.7976931348623157E308" textAlignment="CENTER" wrapText="true" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="58.0">
+      <font>
+         <Font name="System Bold" size="18.0" />
+      </font>
+   </Label>
+   <TextField fx:id="usernameField" layoutX="108.0" layoutY="103.0" prefHeight="33.0" prefWidth="384.0" promptText="Nom d'usuari" />
+   <TextField fx:id="firstNameField" layoutX="108.0" layoutY="151.0" prefHeight="33.0" prefWidth="384.0" promptText="Nom" />
+   <TextField fx:id="lastNameField" layoutX="108.0" layoutY="200.0" prefHeight="33.0" prefWidth="384.0" promptText="Cognoms" />
+   <TextField fx:id="emailField" layoutX="108.0" layoutY="248.0" prefHeight="33.0" prefWidth="384.0" promptText="Email" />
+   <PasswordField fx:id="passwordField" layoutX="108.0" layoutY="296.0" prefHeight="33.0" prefWidth="384.0" promptText="Password" />
+   <ComboBox fx:id="rolComboBox" layoutX="108.0" layoutY="344.0" prefHeight="33.0" prefWidth="384.0" promptText="Rol" />
+   <Button fx:id="eliminarUsuariButton" layoutX="108.0" layoutY="401.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="186.0" text=" Eliminar usuari">
+      <graphic>
+         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/delete_icon.png" />
+            </image>
+         </ImageView>
+      </graphic>
+   </Button>
+   <Button fx:id="guardarUsuariButton" layoutX="306.0" layoutY="401.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="186.0" text=" Guardar">
+      <graphic>
+         <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+               <Image url="@../images/save_data_icon.png" />
+            </image>
+         </ImageView>
+      </graphic></Button>
+</AnchorPane>

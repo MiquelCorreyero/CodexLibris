@@ -23,15 +23,15 @@ import java.net.URL;
  */
 public class IsbnController {
 
-    @FXML
-    private TextField campISBN;
+    @FXML private TextField campISBN;
+    @FXML private Button cercarISBNButton;
+    @FXML private Button entradaLlibreButton;
 
-    @FXML
-    private Button cercarISBNButton;
+    @FXML private void initialize() {
 
-    @FXML
-    private void initialize() {
         cercarISBNButton.setOnAction(event -> cercarPerIsbn());
+        entradaLlibreButton.setOnAction(event -> entradaLlibreManual());
+
     }
 
     /**
@@ -130,8 +130,25 @@ public class IsbnController {
         alert.showAndWait();
     }
 
-    public void entradaLlibreManual(){
+    public void entradaLlibreManual() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detallsLlibreView.fxml"));
+            Parent root = loader.load();
 
+            DetallsLlibreController controller = loader.getController();
+            // No passem cap dada → els camps es quedaran buits
+            controller.mostrarDetallsLlibre("", "", "", "", null);
+
+            Stage stage = new Stage();
+            stage.setTitle("Afegir nou llibre manualment");
+            stage.setScene(new Scene(root));
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/details.png")));
+            stage.show();
+
+        } catch (IOException e) {
+            mostrarAlerta("Error", "No s'ha pogut obrir el formulari per afegir un llibre.");
+            e.printStackTrace();
+        }
     }
 
 }

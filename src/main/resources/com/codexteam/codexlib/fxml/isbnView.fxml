@@ -5,12 +5,12 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.IsbnController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.IsbnController">
    <children>
       <Label layoutX="133.0" layoutY="60.0" text="Introdueix un ISBN per cercar les dades de forma automàtica:" />
-      <Button fx:id="cercarISBNButton" layoutX="124.0" layoutY="137.0" mnemonicParsing="false" onAction="#cercarPerIsbn" prefHeight="43.0" prefWidth="341.0" text="Cercar llibre" />
       <TextField fx:id="campISBN" layoutX="124.0" layoutY="93.0" prefHeight="25.0" prefWidth="341.0" promptText="Introdueix un ISBN" />
-      <Button fx:id="entradaLlibreButton" layoutX="124.0" layoutY="283.0" mnemonicParsing="false" onAction="#entradaLlibreManual" prefHeight="43.0" prefWidth="341.0" text="Entrada manual" />
+      <Button fx:id="cercarISBNButton" layoutX="124.0" layoutY="137.0" mnemonicParsing="false" onAction="#cercarPerIsbn" prefHeight="43.0" prefWidth="341.0" text="Cercar llibre" />
       <Label layoutX="163.0" layoutY="222.0" prefHeight="49.0" prefWidth="274.0" text="També pots entrar les dades de forma manual si no es troba el llibre mitjançant l'ISBN:" textAlignment="CENTER" wrapText="true" />
+      <Button fx:id="entradaLlibreButton" layoutX="124.0" layoutY="283.0" mnemonicParsing="false" onAction="#entradaLlibreManual" prefHeight="43.0" prefWidth="341.0" text="Entrada manual" />
    </children>
 </AnchorPane>

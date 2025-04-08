@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import static com.codexteam.codexlib.ConnexioServidor.getNomUsuariActual;
 
@@ -39,6 +40,8 @@ public class AdminController {
     // PANELLS
     @FXML private AnchorPane paneInici;
     @FXML private AnchorPane paneLlibres;
+    @FXML private AnchorPane paneAutors;
+    @FXML private AnchorPane paneGeneres;
     @FXML private AnchorPane paneUsuaris;
     @FXML private AnchorPane paneReserves;
     @FXML private AnchorPane paneEsdeveniments;
@@ -57,9 +60,37 @@ public class AdminController {
     @FXML private TableColumn<Llibre, String> colIsbn;
     @FXML private TableColumn<Llibre, String> colDisponibilitat;
 
+    // COLUMNES DE LA TAULA D'AUTORS
+    @FXML private TableView<Autor> taulaAutors;
+    @FXML private TableColumn<Autor, String> colIdAutor;
+    @FXML private TableColumn<Autor, String> colNomAutor;
+    @FXML private TableColumn<Autor, String> colNacionalitatAutor;
+    @FXML private TableColumn<Autor, String> colDataAutor;
+
+    // COLUMNES DE LA TAULA DE RESERVES
+    @FXML private TableView<Reserva> taulaReserves;
+    @FXML private TableColumn<Reserva, String> colIdReserva;
+    @FXML private TableColumn<Reserva, String> colNomReserva;
+    @FXML private TableColumn<Reserva, String> colCognomsReserva;
+    @FXML private TableColumn<Reserva, String> colEmailReserva;
+    @FXML private TableColumn<Reserva, String> colLlibreReserva;
+    @FXML private TableColumn<Reserva, String> colDataReserva;
+    @FXML private TableColumn<Reserva, String> colDataRetorn;
+
+    // COLUMNES DE LA TAULA DE USUARIS
+    @FXML private TableView<Usuari> taulaUsuaris;
+    @FXML private TableColumn<Usuari, String> colIdUsuari;
+    @FXML private TableColumn<Usuari, String> colUsernameUsuari;
+    @FXML private TableColumn<Usuari, String> colNomUsuari;
+    @FXML private TableColumn<Usuari, String> colEmailUsuari;
+    @FXML private TableColumn<Usuari, String> colPasswordUsuari;
+    @FXML private TableColumn<Usuari, String> colRolUsuari;
+
     // BOTONS
     @FXML private Button inserirNouLlibreButton; // Cercar llibre per ISBN
     @FXML private Button logoutButton; // Logout
+    @FXML private Button inserirNouAutorButton; // Inserir o editar autor
+    @FXML private Button nouUsuariButton; // Inserir o editar usuari
 
     //=====================================================
     //                VISIBILITAT PANELLS
@@ -68,6 +99,8 @@ public class AdminController {
         paneInici.setVisible(false);
         paneLlibres.setVisible(false);
         paneUsuaris.setVisible(false);
+        paneAutors.setVisible(false);
+        paneGeneres.setVisible(false);
         paneReserves.setVisible(false);
         paneEsdeveniments.setVisible(false);
     }
@@ -82,7 +115,16 @@ public class AdminController {
     }
 
     /**
-     * Mostra el panell de llibres i amaga la resta.
+     * Mostra el panell d'usuaris i amaga la resta.
+     */
+    @FXML
+    private void showUsuaris() {
+        hideAllPanes();
+        paneUsuaris.setVisible(true);
+    }
+
+    /**
+     * Mostra el panell de llibres (catàleg) i amaga la resta.
      */
     @FXML
     private void showLlibres() {
@@ -91,12 +133,21 @@ public class AdminController {
     }
 
     /**
-     * Mostra el panell d'usuaris i amaga la resta.
+     * Mostra el panell d'autors i amaga la resta.
      */
     @FXML
-    private void showUsuaris() {
+    private void showAutors() {
         hideAllPanes();
-        paneUsuaris.setVisible(true);
+        paneAutors.setVisible(true);
+    }
+
+    /**
+     * Mostra el panell de gèneres i amaga la resta.
+     */
+    @FXML
+    private void showGeneres() {
+        hideAllPanes();
+        paneGeneres.setVisible(true);
     }
 
     /**
@@ -145,6 +196,34 @@ public class AdminController {
         );
         configButton.setCursor(javafx.scene.Cursor.HAND);
 
+        // CARREGAR LLISTAT D'USUARIS
+        colIdUsuari.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colUsernameUsuari.setCellValueFactory(new PropertyValueFactory<>("username"));
+        colNomUsuari.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getFirstName() + " " + cellData.getValue().getLastName()));
+        colEmailUsuari.setCellValueFactory(new PropertyValueFactory<>("email"));
+        colPasswordUsuari.setCellValueFactory(new PropertyValueFactory<>("password"));
+        colRolUsuari.setCellValueFactory(cellData ->
+                new SimpleStringProperty(cellData.getValue().getRole().getName()));
+
+        carregarUsuaris();
+
+        // EDITA L'USUARI EN FER DOBLE CLIC SOBRE UNA FILA
+        taulaUsuaris.setRowFactory(tv -> {
+            TableRow<Usuari> fila = new TableRow<>();
+            fila.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !fila.isEmpty()) {
+                    Usuari usuariSeleccionat = fila.getItem();
+                    obrirFinestraEditarUsuari(usuariSeleccionat);
+                }
+            });
+            return fila;
+        });
+
+        // OBRE LA FINESTRA PER CREAR UN NOU USUARI
+        nouUsuariButton.setOnAction(e -> obrirFinestraEditarUsuari(null));
+
+
         // CARREGAR LLISTAT DE LLIBRES
         colTitol.setCellValueFactory(new PropertyValueFactory<>("title"));
         colAutor.setCellValueFactory(new PropertyValueFactory<>("authorName"));
@@ -155,6 +234,40 @@ public class AdminController {
         });
 
         carregarLlibres();
+
+        // CARREGAR LLISTAT D'AUTORS
+        colIdAutor.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNomAutor.setCellValueFactory(new PropertyValueFactory<>("name"));
+        colNacionalitatAutor.setCellValueFactory(new PropertyValueFactory<>("nationality"));
+        colDataAutor.setCellValueFactory(new PropertyValueFactory<>("birth_date"));
+
+        carregarAutors();
+
+        // EDITA L'AUTOR EN FER DOBLE CLIC SOBRE UNA FILA
+        taulaAutors.setRowFactory(tv -> {
+            TableRow<Autor> fila = new TableRow<>();
+            fila.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !fila.isEmpty()) {
+                    Autor autorSeleccionat = fila.getItem();
+                    obrirGestionarAutors(autorSeleccionat);
+                }
+            });
+            return fila;
+        });
+
+        // OBRE LA FINESTRA PER CREAR UN NOU AUTOR
+        inserirNouAutorButton.setOnAction(e -> obrirGestionarAutors(null));
+
+        // CARREGAR LLISTAT DE RESERVES
+        colIdReserva.setCellValueFactory(new PropertyValueFactory<>("id"));
+        colNomReserva.setCellValueFactory(new PropertyValueFactory<>("user_first_name"));
+        colCognomsReserva.setCellValueFactory(new PropertyValueFactory<>("user_name"));
+        colEmailReserva.setCellValueFactory(new PropertyValueFactory<>("user_email"));
+        colLlibreReserva.setCellValueFactory(new PropertyValueFactory<>("book_title"));
+        colDataReserva.setCellValueFactory(new PropertyValueFactory<>("loan_date"));
+        colDataRetorn.setCellValueFactory(new PropertyValueFactory<>("return_date"));
+
+        carregarReserves();
 
     }
 
@@ -241,7 +354,7 @@ public class AdminController {
     }
 
     //=====================================================
-    //            OBTENIR LLISTAT DE LLIBRES
+    //        OBTENIR LLISTAT DE LLIBRES DEL CATÀLEG
     //=====================================================
     /**
      * Obté el llistat de llibres del servidor mitjançant una petició HTTP
@@ -267,6 +380,160 @@ public class AdminController {
                         Platform.runLater(() -> {
                             taulaLlibres.getItems().setAll(llibres);
                         });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    return null;
+                });
+    }
+
+    //=====================================================
+    //            OBTENIR LLISTAT D'AUTORS
+    //=====================================================
+    private void carregarAutors() {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/authors"))
+                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
+                .header("Content-Type", "application/json")
+                .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(response -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        // Si hay fechas tipo LocalDate, registrar módulo:
+                        mapper.registerModule(new JavaTimeModule());
+
+                        List<Autor> autors = mapper.readValue(
+                                response,
+                                new TypeReference<List<Autor>>() {}
+                        );
+
+                        // Añadir los autores a la tabla desde el hilo principal
+                        Platform.runLater(() -> {
+                            taulaAutors.getItems().setAll(autors);
+                        });
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Platform.runLater(() -> mostrarMissatge("Error", "No s'han pogut carregar els autors."));
+                    }
+                })
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    Platform.runLater(() -> mostrarMissatge("Error", "Error en la connexió amb el servidor."));
+                    return null;
+                });
+    }
+
+    //=====================================================
+    //           OBRIR FINESTRA DETALLS AUTORS
+    //=====================================================
+    private void obrirGestionarAutors(Autor autor) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/editarInserirAutor.fxml"));
+            Parent root = loader.load();
+
+            GestionarAutorsController controller = loader.getController();
+            controller.setAutor(autor); // null si és nou
+
+            Stage stage = new Stage();
+            stage.setTitle(autor == null ? "Nou autor" : "Editar autor");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/author.png")));
+            stage.showAndWait();
+
+            carregarAutors(); // Refresca la taula
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //=====================================================
+    //           OBRIR FINESTRA DETALLS USUARI
+    //=====================================================
+    private void obrirFinestraEditarUsuari(Usuari usuari) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/usersView.fxml"));
+            Parent root = loader.load();
+
+            GestionarUsuariController controller = loader.getController();
+            controller.setUsuari(usuari); // null si és nou
+
+            Stage stage = new Stage();
+            stage.setTitle(usuari == null ? "Nou usuari" : "Editar usuari");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            carregarUsuaris(); // Refrescar
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void carregarUsuaris() {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/users"))
+                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
+                .header("Content-Type", "application/json")
+                .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(response -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        mapper.registerModule(new JavaTimeModule());
+                        List<Usuari> usuaris = mapper.readValue(response, new TypeReference<List<Usuari>>() {});
+                        Platform.runLater(() -> taulaUsuaris.getItems().setAll(usuaris));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Platform.runLater(() -> mostrarMissatge("Error", "No s'han pogut carregar els usuaris."));
+                    }
+                })
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    Platform.runLater(() -> mostrarMissatge("Error", "Error en la connexió amb el servidor."));
+                    return null;
+                });
+    }
+
+
+    //=====================================================
+    //            OBTENIR LLISTAT DE RESERVES
+    //=====================================================
+    /**
+     * Obté el llistat de les reserves del servidor mitjançant una petició HTTP
+     * i les mostra a la taula de reserves.
+     */
+    private void carregarReserves() {
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create("http://localhost:8080/loans"))
+                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
+                .header("Content-Type", "application/json")
+                .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(response -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        mapper.registerModule(new JavaTimeModule());
+                        mapper.findAndRegisterModules(); // Perque reconegui dates de tipus LocalDate
+                        List<Reserva> reserves = mapper.readValue(
+                                response,
+                                new TypeReference<List<Reserva>>() {}
+                        );
+                        Platform.runLater(() -> taulaReserves.getItems().setAll(reserves));
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
