@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="500.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.LoginController">
+<VBox prefHeight="500.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.LoginController">
     <children>
         <AnchorPane fx:id="paneLogin" maxHeight="-1.0" maxWidth="-1.0" prefHeight="500.0" prefWidth="640.0" stylesheets="@../css/style.css" VBox.vgrow="ALWAYS">
             <children>

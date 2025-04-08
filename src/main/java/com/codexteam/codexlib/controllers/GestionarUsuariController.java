@@ -1,5 +1,7 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.controllers;
 
+import com.codexteam.codexlib.services.ConnexioServidor;
+import com.codexteam.codexlib.models.Usuari;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.fxml.FXML;

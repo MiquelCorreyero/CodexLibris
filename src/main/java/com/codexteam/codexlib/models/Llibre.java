@@ -1,4 +1,4 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.models;
 
 /**
  * Representa un llibre dins del sistema. Conté informació bàsica com títol, autor, ISBN, gènere,

@@ -1,4 +1,4 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.models;
 
 /**
  * Classe que representa un autor dins del sistema CodexLibris.

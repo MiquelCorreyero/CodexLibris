@@ -48,7 +48,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.AdminController">
+<VBox prefHeight="800.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.AdminController">
   <children>
     <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #262125;" stylesheets="@../css/style.css" VBox.vgrow="ALWAYS">
       <children>
@@ -204,6 +204,11 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <Label text="Fes doble clic sobre un usuari per veure'n els detalls, editar-lo o eliminar-lo:" textFill="#e91e63" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
                               <TableView fx:id="taulaUsuaris" layoutX="156.0" layoutY="145.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
                                 <columns>
                                   <TableColumn fx:id="colIdUsuari" prefWidth="75.0" text="ID" />
@@ -235,9 +240,9 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="32.0" layoutY="60.0" text="Fes doble clic sobre un títol per veure'n els detalls:">
+                              <Label text="Fes doble clic sobre un títol per veure'n els detalls, editar-lo o eliminar-lo:" textFill="#e91e63" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="50.0">
                                  <font>
-                                    <Font size="14.0" />
+                                    <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                               <TableView fx:id="taulaLlibres" layoutX="40.0" layoutY="148.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
@@ -248,27 +253,11 @@
                                     <TableColumn fx:id="colDisponibilitat" prefWidth="100.0" text="Disponible" />
                                 </columns>
                               </TableView>
-                              <Button fx:id="inserirNouLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nou llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="380.0">
+                              <Button fx:id="inserirNouLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Nou llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
                                  <graphic>
                                     <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@../images/add_icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic></Button>
-                              <Button layoutX="380.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Editar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="200.0">
-                                 <graphic>
-                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/edit_icon.png" />
-                                       </image>
-                                    </ImageView>
-                                 </graphic></Button>
-                              <Button layoutX="200.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Eliminar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
-                                 <graphic>
-                                    <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                                       <image>
-                                          <Image url="@../images/delete_icon.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
@@ -318,6 +307,11 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <Label text="Fes doble clic sobre un gènere per veure'n els detalls, editar-lo o eliminar-lo:" textFill="#e91e63" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
                               <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
                                  <columns>
                                     <TableColumn fx:id="colIdGenere" prefWidth="75.0" text="ID" />
@@ -349,6 +343,11 @@
                                     <Font name="System Bold" size="24.0" />
                                  </font>
                               </Label>
+                              <Label text="Fes doble clic sobre una reserva per veure'n els detalls, editar-la o eliminar-la:" textFill="#e91e63" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
+                                 </font>
+                              </Label>
                               <TableView fx:id="taulaReserves" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
                                  <columns>
                                     <TableColumn fx:id="colIdReserva" prefWidth="75.5" text="ID reserva" />
@@ -376,6 +375,11 @@
                               <Label text="Esdeveniments" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
                                  <font>
                                     <Font name="System Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Fes doble clic sobre un esdeveniment per veure'n els detalls, editar-lo o eliminar-lo:" textFill="#e91e63" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="50.0">
+                                 <font>
+                                    <Font name="System Bold" size="16.0" />
                                  </font>
                               </Label>
                               <TableView prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">

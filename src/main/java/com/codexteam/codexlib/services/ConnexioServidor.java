@@ -1,4 +1,4 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.services;
 
 import org.json.JSONObject;
 import java.io.OutputStream;

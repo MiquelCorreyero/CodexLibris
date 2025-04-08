@@ -8,4 +8,10 @@ module com.codexteam.codexlib {
 
     opens com.codexteam.codexlib to javafx.fxml;
     exports com.codexteam.codexlib;
+    exports com.codexteam.codexlib.controllers;
+    opens com.codexteam.codexlib.controllers to javafx.fxml;
+    exports com.codexteam.codexlib.models;
+    opens com.codexteam.codexlib.models to javafx.fxml;
+    exports com.codexteam.codexlib.services;
+    opens com.codexteam.codexlib.services to javafx.fxml;
 }

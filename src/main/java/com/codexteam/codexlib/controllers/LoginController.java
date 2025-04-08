@@ -1,5 +1,6 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.controllers;
 
+import com.codexteam.codexlib.services.ConnexioServidor;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

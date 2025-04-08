@@ -1,5 +1,10 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.controllers;
 
+import com.codexteam.codexlib.models.Autor;
+import com.codexteam.codexlib.models.Llibre;
+import com.codexteam.codexlib.models.Reserva;
+import com.codexteam.codexlib.models.Usuari;
+import com.codexteam.codexlib.services.ConnexioServidor;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
@@ -24,7 +29,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-import static com.codexteam.codexlib.ConnexioServidor.getNomUsuariActual;
+import static com.codexteam.codexlib.services.ConnexioServidor.getNomUsuariActual;
 
 /**
  * Controlador del panell d'administració, només visible per a usuaris de tipus admin.
@@ -215,6 +220,18 @@ public class AdminController {
                 if (event.getClickCount() == 2 && !fila.isEmpty()) {
                     Usuari usuariSeleccionat = fila.getItem();
                     obrirFinestraEditarUsuari(usuariSeleccionat);
+                }
+            });
+            return fila;
+        });
+
+        // EDITA EL LLIBRE EN FER DOBLE CLIC SOBRE UNA FILA
+        taulaLlibres.setRowFactory(tv -> {
+            TableRow<Llibre> fila = new TableRow<>();
+            fila.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !fila.isEmpty()) {
+                    Llibre llibreSeleccionat = fila.getItem();
+                    obrirGestionarLlibre(llibreSeleccionat);
                 }
             });
             return fila;
@@ -435,7 +452,7 @@ public class AdminController {
     //=====================================================
     private void obrirGestionarAutors(Autor autor) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/editarInserirAutor.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestionarAutorsView.fxml"));
             Parent root = loader.load();
 
             GestionarAutorsController controller = loader.getController();
@@ -542,6 +559,27 @@ public class AdminController {
                     e.printStackTrace();
                     return null;
                 });
+    }
+
+    private void obrirGestionarLlibre(Llibre llibre) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestionarLlibresView.fxml"));
+            Parent root = loader.load();
+
+            GestionarLlibresController controller = loader.getController();
+            controller.setLlibre(llibre); // null si és nou
+
+            Stage stage = new Stage();
+            stage.setTitle(llibre == null ? "Nou llibre" : "Editar llibre");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book.png")));
+            stage.showAndWait();
+
+            carregarLlibres(); // Refrescar taula
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     //=====================================================

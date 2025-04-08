@@ -1,4 +1,4 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

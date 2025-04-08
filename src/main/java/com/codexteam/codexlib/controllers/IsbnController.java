@@ -1,4 +1,4 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

@@ -1,5 +1,8 @@
-package com.codexteam.codexlib;
+package com.codexteam.codexlib.controllers;
 
+import com.codexteam.codexlib.models.Autor;
+import com.codexteam.codexlib.services.ConnexioServidor;
+import com.codexteam.codexlib.models.Genere;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
