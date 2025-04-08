@@ -23,10 +23,6 @@ import static com.codexteam.codexlib.services.ConnexioServidor.getNomUsuariActua
  */
 public class AdminController {
 
-    //=====================================================
-    //            ELEMENTS DE LA INTERFÍCIE
-    //=====================================================
-
     // PANELLS
     @FXML private AnchorPane paneInici;
     @FXML private AnchorPane paneLlibres;
@@ -46,9 +42,7 @@ public class AdminController {
     // BOTONS
     @FXML private Button logoutButton; // Logout
 
-    //=====================================================
-    //                VISIBILITAT PANELLS
-    //=====================================================
+    // VISIBILITAT DELS PANELLS
     private void hideAllPanes() {
         paneInici.setVisible(false);
         paneLlibres.setVisible(false);
@@ -69,26 +63,39 @@ public class AdminController {
     }
 
     /**
-     * Mostra el panell d'usuaris i amaga la resta.
+     * Mostra cada secció dins de l'aplicació carregant el seu contingut des d'un fitxer FXML.
+     *
+     * <p>Abans de mostrar el panell especificat, aquest mètode amaga tots els altres panells
+     * mitjançant {@code hideAllPanes()} i estableix la visibilitat del panell desitjat a {@code true}.</p>
+     *
+     * @param panell El {@link AnchorPane} que es vol mostrar i al qual s'ha d'afegir el contingut.
+     * @param rutaFXML La ruta relativa al fitxer FXML que conté el disseny del contingut a carregar.
      */
-    @FXML
-    private void showUsuaris() {
+    private void mostrarPanell(AnchorPane panell, String rutaFXML) {
         hideAllPanes();
-        paneUsuaris.setVisible(true);
+        panell.setVisible(true);
 
-        if (paneUsuaris.getChildren().isEmpty()) {
+        if (panell.getChildren().isEmpty()) {
             try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/panellUsuarisView.fxml"));
-                Parent usuarisContent = loader.load();
-                paneUsuaris.getChildren().setAll(usuarisContent);
-                AnchorPane.setTopAnchor(usuarisContent, 0.0);
-                AnchorPane.setBottomAnchor(usuarisContent, 0.0);
-                AnchorPane.setLeftAnchor(usuarisContent, 0.0);
-                AnchorPane.setRightAnchor(usuarisContent, 0.0);
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(rutaFXML));
+                Parent contingut = loader.load();
+                panell.getChildren().setAll(contingut);
+                AnchorPane.setTopAnchor(contingut, 0.0);
+                AnchorPane.setBottomAnchor(contingut, 0.0);
+                AnchorPane.setLeftAnchor(contingut, 0.0);
+                AnchorPane.setRightAnchor(contingut, 0.0);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    /**
+     * Mostra el panell d'usuaris i amaga la resta.
+     */
+    @FXML
+    private void showUsuaris() {
+        mostrarPanell(paneUsuaris, "/com/codexteam/codexlib/fxml/panellUsuarisView.fxml");
     }
 
     /**
@@ -96,22 +103,7 @@ public class AdminController {
      */
     @FXML
     private void showLlibres() {
-        hideAllPanes();
-        paneLlibres.setVisible(true);
-
-        if (paneLlibres.getChildren().isEmpty()) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/panellLlibresView.fxml"));
-                Parent llibresContent = loader.load();
-                paneLlibres.getChildren().setAll(llibresContent);
-                AnchorPane.setTopAnchor(llibresContent, 0.0);
-                AnchorPane.setBottomAnchor(llibresContent, 0.0);
-                AnchorPane.setLeftAnchor(llibresContent, 0.0);
-                AnchorPane.setRightAnchor(llibresContent, 0.0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        mostrarPanell(paneLlibres, "/com/codexteam/codexlib/fxml/panellLlibresView.fxml");
     }
 
     /**
@@ -119,22 +111,7 @@ public class AdminController {
      */
     @FXML
     private void showAutors() {
-        hideAllPanes();
-        paneAutors.setVisible(true);
-
-        if (paneAutors.getChildren().isEmpty()) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/panellAutorsView.fxml"));
-                Parent autorsContent = loader.load();
-                paneAutors.getChildren().setAll(autorsContent);
-                AnchorPane.setTopAnchor(autorsContent, 0.0);
-                AnchorPane.setBottomAnchor(autorsContent, 0.0);
-                AnchorPane.setLeftAnchor(autorsContent, 0.0);
-                AnchorPane.setRightAnchor(autorsContent, 0.0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        mostrarPanell(paneAutors, "/com/codexteam/codexlib/fxml/panellAutorsView.fxml");
     }
 
     /**
@@ -142,8 +119,7 @@ public class AdminController {
      */
     @FXML
     private void showGeneres() {
-        hideAllPanes();
-        paneGeneres.setVisible(true);
+        mostrarPanell(paneGeneres, "/com/codexteam/codexlib/fxml/panellGeneresView.fxml");
     }
 
     /**
@@ -151,22 +127,7 @@ public class AdminController {
      */
     @FXML
     private void showReserves() {
-        hideAllPanes();
-        paneReserves.setVisible(true);
-
-        if (paneReserves.getChildren().isEmpty()) {
-            try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/panellReservesView.fxml"));
-                Parent reservesContent = loader.load();
-                paneReserves.getChildren().setAll(reservesContent);
-                AnchorPane.setTopAnchor(reservesContent, 0.0);
-                AnchorPane.setBottomAnchor(reservesContent, 0.0);
-                AnchorPane.setLeftAnchor(reservesContent, 0.0);
-                AnchorPane.setRightAnchor(reservesContent, 0.0);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        mostrarPanell(paneReserves, "/com/codexteam/codexlib/fxml/panellReservesView.fxml");
     }
 
     /**
@@ -174,9 +135,9 @@ public class AdminController {
      */
     @FXML
     private void showEsdeveniments() {
-        hideAllPanes();
-        paneEsdeveniments.setVisible(true);
+        mostrarPanell(paneEsdeveniments, "/com/codexteam/codexlib/fxml/panellEsdevenimentsView.fxml");
     }
+
 
     //=====================================================
     //             INICIALITZAR ELS COMPONENTS
