@@ -1,30 +1,18 @@
 package com.codexteam.codexlib.controllers;
 
-import com.codexteam.codexlib.models.Autor;
-import com.codexteam.codexlib.models.Reserva;
 import com.codexteam.codexlib.services.ConnexioServidor;
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.List;
 import java.util.Optional;
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
 import static com.codexteam.codexlib.services.ConnexioServidor.getNomUsuariActual;
 
@@ -55,26 +43,8 @@ public class AdminController {
     @FXML private ImageView configButton;
     @FXML private ImageView bellButton;
 
-    // COLUMNES DE LA TAULA D'AUTORS
-    @FXML private TableView<Autor> taulaAutors;
-    @FXML private TableColumn<Autor, String> colIdAutor;
-    @FXML private TableColumn<Autor, String> colNomAutor;
-    @FXML private TableColumn<Autor, String> colNacionalitatAutor;
-    @FXML private TableColumn<Autor, String> colDataAutor;
-
-    // COLUMNES DE LA TAULA DE RESERVES
-    @FXML private TableView<Reserva> taulaReserves;
-    @FXML private TableColumn<Reserva, String> colIdReserva;
-    @FXML private TableColumn<Reserva, String> colNomReserva;
-    @FXML private TableColumn<Reserva, String> colCognomsReserva;
-    @FXML private TableColumn<Reserva, String> colEmailReserva;
-    @FXML private TableColumn<Reserva, String> colLlibreReserva;
-    @FXML private TableColumn<Reserva, String> colDataReserva;
-    @FXML private TableColumn<Reserva, String> colDataRetorn;
-
     // BOTONS
     @FXML private Button logoutButton; // Logout
-    @FXML private Button inserirNouAutorButton; // Inserir o editar autor
 
     //=====================================================
     //                VISIBILITAT PANELLS
@@ -144,7 +114,6 @@ public class AdminController {
         }
     }
 
-
     /**
      * Mostra el panell d'autors i amaga la resta.
      */
@@ -152,6 +121,20 @@ public class AdminController {
     private void showAutors() {
         hideAllPanes();
         paneAutors.setVisible(true);
+
+        if (paneAutors.getChildren().isEmpty()) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/panellAutorsView.fxml"));
+                Parent autorsContent = loader.load();
+                paneAutors.getChildren().setAll(autorsContent);
+                AnchorPane.setTopAnchor(autorsContent, 0.0);
+                AnchorPane.setBottomAnchor(autorsContent, 0.0);
+                AnchorPane.setLeftAnchor(autorsContent, 0.0);
+                AnchorPane.setRightAnchor(autorsContent, 0.0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -170,6 +153,20 @@ public class AdminController {
     private void showReserves() {
         hideAllPanes();
         paneReserves.setVisible(true);
+
+        if (paneReserves.getChildren().isEmpty()) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/panellReservesView.fxml"));
+                Parent reservesContent = loader.load();
+                paneReserves.getChildren().setAll(reservesContent);
+                AnchorPane.setTopAnchor(reservesContent, 0.0);
+                AnchorPane.setBottomAnchor(reservesContent, 0.0);
+                AnchorPane.setLeftAnchor(reservesContent, 0.0);
+                AnchorPane.setRightAnchor(reservesContent, 0.0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -198,47 +195,11 @@ public class AdminController {
         bellButton.setOnMouseClicked(event -> mostrarMissatge("Alerta", "Ep! Sóc una notificació!"));
         bellButton.setCursor(javafx.scene.Cursor.HAND);
 
-
-
         // Mostrar finestra de configuració
         configButton.setOnMouseClicked(event ->
                 obrirNovaFinestra("/com/codexteam/codexlib/fxml/configView.fxml", "Configuració", "/com/codexteam/codexlib/images/config_.png")
         );
         configButton.setCursor(javafx.scene.Cursor.HAND);
-
-        // CARREGAR LLISTAT D'AUTORS
-        colIdAutor.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNomAutor.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colNacionalitatAutor.setCellValueFactory(new PropertyValueFactory<>("nationality"));
-        colDataAutor.setCellValueFactory(new PropertyValueFactory<>("birth_date"));
-
-        carregarAutors();
-
-        // EDITA L'AUTOR EN FER DOBLE CLIC SOBRE UNA FILA
-        taulaAutors.setRowFactory(tv -> {
-            TableRow<Autor> fila = new TableRow<>();
-            fila.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !fila.isEmpty()) {
-                    Autor autorSeleccionat = fila.getItem();
-                    obrirGestionarAutors(autorSeleccionat);
-                }
-            });
-            return fila;
-        });
-
-        // OBRE LA FINESTRA PER CREAR UN NOU AUTOR
-        inserirNouAutorButton.setOnAction(e -> obrirGestionarAutors(null));
-
-        // CARREGAR LLISTAT DE RESERVES
-        colIdReserva.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colNomReserva.setCellValueFactory(new PropertyValueFactory<>("user_first_name"));
-        colCognomsReserva.setCellValueFactory(new PropertyValueFactory<>("user_name"));
-        colEmailReserva.setCellValueFactory(new PropertyValueFactory<>("user_email"));
-        colLlibreReserva.setCellValueFactory(new PropertyValueFactory<>("book_title"));
-        colDataReserva.setCellValueFactory(new PropertyValueFactory<>("loan_date"));
-        colDataRetorn.setCellValueFactory(new PropertyValueFactory<>("return_date"));
-
-        carregarReserves();
 
     }
 
@@ -322,108 +283,6 @@ public class AdminController {
 
         // Retorna true si l'usuari clica "OK", false si clica "Cancel"
         return result.isPresent() && result.get() == ButtonType.OK;
-    }
-
-    //=====================================================
-    //            OBTENIR LLISTAT D'AUTORS
-    //=====================================================
-    private void carregarAutors() {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/authors"))
-                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
-                .header("Content-Type", "application/json")
-                .build();
-
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(response -> {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        // Si hay fechas tipo LocalDate, registrar módulo:
-                        mapper.registerModule(new JavaTimeModule());
-
-                        List<Autor> autors = mapper.readValue(
-                                response,
-                                new TypeReference<List<Autor>>() {}
-                        );
-
-                        // Añadir los autores a la tabla desde el hilo principal
-                        Platform.runLater(() -> {
-                            taulaAutors.getItems().setAll(autors);
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Platform.runLater(() -> mostrarMissatge("Error", "No s'han pogut carregar els autors."));
-                    }
-                })
-                .exceptionally(e -> {
-                    e.printStackTrace();
-                    Platform.runLater(() -> mostrarMissatge("Error", "Error en la connexió amb el servidor."));
-                    return null;
-                });
-    }
-
-    //=====================================================
-    //           OBRIR FINESTRA DETALLS AUTORS
-    //=====================================================
-    private void obrirGestionarAutors(Autor autor) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestionarAutorsView.fxml"));
-            Parent root = loader.load();
-
-            GestionarAutorsController controller = loader.getController();
-            controller.setAutor(autor); // null si és nou
-
-            Stage stage = new Stage();
-            stage.setTitle(autor == null ? "Nou autor" : "Editar autor");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/author.png")));
-            stage.showAndWait();
-
-            carregarAutors(); // Refresca la taula
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    //=====================================================
-    //            OBTENIR LLISTAT DE RESERVES
-    //=====================================================
-    /**
-     * Obté el llistat de les reserves del servidor mitjançant una petició HTTP
-     * i les mostra a la taula de reserves.
-     */
-    private void carregarReserves() {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/loans"))
-                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
-                .header("Content-Type", "application/json")
-                .build();
-
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(response -> {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        mapper.registerModule(new JavaTimeModule());
-                        mapper.findAndRegisterModules(); // Perque reconegui dates de tipus LocalDate
-                        List<Reserva> reserves = mapper.readValue(
-                                response,
-                                new TypeReference<List<Reserva>>() {}
-                        );
-                        Platform.runLater(() -> taulaReserves.getItems().setAll(reserves));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                })
-                .exceptionally(e -> {
-                    e.printStackTrace();
-                    return null;
-                });
     }
 
     //=====================================================
