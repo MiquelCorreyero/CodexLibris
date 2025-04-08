@@ -14,4 +14,11 @@ module com.codexteam.codexlib {
     opens com.codexteam.codexlib.models to javafx.fxml;
     exports com.codexteam.codexlib.services;
     opens com.codexteam.codexlib.services to javafx.fxml;
+
+    // Exportaciones normales (para compilación y acceso)
+    exports com.codexteam.codexlib.controllers.admincontrollers;
+
+    // 👇 Necesario para que FXML pueda acceder a los campos privados
+    opens com.codexteam.codexlib.controllers.admincontrollers to javafx.fxml;
+
 }

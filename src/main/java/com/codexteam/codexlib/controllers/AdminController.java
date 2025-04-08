@@ -3,7 +3,6 @@ package com.codexteam.codexlib.controllers;
 import com.codexteam.codexlib.models.Autor;
 import com.codexteam.codexlib.models.Llibre;
 import com.codexteam.codexlib.models.Reserva;
-import com.codexteam.codexlib.models.Usuari;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -82,20 +81,11 @@ public class AdminController {
     @FXML private TableColumn<Reserva, String> colDataReserva;
     @FXML private TableColumn<Reserva, String> colDataRetorn;
 
-    // COLUMNES DE LA TAULA DE USUARIS
-    @FXML private TableView<Usuari> taulaUsuaris;
-    @FXML private TableColumn<Usuari, String> colIdUsuari;
-    @FXML private TableColumn<Usuari, String> colUsernameUsuari;
-    @FXML private TableColumn<Usuari, String> colNomUsuari;
-    @FXML private TableColumn<Usuari, String> colEmailUsuari;
-    @FXML private TableColumn<Usuari, String> colPasswordUsuari;
-    @FXML private TableColumn<Usuari, String> colRolUsuari;
-
     // BOTONS
     @FXML private Button inserirNouLlibreButton; // Cercar llibre per ISBN
     @FXML private Button logoutButton; // Logout
     @FXML private Button inserirNouAutorButton; // Inserir o editar autor
-    @FXML private Button nouUsuariButton; // Inserir o editar usuari
+
 
     //=====================================================
     //                VISIBILITAT PANELLS
@@ -126,6 +116,20 @@ public class AdminController {
     private void showUsuaris() {
         hideAllPanes();
         paneUsuaris.setVisible(true);
+
+        if (paneUsuaris.getChildren().isEmpty()) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/panellUsuarisView.fxml"));
+                Parent usuarisContent = loader.load();
+                paneUsuaris.getChildren().setAll(usuarisContent);
+                AnchorPane.setTopAnchor(usuarisContent, 0.0);
+                AnchorPane.setBottomAnchor(usuarisContent, 0.0);
+                AnchorPane.setLeftAnchor(usuarisContent, 0.0);
+                AnchorPane.setRightAnchor(usuarisContent, 0.0);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
@@ -201,30 +205,6 @@ public class AdminController {
         );
         configButton.setCursor(javafx.scene.Cursor.HAND);
 
-        // CARREGAR LLISTAT D'USUARIS
-        colIdUsuari.setCellValueFactory(new PropertyValueFactory<>("id"));
-        colUsernameUsuari.setCellValueFactory(new PropertyValueFactory<>("username"));
-        colNomUsuari.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getFirstName() + " " + cellData.getValue().getLastName()));
-        colEmailUsuari.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colPasswordUsuari.setCellValueFactory(new PropertyValueFactory<>("password"));
-        colRolUsuari.setCellValueFactory(cellData ->
-                new SimpleStringProperty(cellData.getValue().getRole().getName()));
-
-        carregarUsuaris();
-
-        // EDITA L'USUARI EN FER DOBLE CLIC SOBRE UNA FILA
-        taulaUsuaris.setRowFactory(tv -> {
-            TableRow<Usuari> fila = new TableRow<>();
-            fila.setOnMouseClicked(event -> {
-                if (event.getClickCount() == 2 && !fila.isEmpty()) {
-                    Usuari usuariSeleccionat = fila.getItem();
-                    obrirFinestraEditarUsuari(usuariSeleccionat);
-                }
-            });
-            return fila;
-        });
-
         // EDITA EL LLIBRE EN FER DOBLE CLIC SOBRE UNA FILA
         taulaLlibres.setRowFactory(tv -> {
             TableRow<Llibre> fila = new TableRow<>();
@@ -236,10 +216,6 @@ public class AdminController {
             });
             return fila;
         });
-
-        // OBRE LA FINESTRA PER CREAR UN NOU USUARI
-        nouUsuariButton.setOnAction(e -> obrirFinestraEditarUsuari(null));
-
 
         // CARREGAR LLISTAT DE LLIBRES
         colTitol.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -471,58 +447,6 @@ public class AdminController {
             e.printStackTrace();
         }
     }
-
-    //=====================================================
-    //           OBRIR FINESTRA DETALLS USUARI
-    //=====================================================
-    private void obrirFinestraEditarUsuari(Usuari usuari) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/usersView.fxml"));
-            Parent root = loader.load();
-
-            GestionarUsuarisController controller = loader.getController();
-            controller.setUsuari(usuari); // null si és nou
-
-            Stage stage = new Stage();
-            stage.setTitle(usuari == null ? "Nou usuari" : "Editar usuari");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL);
-            stage.showAndWait();
-
-            carregarUsuaris(); // Refrescar
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void carregarUsuaris() {
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/users"))
-                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
-                .header("Content-Type", "application/json")
-                .build();
-
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                .thenApply(HttpResponse::body)
-                .thenAccept(response -> {
-                    try {
-                        ObjectMapper mapper = new ObjectMapper();
-                        mapper.registerModule(new JavaTimeModule());
-                        List<Usuari> usuaris = mapper.readValue(response, new TypeReference<List<Usuari>>() {});
-                        Platform.runLater(() -> taulaUsuaris.getItems().setAll(usuaris));
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Platform.runLater(() -> mostrarMissatge("Error", "No s'han pogut carregar els usuaris."));
-                    }
-                })
-                .exceptionally(e -> {
-                    e.printStackTrace();
-                    Platform.runLater(() -> mostrarMissatge("Error", "Error en la connexió amb el servidor."));
-                    return null;
-                });
-    }
-
 
     //=====================================================
     //            OBTENIR LLISTAT DE RESERVES
