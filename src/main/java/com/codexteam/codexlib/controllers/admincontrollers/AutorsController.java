@@ -110,7 +110,7 @@ public class AutorsController {
     //=====================================================
     private void obrirGestionarAutors(Autor autor) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestionarAutorsView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarAutorsView.fxml"));
             Parent root = loader.load();
 
             GestionarAutorsController controller = loader.getController();

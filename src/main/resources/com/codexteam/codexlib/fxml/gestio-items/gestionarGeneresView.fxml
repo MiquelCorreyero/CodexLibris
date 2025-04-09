@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.GestionarGeneresController">
+    <children>
+        <!-- TÍTOL -->
+        <Label fx:id="titolLabel" text="Nou gènere"
+               AnchorPane.topAnchor="20.0" AnchorPane.leftAnchor="20.0">
+            <font>
+                <Font name="System Bold" size="20.0"/>
+            </font>
+        </Label>
+        <!-- NOM -->
+        <Label text="Nom:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="70.0"/>
+        <TextField fx:id="nomField"
+                   promptText="Nom del gènere"
+                   AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="65.0"/>
+        <!-- DESCRIPCIÓ -->
+        <Label text="Descripció:" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="120.0"/>
+        <TextArea fx:id="descripcioArea"
+                  promptText="Descripció del gènere"
+                  prefHeight="100.0"
+                  AnchorPane.leftAnchor="100.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="115.0"/>
+        <!-- BOTÓ GUARDAR -->
+        <Button fx:id="guardarGenereButton"
+                text=" Guardar"
+                AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="140.0"
+                prefWidth="120" prefHeight="40"
+                styleClass="button">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/save_data_icon.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+        <!-- BOTÓ ELIMINAR -->
+        <Button fx:id="eliminarGenereButton"
+                text=" Eliminar"
+                AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0"
+                prefWidth="120" prefHeight="40"
+                styleClass="button">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/delete_icon.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+    </children>
+</AnchorPane>

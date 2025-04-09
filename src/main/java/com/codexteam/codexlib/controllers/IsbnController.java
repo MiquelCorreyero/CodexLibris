@@ -97,7 +97,7 @@ public class IsbnController {
      */
     private void obrirFinestraDetalls(String titol, String autor, String publicacio, String isbn, String portada) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detallsLlibreView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detall-items/detallsLlibreView.fxml"));
             Parent root = loader.load();
 
             NouLlibreApiController controller = loader.getController();
@@ -132,7 +132,7 @@ public class IsbnController {
 
     public void entradaLlibreManual() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detallsLlibreView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detall-items/detallsLlibreView.fxml"));
             Parent root = loader.load();
 
             NouLlibreApiController controller = loader.getController();

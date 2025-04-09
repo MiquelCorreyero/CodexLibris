@@ -45,7 +45,7 @@ public class LlibresController {
 
         // Mostrar finestra per a cercar llibre per ISBN
         inserirNouLlibreButton.setOnAction(event ->
-                obrirNovaFinestra("/com/codexteam/codexlib/fxml/isbnView.fxml", "Cercar llibre per ISBN", "/com/codexteam/codexlib/images/isbn.png")
+                obrirNovaFinestra("/com/codexteam/codexlib/fxml/gestio-items/introduirIsbnView.fxml", "Cercar llibre per ISBN", "/com/codexteam/codexlib/images/isbn.png")
         );
 
         // EDITA EL LLIBRE EN FER DOBLE CLIC SOBRE UNA FILA
@@ -112,7 +112,7 @@ public class LlibresController {
 
     private void obrirGestionarLlibre(Llibre llibre) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestionarLlibresView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarLlibresView.fxml"));
             Parent root = loader.load();
 
             GestionarLlibresController controller = loader.getController();

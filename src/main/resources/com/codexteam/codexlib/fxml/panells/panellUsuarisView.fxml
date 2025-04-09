@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" stylesheets="@../css/style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.codexteam.codexlib.controllers.admincontrollers.UsuarisController">
+<AnchorPane layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" stylesheets="@../../css/style.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="com.codexteam.codexlib.controllers.admincontrollers.UsuarisController">
     <children>
         <Label text="Usuaris" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
             <font>
@@ -35,7 +35,7 @@
             <graphic>
                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                     <image>
-                        <Image url="@../images/add_icon.png" />
+                        <Image url="@../../images/add_icon.png" />
                     </image>
                 </ImageView>
             </graphic>

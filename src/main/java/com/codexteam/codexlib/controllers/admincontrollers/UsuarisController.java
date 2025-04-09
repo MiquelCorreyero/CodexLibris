@@ -106,7 +106,7 @@ public class UsuarisController {
     //=====================================================
     private void obrirFinestraEditarUsuari(Usuari usuari) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detallsUsuarisView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detall-items/detallsUsuariView.fxml"));
             Parent root = loader.load();
 
             GestionarUsuarisController controller = loader.getController();

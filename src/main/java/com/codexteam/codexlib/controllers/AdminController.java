@@ -95,7 +95,7 @@ public class AdminController {
      */
     @FXML
     private void showUsuaris() {
-        mostrarPanell(paneUsuaris, "/com/codexteam/codexlib/fxml/panellUsuarisView.fxml");
+        mostrarPanell(paneUsuaris, "/com/codexteam/codexlib/fxml/panells/panellUsuarisView.fxml");
     }
 
     /**
@@ -103,7 +103,7 @@ public class AdminController {
      */
     @FXML
     private void showLlibres() {
-        mostrarPanell(paneLlibres, "/com/codexteam/codexlib/fxml/panellLlibresView.fxml");
+        mostrarPanell(paneLlibres, "/com/codexteam/codexlib/fxml/panells/panellLlibresView.fxml");
     }
 
     /**
@@ -111,7 +111,7 @@ public class AdminController {
      */
     @FXML
     private void showAutors() {
-        mostrarPanell(paneAutors, "/com/codexteam/codexlib/fxml/panellAutorsView.fxml");
+        mostrarPanell(paneAutors, "/com/codexteam/codexlib/fxml/panells/panellAutorsView.fxml");
     }
 
     /**
@@ -119,7 +119,7 @@ public class AdminController {
      */
     @FXML
     private void showGeneres() {
-        mostrarPanell(paneGeneres, "/com/codexteam/codexlib/fxml/panellGeneresView.fxml");
+        mostrarPanell(paneGeneres, "/com/codexteam/codexlib/fxml/panells/panellGeneresView.fxml");
     }
 
     /**
@@ -127,7 +127,7 @@ public class AdminController {
      */
     @FXML
     private void showReserves() {
-        mostrarPanell(paneReserves, "/com/codexteam/codexlib/fxml/panellReservesView.fxml");
+        mostrarPanell(paneReserves, "/com/codexteam/codexlib/fxml/panells/panellReservesView.fxml");
     }
 
     /**
@@ -135,7 +135,7 @@ public class AdminController {
      */
     @FXML
     private void showEsdeveniments() {
-        mostrarPanell(paneEsdeveniments, "/com/codexteam/codexlib/fxml/panellEsdevenimentsView.fxml");
+        mostrarPanell(paneEsdeveniments, "/com/codexteam/codexlib/fxml/panells/panellEsdevenimentsView.fxml");
     }
 
 
