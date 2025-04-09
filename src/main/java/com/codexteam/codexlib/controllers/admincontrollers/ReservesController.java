@@ -7,16 +7,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+/**
+ * Controlador del panell de reserves dins de l’àrea d’administració.
+ * S'encarrega de mostrar totes les reserves registrades, amb informació rellevant com usuari, llibre i dates.
+ */
 public class ReservesController {
 
     // COLUMNES DE LA TAULA DE RESERVES
@@ -30,6 +41,13 @@ public class ReservesController {
     @FXML private TableColumn<Reserva, String> colDataReserva;
     @FXML private TableColumn<Reserva, String> colDataRetorn;
 
+    // BOTONS
+    @FXML private javafx.scene.control.Button inserirNovaReservaButton;
+
+    /**
+     * Inicialitza la taula de reserves assignant les propietats a cada columna
+     * i carrega les dades des del servidor. També configura els esdeveniments de la taula i del botó.
+     */
     @FXML
     public void initialize() {
 
@@ -44,13 +62,23 @@ public class ReservesController {
 
         carregarReserves();
 
+        taulaReserves.setRowFactory(tv -> {
+            TableRow<Reserva> fila = new TableRow<>();
+            fila.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !fila.isEmpty()) {
+                    Reserva reservaSeleccionada = fila.getItem();
+                    obrirFinestraGestionarReserva(reservaSeleccionada);
+                }
+            });
+            return fila;
+        });
+
+        inserirNovaReservaButton.setOnAction(e -> obrirFinestraGestionarReserva(null));
+
     }
 
-    //=====================================================
-    //            OBTENIR LLISTAT DE RESERVES
-    //=====================================================
     /**
-     * Obté el llistat de les reserves del servidor mitjançant una petició HTTP
+     * Obté el llistat de les reserves del servidor mitjançant una petició HTTP GET
      * i les mostra a la taula de reserves.
      */
     private void carregarReserves() {
@@ -82,5 +110,32 @@ public class ReservesController {
                     return null;
                 });
     }
+
+    /**
+     * Obre la finestra per gestionar una reserva (nova o existent).
+     *
+     * @param reserva La reserva a editar, o null si és una nova reserva.
+     */
+    private void obrirFinestraGestionarReserva(Reserva reserva) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarReservesView.fxml"));
+            Parent root = loader.load();
+
+            com.codexteam.codexlib.controllers.GestionarReservesController controller = loader.getController();
+            controller.setReserva(reserva);
+
+            Stage stage = new Stage();
+            stage.setTitle(reserva == null ? "Nova reserva" : "Editar reserva");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+
+            // Recarrega les dades després de tancar la finestra
+            carregarReserves();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }

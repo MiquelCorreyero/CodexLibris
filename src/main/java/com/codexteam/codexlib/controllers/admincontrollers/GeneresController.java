@@ -16,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,6 +23,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+/**
+ * Controlador del panell de gèneres a l'àrea d'administració.
+ * Permet gestionar la visualització, inserció i edició de gèneres mitjançant peticions a l'API REST.
+ */
 public class GeneresController {
 
     @FXML private TableView<Genere> taulaGeneres;
@@ -33,6 +36,13 @@ public class GeneresController {
 
     @FXML private Button inserirNouGenereButton;
 
+    /**
+     * Inicialitza el panell de gèneres:
+     * - Assigna els valors a les columnes de la taula.
+     * - Carrega la llista de gèneres des del servidor.
+     * - Defineix el comportament en fer doble clic sobre una fila.
+     * - Configura el botó per afegir un nou gènere.
+     */
     @FXML
     public void initialize() {
         colIdGenere.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -55,6 +65,10 @@ public class GeneresController {
         inserirNouGenereButton.setOnAction(e -> obrirGestionarGenere(null));
     }
 
+    /**
+     * Envia una petició HTTP GET al servidor per obtenir tots els gèneres.
+     * Si la resposta és correcta, actualitza la taula amb els resultats.
+     */
     private void carregarGeneres() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -84,6 +98,11 @@ public class GeneresController {
                 });
     }
 
+    /**
+     * Obre una finestra modal per gestionar un gènere.
+     *
+     * @param genere El gènere a editar, o {@code null} si es vol crear un de nou.
+     */
     private void obrirGestionarGenere(Genere genere) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarGeneresView.fxml"));
@@ -105,6 +124,12 @@ public class GeneresController {
         }
     }
 
+    /**
+     * Mostra un missatge informatiu a l'usuari.
+     *
+     * @param title   Títol de la finestra.
+     * @param message Missatge de contingut.
+     */
     private void mostrarMissatge(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
@@ -113,4 +138,3 @@ public class GeneresController {
         alert.showAndWait();
     }
 }
-

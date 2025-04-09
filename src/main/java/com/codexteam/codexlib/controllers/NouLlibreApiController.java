@@ -49,7 +49,7 @@ public class NouLlibreApiController {
      * Mostra la informació detallada d’un llibre en els camps corresponents de la finestra.
      *
      * @param titol         Títol del llibre.
-     * @param autor         Nom de l’autor.
+     * @param autorNom         Nom de l’autor.
      * @param dataPublicacio Data de publicació.
      * @param isbn          Codi ISBN.
      * @param portadaUrl    URL de la imatge de la portada (pot ser null o "Sense portada").
@@ -82,6 +82,10 @@ public class NouLlibreApiController {
         }
     }
 
+    /**
+     * Inicialitza el controlador després de carregar l’FXML.
+     * Omple els ComboBox amb les dades disponibles i configura els converters.
+     */
     @FXML
     public void initialize() {
         disponibilitatComboBox.getItems().addAll("Sí", "No");
@@ -121,6 +125,10 @@ public class NouLlibreApiController {
         });
     }
 
+    /**
+     * Obté la llista d’autors del servidor.
+     * @return una llista d’objectes Autor.
+     */
     private List<Autor> obtenirAutors() {
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -139,6 +147,10 @@ public class NouLlibreApiController {
         }
     }
 
+    /**
+     * Obté la llista de gèneres del servidor.
+     * @return una llista d’objectes Genere.
+     */
     private List<Genere> obtenirGeneres() {
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -157,6 +169,11 @@ public class NouLlibreApiController {
         }
     }
 
+    /**
+     * Crea un autor nou al servidor si no existeix.
+     * @param nomAutor nom de l’autor.
+     * @return l’autor creat o null si no s’ha pogut crear.
+     */
     private Autor crearAutor(String nomAutor) {
         try {
             String json = String.format("""
@@ -190,6 +207,9 @@ public class NouLlibreApiController {
         return null;
     }
 
+    /**
+     * Envia les dades del formulari per crear un nou llibre al servidor.
+     */
     private void crearNouLlibre() {
         String titol = titolTextField.getText().trim();
         String isbn = isbnTextField.getText().trim();
@@ -243,6 +263,12 @@ public class NouLlibreApiController {
         }
     }
 
+    /**
+     * Mostra un missatge d'error si el login no és correcte
+     *
+     * @param titol Títol de l'alerta.
+     * @param missatge Contingut del missatge.
+     */
     private void mostrarAlerta(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titol);

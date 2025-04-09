@@ -2,6 +2,10 @@ package com.codexteam.codexlib.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+/**
+ * Representa un usuari dins el sistema de la biblioteca.
+ * Inclou dades personals, credencials, estat d'activació i rol associat.
+ */
 public class Usuari {
 
     private int id;

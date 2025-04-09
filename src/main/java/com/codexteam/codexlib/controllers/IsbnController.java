@@ -130,13 +130,16 @@ public class IsbnController {
         alert.showAndWait();
     }
 
+    /**
+     * Obre una finestra buida per afegir un nou llibre de forma manual.
+     */
     public void entradaLlibreManual() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detall-items/detallsLlibreView.fxml"));
             Parent root = loader.load();
 
             NouLlibreApiController controller = loader.getController();
-            // No passem cap dada → els camps es quedaran buits
+            // Si no passem cap dada els camps es quedaran buits
             controller.mostrarDetallsLlibre("", "", "", "", null);
 
             Stage stage = new Stage();
@@ -152,4 +155,3 @@ public class IsbnController {
     }
 
 }
-

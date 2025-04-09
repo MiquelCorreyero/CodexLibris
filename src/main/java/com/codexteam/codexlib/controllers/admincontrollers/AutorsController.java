@@ -16,7 +16,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,6 +23,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+/**
+ * Controlador per gestionar el panell d'autors dins l'àrea d'administració.
+ * Permet visualitzar, inserir, editar i eliminar autors mitjançant peticions a l'API.
+ */
 public class AutorsController {
 
     // COLUMNES DE LA TAULA D'AUTORS
@@ -37,6 +40,13 @@ public class AutorsController {
     // BOTONS
     @FXML private Button inserirNouAutorButton; // Inserir o editar autor
 
+    /**
+     * Inicialitza el panell d'autors:
+     * - Assigna els valors a les columnes de la taula.
+     * - Carrega la llista d'autors des del servidor.
+     * - Defineix el comportament en fer doble clic sobre un autor.
+     * - Configura el botó per afegir un nou autor.
+     */
     @FXML
     public void initialize() {
 
@@ -65,9 +75,10 @@ public class AutorsController {
 
     }
 
-    //=====================================================
-    //            OBTENIR LLISTAT D'AUTORS
-    //=====================================================
+    /**
+     * Envia una petició HTTP GET al servidor per obtenir tots els autors.
+     * Si la resposta és correcta, actualitza la taula amb els resultats.
+     */
     private void carregarAutors() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -105,9 +116,11 @@ public class AutorsController {
                 });
     }
 
-    //=====================================================
-    //           OBRIR FINESTRA DETALLS AUTORS
-    //=====================================================
+    /**
+     * Obre una nova finestra modal per editar o crear un autor.
+     *
+     * @param autor L'autor a editar, o {@code null} si es vol crear un de nou.
+     */
     private void obrirGestionarAutors(Autor autor) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarAutorsView.fxml"));
@@ -130,9 +143,6 @@ public class AutorsController {
         }
     }
 
-    //=====================================================
-    //            MOSTRAR MISSATGES INFORMATIUS
-    //=====================================================
     /**
      * Mostra un missatge d’informació amb el títol i contingut especificats.
      *

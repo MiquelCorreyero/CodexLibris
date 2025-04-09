@@ -16,7 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,6 +23,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+/**
+ * Controlador del panell de gestió d'usuaris dins de l'àrea d'administració.
+ * Permet visualitzar, crear, editar i gestionar la llista d'usuaris obtinguda del servidor.
+ */
 public class UsuarisController {
 
     // COLUMNES DE LA TAULA D'USUARIS
@@ -38,6 +41,10 @@ public class UsuarisController {
     // BOTONS
     @FXML private Button nouUsuariButton;
 
+    /**
+     * Inicialitza el controlador després de carregar l'FXML.
+     * Configura les columnes de la taula, carrega els usuaris.
+     */
     @FXML
     public void initialize() {
 
@@ -70,9 +77,10 @@ public class UsuarisController {
 
     }
 
-    //=====================================================
-    //            OBTENIR LLISTAT D'USUARIS
-    //=====================================================
+    /**
+     * Obté el llistat d’usuaris del servidor mitjançant una petició HTTP GET
+     * i actualitza la taula amb els resultats.
+     */
     private void carregarUsuaris() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -101,16 +109,18 @@ public class UsuarisController {
                 });
     }
 
-    //=====================================================
-    //           OBRIR FINESTRA DETALLS USUARI
-    //=====================================================
+    /**
+     * Obre la finestra de detall per editar o crear un nou usuari.
+     *
+     * @param usuari Usuari a editar, o null si es vol crear-ne un de nou.
+     */
     private void obrirFinestraEditarUsuari(Usuari usuari) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/detall-items/detallsUsuariView.fxml"));
             Parent root = loader.load();
 
             GestionarUsuarisController controller = loader.getController();
-            controller.setUsuari(usuari); // null si és nou
+            controller.seleccionarUsuari(usuari); // null si és nou
 
             Stage stage = new Stage();
             stage.setTitle(usuari == null ? "Nou usuari" : "Editar usuari");
@@ -128,14 +138,11 @@ public class UsuarisController {
         }
     }
 
-    //=====================================================
-    //            MOSTRAR MISSATGES INFORMATIUS
-    //=====================================================
     /**
-     * Mostra un missatge d’informació amb el títol i contingut especificats.
+     * Mostra una alerta informativa amb el títol i missatge especificats.
      *
-     * @param title Títol de la finestra d’alerta.
-     * @param message Missatge que es mostrarà a l’usuari.
+     * @param title   Títol de l'alerta.
+     * @param message Missatge a mostrar a l'usuari.
      */
     private void mostrarMissatge(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

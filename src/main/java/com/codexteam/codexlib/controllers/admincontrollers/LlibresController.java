@@ -19,7 +19,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -27,6 +26,10 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+/**
+ * Controlador del panell de llibres a l'àrea d'administració.
+ * Permet mostrar, buscar, editar i inserir llibres mitjançant peticions a l'API REST.
+ */
 public class LlibresController {
 
     // COLUMNES DE LA TAULA DE LLIBRES
@@ -40,6 +43,13 @@ public class LlibresController {
     // BOTONS
     @FXML private Button inserirNouLlibreButton; // Cercar llibre per ISBN
 
+    /**
+     * Inicialitza el panell de llibres:
+     * - Configura les columnes de la taula.
+     * - Assigna accions als botons.
+     * - Carrega el llistat de llibres des del servidor.
+     * - Defineix el comportament al fer doble clic sobre una fila.
+     */
     @FXML
     public void initialize() {
 
@@ -73,12 +83,9 @@ public class LlibresController {
 
     }
 
-    //=====================================================
-    //        OBTENIR LLISTAT DE LLIBRES DEL CATÀLEG
-    //=====================================================
     /**
      * Obté el llistat de llibres del servidor mitjançant una petició HTTP
-     * i els mostra a la taula de llibres.
+     * i actualitza la taula amb els resultats obtinguts.
      */
     private void carregarLlibres() {
         HttpClient client = HttpClient.newHttpClient();
@@ -110,13 +117,18 @@ public class LlibresController {
                 });
     }
 
+    /**
+     * Obre una finestra per gestionar un llibre (editar o inserir).
+     *
+     * @param llibre El llibre seleccionat o {@code null} per crear-ne un de nou.
+     */
     private void obrirGestionarLlibre(Llibre llibre) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarLlibresView.fxml"));
             Parent root = loader.load();
 
             GestionarLlibresController controller = loader.getController();
-            controller.setLlibre(llibre); // null si és nou
+            controller.seleccionarLlibre(llibre); // null si és nou
 
             Stage stage = new Stage();
             stage.setTitle(llibre == null ? "Nou llibre" : "Editar llibre");
@@ -131,9 +143,6 @@ public class LlibresController {
         }
     }
 
-    //=====================================================
-    //              OBRIR UNA NOVA FINESTRA
-    //=====================================================
     /**
      * Obre una nova finestra modal amb el FXML, títol i icona especificats.
      *

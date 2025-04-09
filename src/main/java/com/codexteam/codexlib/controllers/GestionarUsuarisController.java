@@ -13,6 +13,9 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+/**
+ * Controlador per gestionar la creació i edició d’usuaris.
+ */
 public class GestionarUsuarisController {
 
     @FXML private Label titolLabel;
@@ -27,6 +30,9 @@ public class GestionarUsuarisController {
 
     private Usuari usuariActual;
 
+    /**
+     * Inicialitza el formulari assignant valors als camps i accions als botons.
+     */
     @FXML
     public void initialize() {
         rolComboBox.getItems().addAll("admin", "user"); // Ajusta según los roles válidos
@@ -34,7 +40,12 @@ public class GestionarUsuarisController {
         guardarUsuariButton.setOnAction(e -> guardarUsuari());
     }
 
-    public void setUsuari(Usuari usuari) {
+    /**
+     * Estableix l'usuari actual per a editar-lo o buida els camps si és un usuari nou.
+     *
+     * @param usuari Usuari a editar o null si es tracta d’un de nou.
+     */
+    public void seleccionarUsuari(Usuari usuari) {
         this.usuariActual = usuari;
 
         if (usuari != null) {
@@ -58,6 +69,9 @@ public class GestionarUsuarisController {
         }
     }
 
+    /**
+     * Recull les dades del formulari i envia una petició POST o PUT segons si l’usuari és nou o existent.
+     */
     private void guardarUsuari() {
         String username = usernameField.getText().trim();
         String firstName = firstNameField.getText().trim();
@@ -66,20 +80,20 @@ public class GestionarUsuarisController {
         String password = passwordField.getText().trim();
         String rol = rolComboBox.getValue(); // admin o user
 
-        // Validación
+        // Validació
         if (username.isEmpty() || firstName.isEmpty() || lastName.isEmpty()
                 || email.isEmpty() || password.isEmpty() || rol == null || rol.isEmpty()) {
             mostrarAlerta("Error", "Tots els camps són obligatoris.");
             return;
         }
 
-        // ID de rol (ajusta según lo que espere el backend)
+        // ID de rol
         int roleId = rol.equalsIgnoreCase("admin") ? 1 : 2;
 
         try {
             ObjectMapper mapper = new ObjectMapper();
             var dades = new java.util.HashMap<String, Object>();
-            dades.put("userName", username); // <- importante usar "userName" con N mayúscula
+            dades.put("userName", username);
             dades.put("firstName", firstName);
             dades.put("lastName", lastName);
             dades.put("email", email);
@@ -125,6 +139,9 @@ public class GestionarUsuarisController {
         }
     }
 
+    /**
+     * Envia una petició DELETE per eliminar l’usuari si l’usuari actual existeix i es confirma.
+     */
     private void eliminarUsuari() {
         if (usuariActual == null) return;
 
@@ -159,11 +176,20 @@ public class GestionarUsuarisController {
         }
     }
 
+    /**
+     * Tanca la finestra actual.
+     */
     private void tancarFinestra() {
         Stage stage = (Stage) guardarUsuariButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Mostra una finestra emergent amb un missatge.
+     *
+     * @param titol Títol de l’alerta.
+     * @param missatge Contingut de l’alerta.
+     */
     private void mostrarAlerta(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titol);

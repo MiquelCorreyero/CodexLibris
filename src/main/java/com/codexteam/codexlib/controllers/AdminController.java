@@ -13,7 +13,6 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.Optional;
-
 import static com.codexteam.codexlib.services.ConnexioServidor.getNomUsuariActual;
 
 /**
@@ -138,10 +137,6 @@ public class AdminController {
         mostrarPanell(paneEsdeveniments, "/com/codexteam/codexlib/fxml/panells/panellEsdevenimentsView.fxml");
     }
 
-
-    //=====================================================
-    //             INICIALITZAR ELS COMPONENTS
-    //=====================================================
     /**
      * Inicialitza el controlador després de carregar l'FXML.
      * Configura el comportament dels botons i carrega la llista de llibres.
@@ -169,9 +164,6 @@ public class AdminController {
         return (nomUsuari != null && !nomUsuari.trim().isEmpty()) ? ", " + nomUsuari : ".";
     }
 
-    //=====================================================
-    //              OBRIR UNA NOVA FINESTRA
-    //=====================================================
     /**
      * Obre una nova finestra modal amb el FXML, títol i icona especificats.
      *
@@ -199,9 +191,6 @@ public class AdminController {
         }
     }
 
-    //=====================================================
-    //                       LOGOUT
-    //=====================================================
     /**
      * Tanca la sessió de l'usuari actual i retorna al panell de login.
      */
@@ -246,9 +235,6 @@ public class AdminController {
         return result.isPresent() && result.get() == ButtonType.OK;
     }
 
-    //=====================================================
-    //            MOSTRAR MISSATGES INFORMATIUS
-    //=====================================================
     /**
      * Mostra un missatge d’informació amb el títol i contingut especificats.
      *

@@ -97,7 +97,9 @@ public class LoginController {
         }
     }
 
-    // Tancar la finestra del login
+    /**
+     * Tanca la finestra del login
+     */
     private void tancarFinestraActual() {
         Stage stage = (Stage) loginButton.getScene().getWindow();
         stage.close();
@@ -106,14 +108,14 @@ public class LoginController {
     /**
      * Mostra un missatge d'error si el login no és correcte
      *
-     * @param title Títol de l'alerta.
-     * @param message Contingut del missatge.
+     * @param titol Títol de l'alerta.
+     * @param missatge Contingut del missatge.
      */
-    private void mostrarAlerta(String title, String message) {
+    private void mostrarAlerta(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(title);
+        alert.setTitle(titol);
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText(missatge);
         alert.showAndWait();
     }
 

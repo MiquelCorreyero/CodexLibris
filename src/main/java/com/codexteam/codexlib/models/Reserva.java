@@ -2,6 +2,10 @@ package com.codexteam.codexlib.models;
 
 import java.time.LocalDate;
 
+/**
+ * Representa una reserva d'un llibre a la biblioteca.
+ * Conté informació sobre l'usuari, el llibre, les dates i l'estat del préstec.
+ */
 public class Reserva {
     private int id;
     private LocalDate loan_date;

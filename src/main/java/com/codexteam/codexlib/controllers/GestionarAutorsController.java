@@ -7,7 +7,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -15,7 +14,8 @@ import java.net.http.HttpResponse;
 import java.util.Optional;
 
 /**
- * Controlador per afegir o editar un autor.
+ * Controlador per afegir o editar un autor mitjançant una finestra modal.
+ * Gestiona el formulari de dades d'autor i efectua les operacions de creació, modificació o eliminació.
  */
 public class GestionarAutorsController {
 
@@ -28,6 +28,9 @@ public class GestionarAutorsController {
 
     private Autor autorActual; // null si és nou
 
+    /**
+     * Inicialitza el controlador, assignant els esdeveniments als botons.
+     */
     @FXML
     public void initialize() {
         guardarAutorButton.setOnAction(e -> guardarAutor());
@@ -54,7 +57,8 @@ public class GestionarAutorsController {
     }
 
     /**
-     * Guarda o actualitza l'autor segons si és un de nou o ja existeix.
+     * Envia una petició al servidor per guardar o actualitzar l'autor.
+     * Utilitza POST si és nou, o PUT si ja existeix.
      */
     private void guardarAutor() {
         String nom = nomTextField.getText().trim();
@@ -116,6 +120,10 @@ public class GestionarAutorsController {
         }
     }
 
+    /**
+     * Elimina l'autor actual després de confirmar-ho amb l'usuari.
+     * Envia una petició DELETE al servidor.
+     */
     private void eliminarAutor() {
         if (autorActual == null) {
             mostrarAlerta("Error", "No es pot eliminar un autor nou.");
@@ -159,11 +167,11 @@ public class GestionarAutorsController {
         }
     }
 
-
     /**
-     * Mostra un missatge d'alerta a l'usuari.
-     * @param titol Títol de la finestra.
-     * @param missatge Missatge a mostrar.
+     * Mostra un diàleg d'alerta amb un missatge personalitzat.
+     *
+     * @param titol    Títol de la finestra emergent.
+     * @param missatge Contingut del missatge a mostrar.
      */
     private void mostrarAlerta(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -173,5 +181,3 @@ public class GestionarAutorsController {
         alert.showAndWait();
     }
 }
-
-

@@ -27,6 +27,7 @@ public class GestionarGeneresController {
 
     /**
      * Mètode que s’executa després de carregar l’FXML.
+     * Assigna accions als botons de guardar i eliminar.
      */
     @FXML
     public void initialize() {
@@ -49,6 +50,7 @@ public class GestionarGeneresController {
 
     /**
      * Envia les dades del formulari a l’API per guardar el gènere.
+     * Si és un gènere existent, fa una petició PUT. Si és nou, fa una POST.
      */
     private void guardarGenere() {
         String nom = nomField.getText().trim();
@@ -108,6 +110,10 @@ public class GestionarGeneresController {
         }
     }
 
+    /**
+     * Elimina el gènere actual del servidor, després de confirmar-ho amb l'usuari.
+     * Envia una petició DELETE a l'API.
+     */
     private void eliminarGenere() {
         if (genereActual == null || genereActual.getId() <= 0) {
             mostrarMissatge("Error", "No s'ha seleccionat cap gènere vàlid per eliminar.");
@@ -144,6 +150,12 @@ public class GestionarGeneresController {
                 });
     }
 
+    /**
+     * Mostra un diàleg informatiu amb el títol i missatge especificats.
+     *
+     * @param titol Títol de l'alerta.
+     * @param missatge Missatge de contingut.
+     */
     private void mostrarMissatge(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titol);
@@ -152,6 +164,9 @@ public class GestionarGeneresController {
         alert.showAndWait();
     }
 
+    /**
+     * Tanca la finestra actual.
+     */
     private void tancarFinestra() {
         Stage stage = (Stage) nomField.getScene().getWindow();
         stage.close();

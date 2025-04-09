@@ -16,6 +16,9 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+/**
+ * Controlador per gestionar la creació i edició de llibres.
+ */
 public class GestionarLlibresController {
 
     @FXML private Label titolLabel;
@@ -30,6 +33,10 @@ public class GestionarLlibresController {
 
     private Llibre llibreActual;
 
+    /**
+     * Inicialitza els components del formulari.
+     * Assigna opcions i accions als botons i comboboxos.
+     */
     @FXML
     public void initialize() {
         disponibilitatComboBox.getItems().addAll("Sí", "No");
@@ -66,7 +73,13 @@ public class GestionarLlibresController {
         });
     }
 
-    public void setLlibre(Llibre llibre) {
+    /**
+     * Omple els camps del formulari amb la informació d’un llibre existent.
+     * Si es rep null, s’inicialitza per crear un llibre nou.
+     *
+     * @param llibre El llibre a editar, o null si és nou.
+     */
+    public void seleccionarLlibre(Llibre llibre) {
         this.llibreActual = llibre;
 
         if (llibre != null) {
@@ -109,7 +122,10 @@ public class GestionarLlibresController {
         }
     }
 
-
+    /**
+     * Recull les dades del formulari i envia una petició POST o PUT
+     * segons si el llibre és nou o existent.
+     */
     private void guardarLlibre() {
         String titol = titolField.getText().trim();
         String isbn = isbnField.getText().trim();
@@ -174,6 +190,10 @@ public class GestionarLlibresController {
         }
     }
 
+    /**
+     * Envia una petició DELETE per eliminar el llibre actual,
+     * si l’usuari ho confirma.
+     */
     private void eliminarLlibre() {
         if (llibreActual == null) return;
 
@@ -208,12 +228,20 @@ public class GestionarLlibresController {
         }
     }
 
-
+    /**
+     * Tanca la finestra actual.
+     */
     private void tancarFinestra() {
         Stage stage = (Stage) guardarLlibreButton.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Mostra una alerta informativa.
+     *
+     * @param titol Títol de l’alerta.
+     * @param missatge Missatge a mostrar.
+     */
     private void mostrarAlerta(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titol);
@@ -222,6 +250,9 @@ public class GestionarLlibresController {
         alert.showAndWait();
     }
 
+    /**
+     * Fa una petició GET a l’API per obtenir els autors disponibles i omplir el ComboBox.
+     */
     private void carregarAutors() {
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -247,6 +278,9 @@ public class GestionarLlibresController {
         }
     }
 
+    /**
+     * Fa una petició GET a l’API per obtenir els gèneres disponibles i omplir el ComboBox.
+     */
     private void carregarGeneres() {
         try {
             HttpClient client = HttpClient.newHttpClient();
