@@ -4,38 +4,51 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="450.0" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.GestionarReservesController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="550.0" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarReservesController">
     <children>
 
-        <Label fx:id="titolLabel" layoutX="30.0" layoutY="20.0" text="Nova reserva">
+        <Label fx:id="titolLabel" alignment="CENTER" contentDisplay="CENTER" layoutY="34.0" prefHeight="30.0" prefWidth="550.0" text="Nova reserva">
             <font>
-                <Font name="System Bold" size="20.0" />
+                <Font name="System Bold" size="24.0" />
             </font>
         </Label>
 
-        <Label layoutX="30.0" layoutY="70.0" text="Usuari:" />
-        <ComboBox fx:id="comboUsuaris" layoutX="150.0" layoutY="65.0" prefWidth="300" />
+        <Label layoutX="83.0" layoutY="103.0" text="Usuari:" />
+        <ComboBox fx:id="comboUsuaris" layoutX="203.0" layoutY="98.0" prefHeight="32.0" prefWidth="267.0" promptText="Selecciona un usuari" />
 
-        <Label layoutX="30.0" layoutY="120.0" text="Llibre:" />
-        <ComboBox fx:id="comboLlibres" layoutX="150.0" layoutY="115.0" prefWidth="300" />
+        <Label layoutX="83.0" layoutY="153.0" text="Llibre:" />
+        <ComboBox fx:id="comboLlibres" layoutX="203.0" layoutY="148.0" prefHeight="32.0" prefWidth="267.0" promptText="Selecciona un llibre" />
 
-        <Label layoutX="30.0" layoutY="170.0" text="Estat préstec:" />
-        <ComboBox fx:id="comboEstat" layoutX="150.0" layoutY="165.0" prefWidth="300" />
+        <Label layoutX="80.0" layoutY="222.0" text="Data reserva:" />
+        <DatePicker fx:id="dataReservaPicker" layoutX="200.0" layoutY="217.0" prefHeight="33.0" prefWidth="267.0" promptText="Clica per seleccionar una data" />
 
-        <Label layoutX="30.0" layoutY="220.0" text="Data reserva:" />
-        <DatePicker fx:id="dataReservaPicker" layoutX="150.0" layoutY="215.0" prefWidth="200" />
+        <Label layoutX="80.0" layoutY="272.0" text="Data venciment:" />
+        <DatePicker fx:id="dataVencimentPicker" layoutX="200.0" layoutY="267.0" prefHeight="33.0" prefWidth="267.0" promptText="Clica per seleccionar una data" />
 
-        <Label layoutX="30.0" layoutY="270.0" text="Data venciment:" />
-        <DatePicker fx:id="dataVencimentPicker" layoutX="150.0" layoutY="265.0" prefWidth="200" />
+        <Label layoutX="80.0" layoutY="322.0" text="Data retorn:" />
+        <DatePicker fx:id="dataRetornPicker" layoutX="200.0" layoutY="317.0" prefHeight="33.0" prefWidth="267.0" promptText="Clica per seleccionar una data" />
+        <Button fx:id="eliminarReservaButton" layoutX="83.0" layoutY="383.0" prefHeight="60.0" prefWidth="183.0" text=" Eliminar">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/delete_icon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
 
-        <Label layoutX="30.0" layoutY="320.0" text="Data retorn:" />
-        <DatePicker fx:id="dataRetornPicker" layoutX="150.0" layoutY="315.0" prefWidth="200" />
-
-        <Button fx:id="guardarReservaButton" layoutX="150.0" layoutY="380.0" prefWidth="100" text="Guardar" />
-        <Button fx:id="eliminarReservaButton" layoutX="270.0" layoutY="380.0" prefWidth="100" text="Eliminar" />
+        <Button fx:id="guardarReservaButton" layoutX="284.0" layoutY="383.0" prefHeight="60.0" prefWidth="183.0" text=" Guardar">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/save_data_icon.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
 
     </children>
 </AnchorPane>

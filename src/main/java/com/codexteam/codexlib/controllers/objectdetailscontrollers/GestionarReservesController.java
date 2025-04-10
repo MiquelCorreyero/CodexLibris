@@ -1,4 +1,4 @@
-package com.codexteam.codexlib.controllers;
+package com.codexteam.codexlib.controllers.objectdetailscontrollers;
 
 import com.codexteam.codexlib.models.Llibre;
 import com.codexteam.codexlib.models.Reserva;
@@ -16,7 +16,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDate;
 import java.util.List;
 
 /**

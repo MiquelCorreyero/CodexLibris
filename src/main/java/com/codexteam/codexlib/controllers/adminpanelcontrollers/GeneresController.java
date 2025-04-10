@@ -1,6 +1,6 @@
-package com.codexteam.codexlib.controllers.admincontrollers;
+package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
-import com.codexteam.codexlib.controllers.GestionarGeneresController;
+import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarGeneresController;
 import com.codexteam.codexlib.models.Genere;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;

@@ -1,5 +1,6 @@
-package com.codexteam.codexlib.controllers.admincontrollers;
+package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
+import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarReservesController;
 import com.codexteam.codexlib.models.Reserva;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -121,7 +122,7 @@ public class ReservesController {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarReservesView.fxml"));
             Parent root = loader.load();
 
-            com.codexteam.codexlib.controllers.GestionarReservesController controller = loader.getController();
+            GestionarReservesController controller = loader.getController();
             controller.setReserva(reserva);
 
             Stage stage = new Stage();

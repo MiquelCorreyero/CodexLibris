@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.admincontrollers.GeneresController">
+<AnchorPane layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.adminpanelcontrollers.GeneresController">
     <children>
         <Label text="Gèneres" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
             <font>

@@ -1,6 +1,6 @@
-package com.codexteam.codexlib.controllers.admincontrollers;
+package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
-import com.codexteam.codexlib.controllers.GestionarLlibresController;
+import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarLlibresController;
 import com.codexteam.codexlib.models.Llibre;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;

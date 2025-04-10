@@ -1,4 +1,4 @@
-package com.codexteam.codexlib.controllers;
+package com.codexteam.codexlib.controllers.objectdetailscontrollers;
 
 import com.codexteam.codexlib.models.Autor;
 import com.codexteam.codexlib.services.ConnexioServidor;
