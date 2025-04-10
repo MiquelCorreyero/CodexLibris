@@ -24,6 +24,17 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+/**
+ * Controlador del panell d'administració encarregat de gestionar els esdeveniments de la biblioteca.
+ * Aquesta classe mostra una taula amb els esdeveniments registrats i permet afegir-ne, editar-los o visualitzar-ne els detalls.
+ *
+ * <p>Les dades es carreguen des del servidor mitjançant una crida HTTP GET i es mostren a la taula.
+ * L'usuari pot obrir una finestra emergent per gestionar un esdeveniment mitjançant doble clic o el botó de "Nou esdeveniment".</p>
+ *
+ * <p>Les accions d'interfície estan vinculades amb el fitxer FXML <code>gestionarEsdevenimentsView.fxml</code>.</p>
+ *
+ * @author Miquel Correyero
+ */
 public class EsdevenimentsController {
 
     @FXML private TableView<Esdeveniment> taulaEsdeveniments;

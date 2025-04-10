@@ -19,7 +19,14 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- * Controlador per gestionar la inserció o edició de reserves.
+ * Controlador encarregat de gestionar la finestra modal per a inserir, editar i eliminar reserves.
+ *
+ * També actualitza l’estat de disponibilitat del llibre associat en funció de la reserva creada o eliminada.
+ * Es fa ús de ComboBoxes per a la selecció dinàmica d’usuaris i llibres disponibles.
+ *
+ * Aquesta classe s’associa al fitxer FXML <strong>gestionarReservesView.fxml</strong>.
+ *
+ * @author Miquel Correyero
  */
 public class GestionarReservesController {
 
@@ -38,9 +45,6 @@ public class GestionarReservesController {
 
     private Reserva reservaActual;
 
-    /**
-     * Mètode que s’executa després de carregar l’FXML.
-     */
     @FXML
     public void initialize() {
         guardarReservaButton.setOnAction(e -> guardarReserva());
@@ -219,7 +223,11 @@ public class GestionarReservesController {
                 });
     }
 
-
+    /**
+     * Carrega la llista de llibres disponibles des del servidor
+     * i omple el ComboBox amb aquests llibres. Si s'està editant
+     * una reserva, selecciona el llibre corresponent.
+     */
     private void carregarLlibres() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -251,7 +259,11 @@ public class GestionarReservesController {
                 });
     }
 
-
+    /**
+     * Carrega la llista d'usuaris disponibles des del servidor
+     * i omple el ComboBox amb aquests usuaris. Si s'està editant
+     * una reserva, selecciona l'usuari corresponent.
+     */
     private void carregarUsuaris() {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -283,6 +295,12 @@ public class GestionarReservesController {
                 });
     }
 
+    /**
+     * Marca el llibre com a no disponible a la base de dades
+     * mitjançant una petició PUT. Es crida després de crear una reserva.
+     *
+     * @param llibre Llibre que s'ha de marcar com no disponible.
+     */
     private void marcarLlibreComNoDisponible(Llibre llibre) {
         try {
             if (llibre.getAuthor() == null || llibre.getGenre() == null) {
@@ -334,6 +352,12 @@ public class GestionarReservesController {
         }
     }
 
+    /**
+     * Marca el llibre com a disponible a la base de dades
+     * mitjançant una petició PUT. Es crida després d’eliminar una reserva.
+     *
+     * @param llibre Llibre que s'ha de marcar com disponible.
+     */
     private void marcarLlibreComDisponible(Llibre llibre) {
         try {
             if (llibre.getAuthor() == null || llibre.getGenre() == null) {
@@ -382,8 +406,6 @@ public class GestionarReservesController {
             e.printStackTrace();
         }
     }
-
-
 
     /**
      * Mostra un diàleg informatiu a l’usuari.

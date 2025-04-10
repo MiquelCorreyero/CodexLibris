@@ -17,7 +17,15 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- * Controlador per gestionar la creació i edició de llibres.
+ * Controlador de la finestra modal encarregada de gestionar la inserció i edició de llibres.
+ * Proporciona la funcionalitat per omplir un formulari amb dades del llibre, seleccionar autor i gènere,
+ * i enviar les dades mitjançant peticions HTTP al backend (POST per crear, PUT per editar, DELETE per eliminar).
+ *
+ * Aquest controlador també carrega automàticament la llista d’autors i gèneres per mostrar-los als ComboBox.
+ *
+ *  Aquesta classe s’associa al fitxer FXML <strong>gestionarLlibresView.fxml</strong>.
+ *
+ * @author Miquel Correyero
  */
 public class GestionarLlibresController {
 

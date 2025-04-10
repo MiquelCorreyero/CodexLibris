@@ -27,8 +27,18 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- * Controlador del panell de llibres a l'àrea d'administració.
- * Permet mostrar, buscar, editar i inserir llibres mitjançant peticions a l'API REST.
+ * Controlador del panell d’administració dedicat a la gestió del catàleg de llibres.
+ * Aquesta classe permet visualitzar, afegir, editar i actualitzar llibres
+ * mitjançant la interacció amb l’API REST del servidor.
+ *
+ * <p>Els llibres es carreguen automàticament en iniciar el panell i es mostren en una taula amb informació bàsica
+ * com el títol, l’autor, l’ISBN i la disponibilitat. L’usuari pot afegir llibres nous mitjançant una cerca per ISBN
+ * o editar els existents fent doble clic sobre una fila.</p>
+ *
+ * <p>Les accions de gestió es realitzen a través de finestres modals que obren vistes específiques:
+ * <code>gestionarLlibresView.fxml</code> per editar llibres i <code>introduirIsbnView.fxml</code> per afegir-ne per ISBN.</p>
+ *
+ * @author Miquel Correyero
  */
 public class LlibresController {
 

@@ -18,7 +18,8 @@ import static com.codexteam.codexlib.services.ConnexioServidor.getNomUsuariActua
 /**
  * Controlador del panell d'administració, només visible per a usuaris de tipus admin.
  * Gestiona la navegació entre diferents seccions com llibres, usuaris, reserves i esdeveniments.
- * També s'encarrega de carregar les dades dels diferents apartats des del servidor i mostrar-les a les taules corresponents.
+ *
+ * @author Miquel Correyero
  */
 public class AdminController {
 

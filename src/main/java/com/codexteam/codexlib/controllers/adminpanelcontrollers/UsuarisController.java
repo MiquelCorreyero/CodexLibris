@@ -25,7 +25,12 @@ import java.util.List;
 
 /**
  * Controlador del panell de gestió d'usuaris dins de l'àrea d'administració.
- * Permet visualitzar, crear, editar i gestionar la llista d'usuaris obtinguda del servidor.
+ *
+ * <p>Permet visualitzar tots els usuaris registrats al sistema, així com crear-ne de nous o modificar
+ * els existents mitjançant una interfície gràfica. La informació es recupera del servidor via API REST
+ * i s’organitza en una taula amb diverses columnes (ID, nom, email, rol, etc.).</p>
+ *
+ * @author Miquel Correyero
  */
 public class UsuarisController {
 

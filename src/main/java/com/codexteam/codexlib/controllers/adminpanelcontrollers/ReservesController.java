@@ -26,8 +26,18 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- * Controlador del panell de reserves dins de l’àrea d’administració.
- * S'encarrega de mostrar totes les reserves registrades, amb informació rellevant com usuari, llibre i dates.
+ * Controlador del panell d’administració de reserves.
+ * Aquesta classe permet visualitzar, crear i editar les reserves realitzades pels usuaris
+ * mitjançant una taula i interaccions amb el backend a través de l’API REST.
+ *
+ * <p>En inicialitzar-se, la classe configura les columnes de la taula amb la informació de les reserves
+ * (usuari, llibre, dates de préstec i retorn) i carrega automàticament les dades des del servidor.
+ * L’usuari pot fer doble clic sobre una fila per editar una reserva existent o fer clic al botó
+ * per crear-ne una de nova, obrint una finestra modal.</p>
+ *
+ * <p>Les dades s’obtenen de l’endpoint <code>/loans</code> i es mostren amb suport per a dates en format <code>LocalDate</code>.</p>
+ *
+ * @author Miquel Correyero
  */
 public class ReservesController {
 

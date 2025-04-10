@@ -24,8 +24,18 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- * Controlador per gestionar el panell d'autors dins l'àrea d'administració.
- * Permet visualitzar, inserir, editar i eliminar autors mitjançant peticions a l'API.
+ * Controlador del panell d’administració encarregat de gestionar els autors de la biblioteca.
+ * Aquesta classe permet visualitzar la llista d’autors registrats al sistema, afegir-ne de nous,
+ * editar-ne les dades o accedir als seus detalls.
+ *
+ * <p>Els autors es carreguen mitjançant una petició HTTP GET a l’API REST i es mostren
+ * dins una taula. Es poden obrir finestres emergents per gestionar un autor en concret
+ * amb un doble clic o mitjançant el botó de Nou autor.</p>
+ *
+ * <p>El controlador utilitza l’FXML <code>gestionarAutorsView.fxml</code> per mostrar la interfície
+ * de detall d’un autor.</p>
+ *
+ * @author Miquel Correyero
  */
 public class AutorsController {
 

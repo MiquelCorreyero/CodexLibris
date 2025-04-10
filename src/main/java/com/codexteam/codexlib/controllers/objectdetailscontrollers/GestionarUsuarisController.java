@@ -14,7 +14,13 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 /**
- * Controlador per gestionar la creació i edició d’usuaris.
+ * Controlador encarregat de gestionar la finestra modal per a la inserció, edició i eliminació d’usuaris.
+ *
+ * <p>Les operacions es realitzen a través de peticions HTTP (POST, PUT, DELETE) a l’API REST del backend</p>
+ *
+ * <p>Està associada al fitxer FXML <strong>detallsUsuariView.fxml</strong></p>
+ *
+ * @author Miquel Correyero
  */
 public class GestionarUsuarisController {
 

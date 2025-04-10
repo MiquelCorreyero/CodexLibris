@@ -14,7 +14,16 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 /**
- * Controlador per crear, editar o eliminar esdeveniments.
+ * Controlador per a la finestra modal d'esdeveniments.
+ *
+ * <p>Aquesta classe permet afegir, editar i eliminar esdeveniments</p>
+ *
+ * <p>Les operacions es realitzen a través de peticions HTTP (POST, PUT, DELETE)
+ * enviades al backend del sistema.</p>
+ *
+ * Aquesta classe s’associa al fitxer FXML <strong>gestionarEsdevenimentsView.fxml</strong>.
+ *
+ * @author Miquel Correyero
  */
 public class GestionarEsdevenimentsController {
 
@@ -54,6 +63,12 @@ public class GestionarEsdevenimentsController {
         }
     }
 
+    /**
+     * Guarda l'esdeveniment actual mitjançant una petició HTTP.
+     * Si l'esdeveniment ja existeix, s'envia una petició PUT per actualitzar-lo.
+     * Si és un nou esdeveniment, s'envia una petició POST per crear-lo.
+     * També valida que tots els camps obligatoris estiguin informats.
+     */
     private void guardarEsdeveniment() {
         String titol = titolField.getText().trim();
         String contingut = contingutArea.getText().trim();
@@ -116,6 +131,11 @@ public class GestionarEsdevenimentsController {
         }
     }
 
+    /**
+     * Elimina l'esdeveniment actual després de confirmar-ho amb l'usuari.
+     * Envia una petició DELETE al servidor per eliminar-lo.
+     * Mostra un missatge d'error si no hi ha cap esdeveniment seleccionat.
+     */
     private void eliminarEsdeveniment() {
         if (esdevenimentActual == null || esdevenimentActual.getId() <= 0) {
             mostrarMissatge("Error", "Cap esdeveniment seleccionat.");
@@ -147,11 +167,21 @@ public class GestionarEsdevenimentsController {
                 });
     }
 
+    /**
+     * Tanca la finestra modal activa.
+     * Es crida després de desar o eliminar un esdeveniment.
+     */
     private void tancarFinestra() {
         Stage stage = (Stage) botoGuardar.getScene().getWindow();
         stage.close();
     }
 
+    /**
+     * Mostra un diàleg d'informació a l'usuari amb un missatge personalitzat.
+     *
+     * @param titol    Títol de la finestra d’alerta.
+     * @param missatge Contingut del missatge que es mostrarà.
+     */
     private void mostrarMissatge(String titol, String missatge) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titol);

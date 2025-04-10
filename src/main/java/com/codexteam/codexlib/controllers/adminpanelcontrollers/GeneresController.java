@@ -24,8 +24,15 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- * Controlador del panell de gèneres a l'àrea d'administració.
- * Permet gestionar la visualització, inserció i edició de gèneres mitjançant peticions a l'API REST.
+ * Controlador del panell d’administració per gestionar els gèneres literaris disponibles a la biblioteca.
+ * Aquesta classe permet visualitzar, afegir, editar i actualitzar els gèneres mitjançant comunicació amb el servidor.
+ *
+ * <p>Els gèneres es mostren en una taula que es carrega automàticament des del backend mitjançant una petició HTTP GET.
+ * L’usuari pot fer doble clic sobre un gènere per editar-ne les dades o utilitzar el botó Nou gènere per crear-ne un de nou.</p>
+ *
+ * <p>Les accions de gestió s’obren en una finestra modal utilitzant la vista <code>gestionarGeneresView.fxml</code></p>
+ *
+ * @author Miquel Correyero
  */
 public class GeneresController {
 

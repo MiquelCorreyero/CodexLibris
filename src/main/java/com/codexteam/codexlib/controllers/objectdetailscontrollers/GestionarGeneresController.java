@@ -14,7 +14,15 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 /**
- * Controlador per gestionar la inserció o edició de gèneres.
+ * Controlador per a la finestra modal dels gèneres literaris.
+ *
+ * <p>Aquesta classe permet crear, editar i eliminar gèneres mitjançant una finestra modal.
+ * Efectua les operacions CRUD mitjançant peticions HTTP al backend (POST per crear, PUT per
+ * actualitzar i DELETE per eliminar).</p>
+ *
+ * <p>Està associada al fitxer FXML <strong>gestionarGeneresView.fxml</strong></p>
+ *
+ * @author Miquel Correyero
  */
 public class GestionarGeneresController {
 

@@ -14,8 +14,20 @@ import java.net.http.HttpResponse;
 import java.util.Optional;
 
 /**
- * Controlador per afegir o editar un autor mitjançant una finestra modal.
- * Gestiona el formulari de dades d'autor i efectua les operacions de creació, modificació o eliminació.
+ * Controlador per a la finestra modal de gestió d'autors.
+ *
+ * <p>Aquesta classe permet afegir, modificar i eliminar autors mitjançant peticions a l’API REST.</p>
+ *
+ * <p>El controlador detecta si s’està treballant amb un autor existent o si es tracta de la creació
+ * d’un nou autor, i canvia el comportament de la finestra en conseqüència (canvia el títol i habilita/deshabilita
+ * el botó d'eliminació).</p>
+ *
+ * <p>Les accions de creació i actualització s'envien al backend mitjançant peticions HTTP de tipus
+ * POST o PUT, respectivament. La petició DELETE només s'envia si l’usuari confirma l’eliminació.</p>
+ *
+ * Aquesta classe s’associa al fitxer FXML <strong>gestionarAutorsView.fxml</strong>.
+ *
+ * @author Miquel Correyero
  */
 public class GestionarAutorsController {
 
