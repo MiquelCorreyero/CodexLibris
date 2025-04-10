@@ -119,7 +119,7 @@ public class GestionarReservesController {
 
         int userId = comboUsuaris.getValue().getId();
         int bookId = comboLlibres.getValue().getId();
-        int statusId = 1; // O un valor seleccionat si tens ComboBox d'estat
+        int statusId = 1;
 
         String loanDate = dataReservaPicker.getValue().toString();
         String dueDate = dataRetornPicker.getValue().toString();
@@ -162,7 +162,6 @@ public class GestionarReservesController {
                             if (response.statusCode() == 200 || response.statusCode() == 201) {
                                 mostrarMissatge("Èxit", "Reserva desada correctament.");
 
-                                // Marcar llibre com a no disponible
                                 marcarLlibreComNoDisponible(comboLlibres.getValue());
 
                                 tancarFinestra();

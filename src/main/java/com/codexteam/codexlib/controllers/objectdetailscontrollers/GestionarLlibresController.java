@@ -149,7 +149,7 @@ public class GestionarLlibresController {
             return;
         }
 
-        // Convertir manualment la data a ISO 8601 amb hora i zona
+        // Convertir manualment la data amb hora i zona
         String publicacio = dataInput + "T00:00:00.000Z";
 
         String json = String.format("""

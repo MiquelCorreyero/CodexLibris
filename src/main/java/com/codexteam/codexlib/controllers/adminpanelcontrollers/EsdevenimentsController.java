@@ -126,6 +126,10 @@ public class EsdevenimentsController {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/calendar_icon.png")));
+
+            // Desactivar el focus per defecte als inputs
+            stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));
+
             stage.showAndWait();
 
             carregarEsdeveniments(); // Refrescar taula

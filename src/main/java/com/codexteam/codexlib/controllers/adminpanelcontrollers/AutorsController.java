@@ -102,7 +102,6 @@ public class AutorsController {
                 .thenAccept(response -> {
                     try {
                         ObjectMapper mapper = new ObjectMapper();
-                        // Si hay fechas tipo LocalDate, registrar módulo:
                         mapper.registerModule(new JavaTimeModule());
 
                         List<Autor> autors = mapper.readValue(
@@ -110,7 +109,6 @@ public class AutorsController {
                                 new TypeReference<List<Autor>>() {}
                         );
 
-                        // Añadir los autores a la tabla desde el hilo principal
                         Platform.runLater(() -> {
                             taulaAutors.getItems().setAll(autors);
                         });
@@ -145,6 +143,10 @@ public class AutorsController {
             stage.initModality(Modality.APPLICATION_MODAL);
 
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/author.png")));
+
+            // Desactivar el focus per defecte als inputs
+            stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));
+
             stage.showAndWait();
 
             carregarAutors(); // Refresca la taula

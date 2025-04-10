@@ -139,6 +139,10 @@ public class ReservesController {
             stage.setTitle(reserva == null ? "Nova reserva" : "Editar reserva");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
+
+            // Desactivar el focus per defecte als inputs
+            stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));
+
             stage.showAndWait();
 
             // Recarrega les dades després de tancar la finestra
