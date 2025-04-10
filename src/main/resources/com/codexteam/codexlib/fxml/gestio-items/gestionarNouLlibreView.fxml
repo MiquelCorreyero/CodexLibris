@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="400.0" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarNouLlibreController">
+    <children>
+          <TextField fx:id="titolField" layoutX="37.0" layoutY="97.0" prefHeight="33.0" prefWidth="333.0" promptText="Títol del llibre" />
+          <TextField fx:id="isbnField" layoutX="37.0" layoutY="292.0" prefHeight="33.0" prefWidth="333.0" promptText="ISBN (978-84-123456-80)" />
+          <TextField fx:id="dataPublicacioField" layoutX="37.0" layoutY="242.0" prefHeight="33.0" prefWidth="333.0" promptText="Data (YYYY-MM-DD)" />
+        <ComboBox fx:id="comboAutors" layoutX="37.0" layoutY="193.0" prefHeight="33.0" prefWidth="333.0" promptText="Autor" />
+        <ComboBox fx:id="comboGeneres" layoutX="37.0" layoutY="144.0" prefHeight="33.0" prefWidth="333.0" promptText="Gènere" />
+        <Button fx:id="guardarLlibreButton" layoutX="207.0" layoutY="477.0" onAction="#enviarLlibre" prefHeight="52.0" prefWidth="160.0" text=" Desar">
+            <graphic>
+                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/save_data_icon.png" />
+                    </image>
+                </ImageView>
+            </graphic>
+        </Button>
+      <Button fx:id="eliminarLlibreButton" layoutX="34.0" layoutY="477.0" prefHeight="52.0" prefWidth="160.0" text=" Eliminar">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/delete_icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <CheckBox fx:id="availableCheckBox" layoutX="37.0" layoutY="423.0" mnemonicParsing="false" selected="true" text="Disponible?">
+         <font>
+            <Font size="14.0" />
+         </font></CheckBox>
+      <Label layoutX="40.0" layoutY="355.0" prefHeight="58.0" prefWidth="205.0" text="Marca aquesta casella si el llibre es troba disponible:" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label alignment="CENTER" contentDisplay="CENTER" layoutX="1.0" layoutY="33.0" prefHeight="17.0" prefWidth="400.0" text="Nou llibre">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+    </children>
+</AnchorPane>

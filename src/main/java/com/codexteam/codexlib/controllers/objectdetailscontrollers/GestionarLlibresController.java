@@ -137,28 +137,33 @@ public class GestionarLlibresController {
     private void guardarLlibre() {
         String titol = titolField.getText().trim();
         String isbn = isbnField.getText().trim();
-        String publicacio = dataPublicacioField.getText().trim();
+        String dataInput = dataPublicacioField.getText().trim();
         String dispo = disponibilitatComboBox.getValue();
         boolean disponible = "Sí".equalsIgnoreCase(dispo);
 
         Autor autor = comboAutors.getValue();
         Genere genere = comboGeneres.getValue();
 
-        if (titol.isEmpty() || isbn.isEmpty() || publicacio.isEmpty() || autor == null || genere == null) {
+        if (titol.isEmpty() || isbn.isEmpty() || dataInput.isEmpty() || autor == null || genere == null) {
             mostrarAlerta("Error", "Tots els camps són obligatoris.");
             return;
         }
 
+        // Convertir manualment la data a ISO 8601 amb hora i zona
+        String publicacio = dataInput + "T00:00:00.000Z";
+
         String json = String.format("""
-        {
-            "title": "%s",
-            "isbn": "%s",
-            "publishedDate": "%s",
-            "available": %s,
-            "authorId": %d,
-            "genreId": %d
-        }
-        """, titol, isbn, publicacio, disponible, autor.getId(), genere.getId());
+    {
+        "title": "%s",
+        "isbn": "%s",
+        "publishedDate": "%s",
+        "available": %s,
+        "authorId": %d,
+        "genreId": %d
+    }
+    """, titol, isbn, publicacio, disponible, autor.getId(), genere.getId());
+
+        System.out.println("JSON generat:\n" + json);
 
         try {
             HttpClient client = HttpClient.newHttpClient();
@@ -181,16 +186,15 @@ public class GestionarLlibresController {
             }
 
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                    .thenAccept(response -> {
+                    .thenAccept(response -> Platform.runLater(() -> {
                         if (response.statusCode() == 200 || response.statusCode() == 201) {
-                            Platform.runLater(() -> {
-                                mostrarAlerta("Èxit", "Llibre desat correctament.");
-                                tancarFinestra();
-                            });
+                            mostrarAlerta("Èxit", "Llibre desat correctament.");
+                            tancarFinestra();
                         } else {
-                            Platform.runLater(() -> mostrarAlerta("Error", "Error al desar el llibre. Codi: " + response.statusCode()));
+                            mostrarAlerta("Error", "Error al desar el llibre. Codi: " + response.statusCode() +
+                                    "\nResposta: " + response.body());
                         }
-                    });
+                    }));
 
         } catch (Exception e) {
             e.printStackTrace();

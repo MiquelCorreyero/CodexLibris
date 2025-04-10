@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -28,59 +29,42 @@ import java.util.List;
 
 /**
  * Controlador del panell d’administració dedicat a la gestió del catàleg de llibres.
- * Aquesta classe permet visualitzar, afegir, editar i actualitzar llibres
- * mitjançant la interacció amb l’API REST del servidor.
  *
- * <p>Els llibres es carreguen automàticament en iniciar el panell i es mostren en una taula amb informació bàsica
- * com el títol, l’autor, l’ISBN i la disponibilitat. L’usuari pot afegir llibres nous mitjançant una cerca per ISBN
- * o editar els existents fent doble clic sobre una fila.</p>
- *
- * <p>Les accions de gestió es realitzen a través de finestres modals que obren vistes específiques:
- * <code>gestionarLlibresView.fxml</code> per editar llibres i <code>introduirIsbnView.fxml</code> per afegir-ne per ISBN.</p>
+ * <p>Aquesta classe permet visualitzar, afegir i editar llibres mitjançant
+ * peticions a l'API REST i finestres modals. Els llibres es mostren en una
+ * taula amb informació bàsica i es poden modificar amb un sistema intuïtiu d'interacció.</p>
  *
  * @author Miquel Correyero
  */
 public class LlibresController {
 
-    // COLUMNES DE LA TAULA DE LLIBRES
-    @FXML
-    private TableView<Llibre> taulaLlibres;
+    @FXML private TableView<Llibre> taulaLlibres;
     @FXML private TableColumn<Llibre, String> colTitol;
     @FXML private TableColumn<Llibre, String> colAutor;
     @FXML private TableColumn<Llibre, String> colIsbn;
     @FXML private TableColumn<Llibre, String> colDisponibilitat;
 
-    // BOTONS
-    @FXML private Button inserirNouLlibreButton; // Cercar llibre per ISBN
+    @FXML private Button inserirNouLlibreButton;
 
-    /**
-     * Inicialitza el panell de llibres:
-     * - Configura les columnes de la taula.
-     * - Assigna accions als botons.
-     * - Carrega el llistat de llibres des del servidor.
-     * - Defineix el comportament al fer doble clic sobre una fila.
-     */
     @FXML
     public void initialize() {
 
-        // Mostrar finestra per a cercar llibre per ISBN
-        inserirNouLlibreButton.setOnAction(event ->
-                obrirNovaFinestra("/com/codexteam/codexlib/fxml/gestio-items/introduirIsbnView.fxml", "Cercar llibre per ISBN", "/com/codexteam/codexlib/images/isbn.png")
-        );
+        // Obre la finestra de creació de llibres
+        inserirNouLlibreButton.setOnAction(event -> obrirFinestraNouLlibre());
 
-        // EDITA EL LLIBRE EN FER DOBLE CLIC SOBRE UNA FILA
+        // Obre la finestra per editar llibres en fer doble clic
         taulaLlibres.setRowFactory(tv -> {
             TableRow<Llibre> fila = new TableRow<>();
             fila.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !fila.isEmpty()) {
                     Llibre llibreSeleccionat = fila.getItem();
-                    obrirGestionarLlibre(llibreSeleccionat);
+                    obrirFinestraEditarLlibre(llibreSeleccionat);
                 }
             });
             return fila;
         });
 
-        // CARREGAR LLISTAT DE LLIBRES
+        // Configuració de columnes
         colTitol.setCellValueFactory(new PropertyValueFactory<>("title"));
         colAutor.setCellValueFactory(new PropertyValueFactory<>("authorName"));
         colIsbn.setCellValueFactory(new PropertyValueFactory<>("isbn"));
@@ -90,12 +74,11 @@ public class LlibresController {
         });
 
         carregarLlibres();
-
     }
 
     /**
-     * Obté el llistat de llibres del servidor mitjançant una petició HTTP
-     * i actualitza la taula amb els resultats obtinguts.
+     * Fa una petició GET a l’API REST per obtenir el llistat complet de llibres
+     * i actualitza la taula amb els resultats.
      */
     private void carregarLlibres() {
         HttpClient client = HttpClient.newHttpClient();
@@ -128,53 +111,48 @@ public class LlibresController {
     }
 
     /**
-     * Obre una finestra per gestionar un llibre (editar o inserir).
-     *
-     * @param llibre El llibre seleccionat o {@code null} per crear-ne un de nou.
+     * Obre una finestra modal amb el formulari simplificat per afegir un nou llibre.
+     * Un cop tancada, es refresca la taula per reflectir els possibles canvis.
      */
-    private void obrirGestionarLlibre(Llibre llibre) {
+    private void obrirFinestraNouLlibre() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarLlibresView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarNouLlibreView.fxml"));
             Parent root = loader.load();
 
-            GestionarLlibresController controller = loader.getController();
-            controller.seleccionarLlibre(llibre); // null si és nou
-
             Stage stage = new Stage();
-            stage.setTitle(llibre == null ? "Nou llibre" : "Editar llibre");
+            stage.setTitle("Nou llibre");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book.png")));
             stage.showAndWait();
 
-            carregarLlibres(); // Refrescar taula
+            carregarLlibres();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Obre una nova finestra modal amb el FXML, títol i icona especificats.
+     * Obre una finestra modal per editar un llibre existent.
      *
-     * @param fxml Ruta del fitxer FXML.
-     * @param nomFinestra Títol de la finestra.
-     * @param icona Ruta de la icona de la finestra.
+     * @param llibre Llibre seleccionat per editar.
      */
-    private void obrirNovaFinestra(String fxml, String nomFinestra, String icona) {
+    private void obrirFinestraEditarLlibre(Llibre llibre) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarLlibresView.fxml"));
             Parent root = loader.load();
 
+            GestionarLlibresController controller = loader.getController();
+            controller.seleccionarLlibre(llibre);
+
             Stage stage = new Stage();
-            stage.setTitle(nomFinestra);
+            stage.setTitle("Editar llibre");
             stage.setScene(new Scene(root));
-
-            // Icona de la finestra
-            stage.getIcons().add(new Image(getClass().getResourceAsStream(icona)));
-
-            // BloqueJa la finestra principal fins a tancar aquesta
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.show();
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book.png")));
+            stage.showAndWait();
+
+            carregarLlibres();
         } catch (IOException e) {
             e.printStackTrace();
         }
