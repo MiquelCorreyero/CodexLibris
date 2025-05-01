@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane layoutX="10.0" layoutY="10.0" style="-fx-background-color: #f8f7f3;" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.codexteam.codexlib.controllers.adminpanelcontrollers.CatalegExternController">
+    <children>
+        <Label text="Catàleg extern" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="10.0">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+      <TextField fx:id="campCercaExtern" layoutX="33.0" layoutY="65.0" prefHeight="35.0" prefWidth="425.0" promptText="Cercar llibre per paraula clau" AnchorPane.leftAnchor="33.0" AnchorPane.topAnchor="65.0" />
+      <Button fx:id="botoCercaExtern" layoutX="537.0" layoutY="65.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="123.0" text=" Cercar" AnchorPane.leftAnchor="537.0" AnchorPane.topAnchor="65.0">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/zoom_icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+      <Button fx:id="netejaExternButton" layoutX="468.0" layoutY="65.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="11.0" AnchorPane.leftAnchor="468.0" AnchorPane.topAnchor="65.0">
+         <graphic>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/cross_icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
+        <Label layoutX="33.0" layoutY="115.0" text="Selecciona un títol per importar-lo a la biblioteca:" textFill="#e91e63" AnchorPane.leftAnchor="33.0" AnchorPane.topAnchor="115.0">
+            <font>
+                <Font name="System Bold" size="16.0" />
+            </font>
+        </Label>
+        <TableView fx:id="taulaExtern" layoutX="40.0" layoutY="148.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="140.0">
+            <columns>
+                <TableColumn fx:id="colTitolExtern" prefWidth="250.0" text="Títol" />
+                <TableColumn fx:id="colAutorExtern" prefWidth="150.0" text="Autor" />
+                <TableColumn fx:id="colIsbnExtern" prefWidth="150.0" text="ISBN" />
+                <TableColumn fx:id="colAnyExtern" prefWidth="100.0" text="Any" />
+            </columns>
+        </TableView>
+        <Button fx:id="importarLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Importar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+            <graphic>
+                <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../../images/import_icon.png" />
+                    </image>
+                </ImageView>
+            </graphic></Button>
+    </children>
+</AnchorPane>

@@ -2,6 +2,7 @@ package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarAutorsController;
 import com.codexteam.codexlib.models.Autor;
+import com.codexteam.codexlib.models.ResultatCerca;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -49,6 +50,10 @@ public class AutorsController {
 
     // BOTONS
     @FXML private Button inserirNouAutorButton; // Inserir o editar autor
+    @FXML private Button botoCercaAutor;
+    @FXML private Button netejaAutorButton;
+
+    @FXML private TextField campCercaAutor;
 
     /**
      * Inicialitza el panell d'autors:
@@ -82,6 +87,23 @@ public class AutorsController {
 
         // OBRE LA FINESTRA PER CREAR UN NOU AUTOR
         inserirNouAutorButton.setOnAction(e -> obrirGestionarAutors(null));
+
+        // Botó de cerca
+        botoCercaAutor.setOnAction(e -> ferCercaAutors());
+
+        // Botó de neteja
+        netejaAutorButton.setOnAction(e -> {
+            campCercaAutor.clear();
+            carregarAutors();
+        });
+
+        // Enter per cercar
+        campCercaAutor.setOnAction(e -> ferCercaAutors());
+
+        // Desactiva botó de neteja si el camp és buit
+        campCercaAutor.textProperty().addListener((obs, oldVal, newVal) -> {
+            netejaAutorButton.setDisable(newVal.trim().isEmpty());
+        });
 
     }
 
@@ -168,5 +190,59 @@ public class AutorsController {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+    /**
+     * Realitza una cerca d'autors a la base de dades mitjançant una paraula clau.
+     *
+     * <p>Aquest mètode envia una petició GET a l’endpoint de cerca de l’API REST
+     * amb la paraula clau introduïda per l’usuari. Si el camp de text és buit,
+     * es torna a carregar la llista completa d’autors.</p>
+     *
+     * <p>Els resultats obtinguts substitueixen el contingut actual de la taula
+     * mostrant únicament els autors que coincideixen amb el criteri de cerca.</p>
+     *
+     * <p>En cas d’error en la resposta o la connexió, es mostra una alerta a l’usuari.</p>
+     */
+    private void ferCercaAutors() {
+        String paraulaClau = campCercaAutor.getText().trim();
+        if (paraulaClau.isEmpty()) {
+            carregarAutors();
+            return;
+        }
+
+        HttpClient client = HttpClient.newHttpClient();
+        String url = "http://localhost:8080/search/?query=" + paraulaClau.replace(" ", "%20");
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
+                .header("Content-Type", "application/json")
+                .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(response -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        mapper.registerModule(new JavaTimeModule());
+
+                        // Clase wrapper per a la resposta
+                        ResultatCerca resultat = mapper.readValue(response, ResultatCerca.class);
+                        List<Autor> autors = resultat.getAuthors();
+
+                        Platform.runLater(() -> taulaAutors.getItems().setAll(autors));
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Platform.runLater(() -> mostrarMissatge("Error", "No s'han pogut carregar els autors trobats."));
+                    }
+                })
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    Platform.runLater(() -> mostrarMissatge("Error", "Error en la connexió amb el servidor."));
+                    return null;
+                });
+    }
+
 
 }

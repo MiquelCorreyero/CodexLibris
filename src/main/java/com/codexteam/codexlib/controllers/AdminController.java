@@ -26,6 +26,7 @@ public class AdminController {
     // PANELLS
     @FXML private AnchorPane paneInici;
     @FXML private AnchorPane paneLlibres;
+    @FXML private AnchorPane paneCatalegExtern;
     @FXML private AnchorPane paneAutors;
     @FXML private AnchorPane paneGeneres;
     @FXML private AnchorPane paneUsuaris;
@@ -46,6 +47,7 @@ public class AdminController {
     private void hideAllPanes() {
         paneInici.setVisible(false);
         paneLlibres.setVisible(false);
+        paneCatalegExtern.setVisible(false);
         paneUsuaris.setVisible(false);
         paneAutors.setVisible(false);
         paneGeneres.setVisible(false);
@@ -104,6 +106,14 @@ public class AdminController {
     @FXML
     private void showLlibres() {
         mostrarPanell(paneLlibres, "/com/codexteam/codexlib/fxml/panells/panellLlibresView.fxml");
+    }
+
+    /**
+     * Mostra el panell de llibres (catàleg) i amaga la resta.
+     */
+    @FXML
+    private void showCatalegExtern() {
+        mostrarPanell(paneCatalegExtern, "/com/codexteam/codexlib/fxml/panells/panellCatalegExternView.fxml");
     }
 
     /**

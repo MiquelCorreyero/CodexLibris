@@ -1,9 +1,12 @@
 package com.codexteam.codexlib.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 /**
  * Representa un llibre dins del sistema. Conté informació bàsica com títol, autor, ISBN, gènere,
  * data de publicació, disponibilitat i dades de creació/modificació.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Llibre {
     private int id;
     private String title;

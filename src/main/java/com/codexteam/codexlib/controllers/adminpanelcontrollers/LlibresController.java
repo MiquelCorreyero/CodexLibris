@@ -2,6 +2,7 @@ package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarLlibresController;
 import com.codexteam.codexlib.models.Llibre;
+import com.codexteam.codexlib.models.ResultatCerca;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,6 +20,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URI;
@@ -45,6 +47,9 @@ public class LlibresController {
     @FXML private TableColumn<Llibre, String> colDisponibilitat;
 
     @FXML private Button inserirNouLlibreButton;
+    @FXML private TextField campCerca;
+    @FXML private Button botoCerca;
+    @FXML private Button netejaButton;
 
     @FXML
     public void initialize() {
@@ -74,6 +79,23 @@ public class LlibresController {
         });
 
         carregarLlibres();
+
+        // Cercar llibres
+        botoCerca.setOnAction(event -> ferCerca());
+        campCerca.setOnAction(event -> ferCerca()); // Per cercar presionant la tecla enter
+
+        // Botó de reset per a la cerca
+        netejaButton.setOnAction(event -> {
+            campCerca.clear();      // Neteja el text field
+            carregarLlibres();      // Torna a carregar tots els llibres
+        });
+
+        // Desactiva el botó si no s'ha fet cap cerca
+        netejaButton.setDisable(true);
+        campCerca.textProperty().addListener((obs, oldVal, newVal) -> {
+            netejaButton.setDisable(newVal.trim().isEmpty());
+        });
+
     }
 
     /**
@@ -161,5 +183,52 @@ public class LlibresController {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Realitza una cerca de llibres a la base de dades mitjançant una paraula clau.
+     *
+     * <p>Aquest mètode envia una petició GET a l’endpoint de cerca de l’API REST
+     * amb la paraula clau introduïda per l’usuari. Si el camp de text és buit,
+     * es recarrega el catàleg complet de llibres. En cas contrari, es mostren
+     * només els llibres que coincideixen amb el criteri de cerca (paraula clau).</p>
+     *
+     * <p>Els resultats obtinguts substitueixen el contingut actual de la taula.</p>
+     *
+     * <p>Es mostra una alerta d'error si hi ha algun problema amb la petició o la resposta.</p>
+     */
+    private void ferCerca() {
+        String paraulaClau = campCerca.getText().trim();
+        if (paraulaClau.isEmpty()) {
+            carregarLlibres(); // si no hi ha text, carrega tots els llibres
+            return;
+        }
+
+        HttpClient client = HttpClient.newHttpClient();
+        String url = "http://localhost:8080/search/?query=" + paraulaClau.replace(" ", "%20");
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
+                .header("Content-Type", "application/json")
+                .build();
+
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .thenAccept(response -> {
+                    try {
+                        ObjectMapper mapper = new ObjectMapper();
+                        ResultatCerca resultat = mapper.readValue(response, ResultatCerca.class);
+                        List<Llibre> llibres = resultat.getBooks();
+                        Platform.runLater(() -> taulaLlibres.getItems().setAll(llibres));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                })
+                .exceptionally(e -> {
+                    e.printStackTrace();
+                    return null;
+                });
+    }
+
 
 }
