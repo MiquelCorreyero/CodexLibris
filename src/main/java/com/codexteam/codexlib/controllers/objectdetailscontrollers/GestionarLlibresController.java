@@ -1,23 +1,32 @@
 package com.codexteam.codexlib.controllers.objectdetailscontrollers;
 
 import com.codexteam.codexlib.models.Autor;
+import com.codexteam.codexlib.models.LlibreExtern;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.codexteam.codexlib.models.Genere;
 import com.codexteam.codexlib.models.Llibre;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+import java.text.Normalizer;
+import java.util.regex.Pattern;
 
 /**
- * Controlador de la finestra modal encarregada de gestionar la inserció i edició de llibres.
+ * Controlador de la finestra modal encarregada de gestionar la inserció i edició de llibres des del catàleg extern.
  * Proporciona la funcionalitat per omplir un formulari amb dades del llibre, seleccionar autor i gènere,
  * i enviar les dades mitjançant peticions HTTP al backend (POST per crear, PUT per editar, DELETE per eliminar).
  *
@@ -38,6 +47,7 @@ public class GestionarLlibresController {
     @FXML private ComboBox<String> disponibilitatComboBox;
     @FXML private Button guardarLlibreButton;
     @FXML private Button eliminarLlibreButton;
+    @FXML private Button botoNouAutor;
 
     private Llibre llibreActual;
 
@@ -52,6 +62,7 @@ public class GestionarLlibresController {
 
         eliminarLlibreButton.setOnAction(e -> eliminarLlibre());
         guardarLlibreButton.setOnAction(e -> guardarLlibre());
+        botoNouAutor.setOnAction(e -> obrirFinestraNouAutor());
 
         carregarAutors();
         carregarGeneres();
@@ -79,6 +90,7 @@ public class GestionarLlibresController {
                 return null;
             }
         });
+
     }
 
     /**
@@ -149,6 +161,12 @@ public class GestionarLlibresController {
             return;
         }
 
+        // Comprovem que el format de l'ISBN sigui correcte o mostrem un error en pantalla
+        if (!isbnValid(isbn)) {
+            mostrarAlerta("Error", "L'ISBN introduït no té el format correcte.\nEl format hauria de ser com aquest: 978-84-123456-01");
+            return;
+        }
+
         // Convertir manualment la data amb hora i zona
         String publicacio = dataInput + "T00:00:00.000Z";
 
@@ -166,19 +184,19 @@ public class GestionarLlibresController {
         System.out.println("JSON generat:\n" + json);
 
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request;
 
             if (llibreActual == null) {
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/books"))
+                        .uri(URI.create("https://localhost/books"))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(json))
                         .build();
             } else {
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/books/" + llibreActual.getId()))
+                        .uri(URI.create("https://localhost/books/" + llibreActual.getId()))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .PUT(HttpRequest.BodyPublishers.ofString(json))
@@ -215,9 +233,9 @@ public class GestionarLlibresController {
         if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
 
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/books/" + llibreActual.getId()))
+                    .uri(URI.create("https://localhost/books/" + llibreActual.getId()))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .DELETE()
                     .build();
@@ -238,6 +256,52 @@ public class GestionarLlibresController {
             e.printStackTrace();
             mostrarAlerta("Error", "S'ha produït un error inesperat.");
         }
+    }
+
+    /**
+     * Obre una finestra modal per crear un nou autor.
+     * Mostra un missatge d'error si hi ha problemes en carregar la vista.
+     */
+    private void obrirFinestraNouAutor() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarAutorsView.fxml"));
+            Parent root = loader.load();
+
+            GestionarAutorsController controller = loader.getController();
+            controller.setAutor(null);
+
+            Stage stage = new Stage();
+            stage.setTitle("Nou autor");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.setOnShown(event -> Platform.runLater(() -> root.requestFocus()));
+            stage.showAndWait();
+
+            carregarAutors();
+
+            Autor nou = controller.getAutorCreat();
+            if (nou != null) {
+                comboAutors.getItems().add(nou);
+                comboAutors.setValue(nou);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No s'ha pogut obrir la finestra de creació d'autor.");
+        }
+    }
+
+    /**
+     * Elimina accents i normalitza un text a minúscules per fer comparacions més tolerants.
+     */
+    private String normalitzarText(String text) {
+        if (text == null) return "";
+        String normalized = Normalizer.normalize(text, Normalizer.Form.NFD);
+        return Pattern.compile("\\p{InCombiningDiacriticalMarks}+")
+                .matcher(normalized)
+                .replaceAll("")
+                .toLowerCase();
     }
 
     /**
@@ -265,11 +329,11 @@ public class GestionarLlibresController {
     /**
      * Fa una petició GET a l’API per obtenir els autors disponibles i omplir el ComboBox.
      */
-    private void carregarAutors() {
+    private void carregarAutors(Runnable callback) {
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/authors"))
+                    .uri(URI.create("https://localhost/authors"))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .header("Content-Type", "application/json")
                     .build();
@@ -280,7 +344,10 @@ public class GestionarLlibresController {
                         try {
                             ObjectMapper mapper = new ObjectMapper();
                             List<Autor> autors = mapper.readValue(response, new com.fasterxml.jackson.core.type.TypeReference<List<Autor>>() {});
-                            Platform.runLater(() -> comboAutors.getItems().setAll(autors));
+                            Platform.runLater(() -> {
+                                comboAutors.getItems().setAll(autors);
+                                if (callback != null) callback.run(); // << ejecutar después
+                            });
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -290,14 +357,18 @@ public class GestionarLlibresController {
         }
     }
 
+    private void carregarAutors() {
+        carregarAutors(null);
+    }
+
     /**
      * Fa una petició GET a l’API per obtenir els gèneres disponibles i omplir el ComboBox.
      */
     private void carregarGeneres() {
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/genres"))
+                    .uri(URI.create("https://localhost/genres"))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .header("Content-Type", "application/json")
                     .build();
@@ -316,6 +387,49 @@ public class GestionarLlibresController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Prepara el formulari per importar un llibre extern,
+     * omplint els camps amb les dades rebudes i intentant seleccionar l'autor corresponent.
+     *
+     * @param extern Llibre extern a importar, amb títol, ISBN i autor.
+     */
+    public void importarLlibreExtern(LlibreExtern extern) {
+        this.llibreActual = null;
+
+        titolLabel.setText("Importar llibre extern");
+        titolField.setText(extern.getTitle());
+        isbnField.setText(extern.getIsbn());
+        dataPublicacioField.setText(extern.getYear() + "-01-01");
+        disponibilitatComboBox.setValue("Sí");
+
+        comboAutors.setValue(null);
+        comboGeneres.setValue(null);
+        eliminarLlibreButton.setDisable(true);
+
+        String nomExternNormalitzat = normalitzarText(extern.getAuthor());
+
+        carregarAutors(() -> {
+            for (Autor autor : comboAutors.getItems()) {
+                if (normalitzarText(autor.getName()).equals(nomExternNormalitzat)) {
+                    comboAutors.setValue(autor);
+                    break;
+                }
+            }
+        });
+
+        carregarGeneres();
+    }
+
+    /**
+     * Comprova si un ISBN compleix el format {@code XXX-XX-XXXXXX-XX}, només amb dígits.
+     *
+     * @param isbn ISBN a validar.
+     * @return {@code true} si l'ISBN és vàlid, {@code false} altrament.
+     */
+    private boolean isbnValid(String isbn) {
+        return isbn.matches("\\d{3}-\\d{2}-\\d{6}-\\d{2}");
     }
 
 }

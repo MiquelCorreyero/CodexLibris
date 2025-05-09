@@ -35,7 +35,7 @@ public class ApiRestTest {
      */
     @Test
     void testLoginAndReceiveToken() throws IOException {
-        URL url = new URL("http://localhost:8080/auth/login");
+        URL url = new URL("https://localhost/auth/login");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
@@ -73,7 +73,7 @@ public class ApiRestTest {
     void testLogoutEndpoint() throws IOException {
         String token = loginAndGetToken();
 
-        URL url = new URL("http://localhost:8080/auth/logout");
+        URL url = new URL("https://localhost/auth/logout");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Authorization", "Bearer " + token);
@@ -103,7 +103,7 @@ public class ApiRestTest {
     void testAccessBooksEndpoint() throws IOException {
         String token = loginAndGetToken();
 
-        URL url = new URL("http://localhost:8080/books");
+        URL url = new URL("https://localhost/books");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Authorization", "Bearer " + token);
@@ -132,7 +132,7 @@ public class ApiRestTest {
     void testGetAuthors() throws IOException {
         String token = loginAndGetToken();
 
-        URL url = new URL("http://localhost:8080/authors");
+        URL url = new URL("https://localhost/authors");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Authorization", "Bearer " + token);
@@ -159,7 +159,7 @@ public class ApiRestTest {
     void testAccessGenresEndpoint() throws IOException {
         String token = loginAndGetToken();
 
-        URL url = new URL("http://localhost:8080/genres");
+        URL url = new URL("https://localhost/genres");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Authorization", "Bearer " + token);
@@ -187,7 +187,7 @@ public class ApiRestTest {
     void testAccessReservesEndpoint() throws IOException {
         String token = loginAndGetToken();
 
-        URL url = new URL("http://localhost:8080/loans");
+        URL url = new URL("https://localhost/loans");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Authorization", "Bearer " + token);
@@ -216,7 +216,7 @@ public class ApiRestTest {
     void testAccessEventsEndpoint() throws IOException {
         String token = loginAndGetToken();
 
-        URL url = new URL("http://localhost:8080/events");
+        URL url = new URL("https://localhost/events");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("GET");
         con.setRequestProperty("Authorization", "Bearer " + token);
@@ -245,7 +245,7 @@ public class ApiRestTest {
     void testCreateEvent() throws IOException {
         String token = loginAndGetToken();
 
-        URL url = new URL("http://localhost:8080/events");
+        URL url = new URL("https://localhost/events");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Authorization", "Bearer " + token);
@@ -293,7 +293,7 @@ public class ApiRestTest {
 
     // Mètode auxiliar per login
     private String loginAndGetToken() throws IOException {
-        URL url = new URL("http://localhost:8080/auth/login");
+        URL url = new URL("https://localhost/auth/login");
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("POST");
         con.setRequestProperty("Content-Type", "application/json");
@@ -321,7 +321,7 @@ public class ApiRestTest {
 
     // Mètode auxiliar per esborrar esdeveniment
     private void deleteEvent(int eventId, String token) throws IOException {
-        URL url = new URL("http://localhost:8080/events/" + eventId);
+        URL url = new URL("https://localhost/events/" + eventId);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
         con.setRequestMethod("DELETE");
         con.setRequestProperty("Authorization", "Bearer " + token);

@@ -1,6 +1,7 @@
 package com.codexteam.codexlib.controllers.objectdetailscontrollers;
 
 import com.codexteam.codexlib.models.Genere;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
@@ -82,7 +83,7 @@ public class GestionarGeneresController {
             if (genere.getId() > 0) {
                 // EDITAR GÈNERE EXISTENT
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/genres/" + genere.getId()))
+                        .uri(URI.create("https://localhost/genres/" + genere.getId()))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .PUT(HttpRequest.BodyPublishers.ofString(json))
@@ -90,14 +91,14 @@ public class GestionarGeneresController {
             } else {
                 // CREAR NOU GÈNERE
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/genres"))
+                        .uri(URI.create("https://localhost/genres"))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(json))
                         .build();
             }
 
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenAccept(response -> {
                         Platform.runLater(() -> {
@@ -134,12 +135,12 @@ public class GestionarGeneresController {
         if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/genres/" + genereActual.getId()))
+                .uri(URI.create("https://localhost/genres/" + genereActual.getId()))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .DELETE()
                 .build();
 
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
                     Platform.runLater(() -> {

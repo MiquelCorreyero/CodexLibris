@@ -3,6 +3,7 @@ package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarLlibresController;
 import com.codexteam.codexlib.models.Llibre;
 import com.codexteam.codexlib.models.ResultatCerca;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -103,9 +104,9 @@ public class LlibresController {
      * i actualitza la taula amb els resultats.
      */
     private void carregarLlibres() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/books"))
+                .uri(URI.create("https://localhost/books"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -145,7 +146,7 @@ public class LlibresController {
             stage.setTitle("Nou llibre");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book.png")));
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book_w.png")));
 
             // Desactivar el focus per defecte als inputs
             stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));
@@ -175,7 +176,7 @@ public class LlibresController {
             stage.setTitle("Editar llibre");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book.png")));
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book_w.png")));
             stage.showAndWait();
 
             carregarLlibres();
@@ -203,8 +204,8 @@ public class LlibresController {
             return;
         }
 
-        HttpClient client = HttpClient.newHttpClient();
-        String url = "http://localhost:8080/search/?query=" + paraulaClau.replace(" ", "%20");
+        HttpClient client = ClientFactory.getClient();
+        String url = "https://localhost/search/?query=" + paraulaClau.replace(" ", "%20");
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

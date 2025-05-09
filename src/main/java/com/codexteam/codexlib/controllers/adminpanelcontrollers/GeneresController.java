@@ -2,6 +2,7 @@ package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarGeneresController;
 import com.codexteam.codexlib.models.Genere;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -77,9 +78,9 @@ public class GeneresController {
      * Si la resposta és correcta, actualitza la taula amb els resultats.
      */
     private void carregarGeneres() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/genres"))
+                .uri(URI.create("https://localhost/genres"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -122,7 +123,7 @@ public class GeneresController {
             stage.setTitle(genere == null ? "Nou gènere" : "Editar gènere");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/generes_icon.png")));
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/library_icon_.png")));
 
             // Desactivar el focus per defecte als inputs
             stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));

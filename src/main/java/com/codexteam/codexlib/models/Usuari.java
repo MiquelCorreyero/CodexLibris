@@ -1,11 +1,13 @@
 package com.codexteam.codexlib.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Representa un usuari dins el sistema de la biblioteca.
  * Inclou dades personals, credencials, estat d'activació i rol associat.
  */
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Usuari {
 
     private int id;
@@ -116,6 +118,7 @@ public class Usuari {
     public static class Rol {
         private int id;
         private String name;
+        private String description;
 
         public int getId() {
             return id;
@@ -132,6 +135,10 @@ public class Usuari {
         public void setName(String name) {
             this.name = name;
         }
+
+        public String getDescription() { return description; }
+
+        public void setDescription(String description) { this.description = description; }
     }
 }
 

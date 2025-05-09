@@ -2,13 +2,20 @@ package com.codexteam.codexlib.controllers.objectdetailscontrollers;
 
 import com.codexteam.codexlib.models.Autor;
 import com.codexteam.codexlib.models.Genere;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -16,7 +23,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 /**
- * Controlador encarregat de gestionar la finestra per crear un nou llibre.
+ * Controlador encarregat de gestionar la finestra per crear un nou llibre des del catàleg intern.
  * Permet introduir les dades bàsiques (títol, ISBN, data, autor i gènere),
  * i enviar-les al servidor mitjançant una petició POST.
  *
@@ -30,6 +37,8 @@ public class GestionarNouLlibreController {
     @FXML private ComboBox<Autor> comboAutors;
     @FXML private ComboBox<Genere> comboGeneres;
     @FXML private CheckBox availableCheckBox;
+    @FXML private Button botoNouAutorLlibre;
+    @FXML private Button botoNouGenereLLibre;
 
     @FXML
     public void initialize() {
@@ -55,6 +64,9 @@ public class GestionarNouLlibreController {
                 return null;
             }
         });
+
+        botoNouAutorLlibre.setOnAction(e -> obrirFinestraNouAutor());
+
     }
 
     /**
@@ -88,9 +100,9 @@ public class GestionarNouLlibreController {
         }
         """, titol, isbn, publishedDate, disponible, autorSeleccionat.getId(), genereSeleccionat.getId());
 
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/books"))
+                .uri(URI.create("https://localhost/books"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -116,9 +128,9 @@ public class GestionarNouLlibreController {
      * i els afegeix al ComboBox corresponent.
      */
     private void carregarAutors() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/authors"))
+                .uri(URI.create("https://localhost/authors"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -141,9 +153,9 @@ public class GestionarNouLlibreController {
      * i els afegeix al ComboBox corresponent.
      */
     private void carregarGeneres() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/genres"))
+                .uri(URI.create("https://localhost/genres"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -159,6 +171,42 @@ public class GestionarNouLlibreController {
                         e.printStackTrace();
                     }
                 });
+    }
+
+    /**
+     * Obre una finestra modal per crear un nou autor.
+     * Mostra un missatge d'error si hi ha problemes en carregar la vista.
+     */
+    private void obrirFinestraNouAutor() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarAutorsView.fxml"));
+            Parent root = loader.load();
+
+            GestionarAutorsController controller = loader.getController();
+            controller.setAutor(null); // nuevo autor
+
+            Stage stage = new Stage();
+            stage.setTitle("Nou autor");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.setOnShown(event -> Platform.runLater(() -> root.requestFocus()));
+            stage.showAndWait();
+
+            // Refrescar lista de autores
+            carregarAutors();
+
+            // Seleccionar el autor recién creado (por nombre, idealmente por ID si devuelto)
+            Autor nou = controller.getAutorCreat();
+            if (nou != null) {
+                comboAutors.getItems().add(nou); // opcional
+                comboAutors.setValue(nou);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarMissatge("Error", "No s'ha pogut obrir la finestra de creació d'autor.");
+        }
     }
 
     /**

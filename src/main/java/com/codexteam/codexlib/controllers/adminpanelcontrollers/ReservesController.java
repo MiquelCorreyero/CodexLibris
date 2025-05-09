@@ -2,6 +2,7 @@ package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarReservesController;
 import com.codexteam.codexlib.models.Reserva;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -93,9 +95,9 @@ public class ReservesController {
      * i les mostra a la taula de reserves.
      */
     private void carregarReserves() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/loans"))
+                .uri(URI.create("https://localhost/loans"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -139,6 +141,7 @@ public class ReservesController {
             stage.setTitle(reserva == null ? "Nova reserva" : "Editar reserva");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/loans_icon.png")));
 
             // Desactivar el focus per defecte als inputs
             stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));

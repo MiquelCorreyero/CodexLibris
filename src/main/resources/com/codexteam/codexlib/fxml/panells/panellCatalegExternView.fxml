@@ -17,7 +17,7 @@
                 <Font name="System Bold" size="24.0" />
             </font>
         </Label>
-      <TextField fx:id="campCercaExtern" layoutX="33.0" layoutY="65.0" prefHeight="35.0" prefWidth="425.0" promptText="Cercar llibre per paraula clau" AnchorPane.leftAnchor="33.0" AnchorPane.topAnchor="65.0" />
+      <TextField fx:id="campCercaExtern" layoutX="33.0" layoutY="65.0" prefHeight="35.0" prefWidth="425.0" promptText="Cercar llibre a Open Library" AnchorPane.leftAnchor="33.0" AnchorPane.topAnchor="65.0" />
       <Button fx:id="botoCercaExtern" layoutX="537.0" layoutY="65.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="123.0" text=" Cercar" AnchorPane.leftAnchor="537.0" AnchorPane.topAnchor="65.0">
          <graphic>
             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
@@ -49,7 +49,7 @@
                 <TableColumn fx:id="colAnyExtern" prefWidth="100.0" text="Any" />
             </columns>
         </TableView>
-        <Button fx:id="importarLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Importar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="20.0">
+        <Button fx:id="importarLlibreButton" layoutX="20.0" layoutY="498.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Importar llibre" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="40.0">
             <graphic>
                 <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                     <image>
@@ -57,5 +57,14 @@
                     </image>
                 </ImageView>
             </graphic></Button>
+      <Button fx:id="importarIAButton" layoutX="311.0" layoutY="542.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="174.0" text=" Importar amb IA" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="227.0">
+         <graphic>
+            <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../images/robotics_icon.png" />
+               </image>
+            </ImageView>
+         </graphic>
+      </Button>
     </children>
 </AnchorPane>

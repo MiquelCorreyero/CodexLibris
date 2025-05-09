@@ -3,6 +3,7 @@ package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarAutorsController;
 import com.codexteam.codexlib.models.Autor;
 import com.codexteam.codexlib.models.ResultatCerca;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -112,9 +113,9 @@ public class AutorsController {
      * Si la resposta és correcta, actualitza la taula amb els resultats.
      */
     private void carregarAutors() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/authors"))
+                .uri(URI.create("https://localhost/authors"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -164,7 +165,7 @@ public class AutorsController {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
 
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/author.png")));
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/id_user_icon.png")));
 
             // Desactivar el focus per defecte als inputs
             stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));
@@ -210,8 +211,8 @@ public class AutorsController {
             return;
         }
 
-        HttpClient client = HttpClient.newHttpClient();
-        String url = "http://localhost:8080/search/?query=" + paraulaClau.replace(" ", "%20");
+        HttpClient client = ClientFactory.getClient();
+        String url = "https://localhost/search/?query=" + paraulaClau.replace(" ", "%20");
 
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))

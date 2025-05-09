@@ -55,7 +55,7 @@ public class LlibreExtern {
         this.isbn = isbn;
     }
 
-    // Format de visualització útil per a logs o debug
+    // Format per a logs o debug
     @Override
     public String toString() {
         return title + " (" + year + ") - " + author;

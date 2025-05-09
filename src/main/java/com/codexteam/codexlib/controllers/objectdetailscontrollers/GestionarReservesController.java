@@ -3,6 +3,7 @@ package com.codexteam.codexlib.controllers.objectdetailscontrollers;
 import com.codexteam.codexlib.models.Llibre;
 import com.codexteam.codexlib.models.Reserva;
 import com.codexteam.codexlib.models.Usuari;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -137,19 +138,19 @@ public class GestionarReservesController {
     """, loanDate, dueDate, returnDate, userId, bookId, statusId);
 
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request;
 
             if (reservaActual == null) {
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/loans"))
+                        .uri(URI.create("https://localhost/loans"))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(json))
                         .build();
             } else {
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/loans/" + reservaActual.getId()))
+                        .uri(URI.create("https://localhost/loans/" + reservaActual.getId()))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .PUT(HttpRequest.BodyPublishers.ofString(json))
@@ -194,12 +195,12 @@ public class GestionarReservesController {
         if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
 
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/loans/" + reservaActual.getId()))
+                .uri(URI.create("https://localhost/loans/" + reservaActual.getId()))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .DELETE()
                 .build();
 
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
                     Platform.runLater(() -> {
@@ -228,9 +229,9 @@ public class GestionarReservesController {
      * una reserva, selecciona el llibre corresponent.
      */
     private void carregarLlibres() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/books"))
+                .uri(URI.create("https://localhost/books"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -264,9 +265,9 @@ public class GestionarReservesController {
      * una reserva, selecciona l'usuari corresponent.
      */
     private void carregarUsuaris() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/users"))
+                .uri(URI.create("https://localhost/users"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -329,13 +330,13 @@ public class GestionarReservesController {
             System.out.println("JSON per PUT del llibre:\n" + json);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/books/" + llibre.getId()))
+                    .uri(URI.create("https://localhost/books/" + llibre.getId()))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenAccept(response -> {
                         if (response.statusCode() != 200) {
@@ -384,13 +385,13 @@ public class GestionarReservesController {
             );
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/books/" + llibre.getId()))
+                    .uri(URI.create("https://localhost/books/" + llibre.getId()))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers.ofString(json))
                     .build();
 
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                     .thenAccept(response -> {
                         if (response.statusCode() != 200) {

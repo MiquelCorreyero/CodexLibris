@@ -1,6 +1,7 @@
 package com.codexteam.codexlib.controllers;
 
 import com.codexteam.codexlib.models.Autor;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.codexteam.codexlib.models.Genere;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -131,9 +132,9 @@ public class NouLlibreApiController {
      */
     private List<Autor> obtenirAutors() {
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/authors"))
+                    .uri(URI.create("https://localhost/authors"))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .header("Content-Type", "application/json")
                     .build();
@@ -153,9 +154,9 @@ public class NouLlibreApiController {
      */
     private List<Genere> obtenirGeneres() {
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/genres"))
+                    .uri(URI.create("https://localhost/genres"))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .header("Content-Type", "application/json")
                     .build();
@@ -184,9 +185,9 @@ public class NouLlibreApiController {
             }
         """, nomAutor);
 
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/authors"))
+                    .uri(URI.create("https://localhost/authors"))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -239,9 +240,9 @@ public class NouLlibreApiController {
 
         try {
             System.out.println("Token actual: " + ConnexioServidor.getTokenSessio());
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/books"))
+                    .uri(URI.create("https://localhost/books"))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(json))

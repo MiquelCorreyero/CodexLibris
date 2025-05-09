@@ -2,6 +2,7 @@ package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarEsdevenimentsController;
 import com.codexteam.codexlib.models.Esdeveniment;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -76,9 +77,9 @@ public class EsdevenimentsController {
      * Carrega el llistat d'esdeveniments des del servidor i els mostra a la taula.
      */
     private void carregarEsdeveniments() {
-        HttpClient client = HttpClient.newHttpClient();
+        HttpClient client = ClientFactory.getClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/events"))
+                .uri(URI.create("https://localhost/events"))
                 .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                 .header("Content-Type", "application/json")
                 .build();
@@ -125,7 +126,7 @@ public class EsdevenimentsController {
             stage.setTitle(esdeveniment == null ? "Nou esdeveniment" : "Editar esdeveniment");
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/calendar_icon.png")));
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/calendar_icon_.png")));
 
             // Desactivar el focus per defecte als inputs
             stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));

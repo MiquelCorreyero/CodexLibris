@@ -1,5 +1,6 @@
 package com.codexteam.codexlib.controllers.objectdetailscontrollers;
 
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.codexteam.codexlib.models.Usuari;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -108,19 +109,19 @@ public class GestionarUsuarisController {
 
             String json = mapper.writeValueAsString(dades);
 
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request;
 
             if (usuariActual == null) {
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/users"))
+                        .uri(URI.create("https://localhost/users"))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(json))
                         .build();
             } else {
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/users/" + usuariActual.getId()))
+                        .uri(URI.create("https://localhost/users/" + usuariActual.getId()))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .PUT(HttpRequest.BodyPublishers.ofString(json))
@@ -157,9 +158,9 @@ public class GestionarUsuarisController {
         if (confirm.showAndWait().orElse(ButtonType.CANCEL) != ButtonType.OK) return;
 
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/users/" + usuariActual.getId()))
+                    .uri(URI.create("https://localhost/users/" + usuariActual.getId()))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .DELETE()
                     .build();

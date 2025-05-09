@@ -1,6 +1,9 @@
 package com.codexteam.codexlib.controllers;
 
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,6 +15,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
 import java.util.Optional;
 import static com.codexteam.codexlib.services.ConnexioServidor.getNomUsuariActual;
 
@@ -35,6 +43,12 @@ public class AdminController {
 
     // LABEL USUARI ACTIU
     @FXML private Label textBenvinguda;
+
+    // LABEL ESTADÍSTIQUES
+    @FXML private Label labelTotalLlibres;
+    @FXML private Label labelTotalUsuaris;
+    @FXML private Label labelTotalAutors;
+    @FXML private Label labelTotalReserves;
 
     // IMATGES CLICABLES
     @FXML private ImageView configButton;
@@ -150,7 +164,7 @@ public class AdminController {
 
     /**
      * Inicialitza el controlador després de carregar l'FXML.
-     * Configura el comportament dels botons i carrega la llista de llibres.
+     * Configura el comportament dels botons de la interfície general.
      */
     @FXML
     public void initialize() {
@@ -167,6 +181,8 @@ public class AdminController {
                 obrirNovaFinestra("/com/codexteam/codexlib/fxml/configView.fxml", "Configuració", "/com/codexteam/codexlib/images/config_.png")
         );
         configButton.setCursor(javafx.scene.Cursor.HAND);
+
+        carregarEstadistiques();
 
     }
 
@@ -245,6 +261,41 @@ public class AdminController {
         // Retorna true si l'usuari clica "OK", false si clica "Cancel"
         return result.isPresent() && result.get() == ButtonType.OK;
     }
+
+    private void carregarEstadistiques() {
+        obtenirEstadistica("https://localhost/books", labelTotalLlibres);
+        obtenirEstadistica("https://localhost/users", labelTotalUsuaris);
+        obtenirEstadistica("https://localhost/authors", labelTotalAutors);
+        obtenirEstadistica("https://localhost/loans", labelTotalReserves);
+    }
+
+    private void obtenirEstadistica(String endpoint, Label label) {
+        try {
+            HttpClient client = ClientFactory.getClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(endpoint))
+                    .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
+                    .header("Content-Type", "application/json")
+                    .build();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenApply(HttpResponse::body)
+                    .thenAccept(response -> {
+                        try {
+                            ObjectMapper mapper = new ObjectMapper();
+                            List<?> dades = mapper.readValue(response, List.class);
+                            Platform.runLater(() -> label.setText(String.valueOf(dades.size())));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Platform.runLater(() -> label.setText("Error"));
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+            label.setText("Error");
+        }
+    }
+
 
     /**
      * Mostra un missatge d’informació amb el títol i contingut especificats.

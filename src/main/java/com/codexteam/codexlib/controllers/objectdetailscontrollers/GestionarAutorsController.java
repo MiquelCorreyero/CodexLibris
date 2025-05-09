@@ -1,6 +1,7 @@
 package com.codexteam.codexlib.controllers.objectdetailscontrollers;
 
 import com.codexteam.codexlib.models.Autor;
+import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
@@ -39,6 +40,7 @@ public class GestionarAutorsController {
     @FXML private Label titolLabel;
 
     private Autor autorActual; // null si és nou
+    private Autor autorCreat = null;
 
     /**
      * Inicialitza el controlador, assignant els esdeveniments als botons.
@@ -47,6 +49,10 @@ public class GestionarAutorsController {
     public void initialize() {
         guardarAutorButton.setOnAction(e -> guardarAutor());
         eliminarAutorButton.setOnAction(e -> eliminarAutor());
+    }
+
+    public Autor getAutorCreat() {
+        return autorCreat;
     }
 
     /**
@@ -83,7 +89,7 @@ public class GestionarAutorsController {
         }
 
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             ObjectMapper mapper = new ObjectMapper();
 
             String json = String.format("""
@@ -99,7 +105,7 @@ public class GestionarAutorsController {
             if (autorActual == null) {
                 // Crear autor nou (POST)
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/authors"))
+                        .uri(URI.create("https://localhost/authors"))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .POST(HttpRequest.BodyPublishers.ofString(json))
@@ -107,7 +113,7 @@ public class GestionarAutorsController {
             } else {
                 // Actualitzar autor existent (PUT)
                 request = HttpRequest.newBuilder()
-                        .uri(URI.create("http://localhost:8080/authors/" + autorActual.getId()))
+                        .uri(URI.create("https://localhost/authors/" + autorActual.getId()))
                         .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                         .header("Content-Type", "application/json")
                         .PUT(HttpRequest.BodyPublishers.ofString(json))
@@ -118,8 +124,16 @@ public class GestionarAutorsController {
                     .thenAccept(response -> {
                         if (response.statusCode() == 200 || response.statusCode() == 201) {
                             Platform.runLater(() -> {
-                                mostrarAlerta("Èxit", autorActual == null ? "Autor creat correctament!" : "Autor actualitzat correctament!");
-                                ((Stage) guardarAutorButton.getScene().getWindow()).close();
+                                try {
+                                    Autor autorInsertat = mapper.readValue(response.body(), Autor.class);
+                                    autorCreat = autorInsertat;
+
+                                    mostrarAlerta("Èxit", autorActual == null ? "Autor creat correctament!" : "Autor actualitzat correctament!");
+                                    ((Stage) guardarAutorButton.getScene().getWindow()).close();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    mostrarAlerta("Error", "No s'ha pogut interpretar la resposta del servidor.");
+                                }
                             });
                         } else {
                             Platform.runLater(() -> mostrarAlerta("Error", "Error al desar l'autor. Codi: " + response.statusCode()));
@@ -154,9 +168,9 @@ public class GestionarAutorsController {
         }
 
         try {
-            HttpClient client = HttpClient.newHttpClient();
+            HttpClient client = ClientFactory.getClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create("http://localhost:8080/authors/" + autorActual.getId()))
+                    .uri(URI.create("https://localhost/authors/" + autorActual.getId()))
                     .header("Authorization", "Bearer " + ConnexioServidor.getTokenSessio())
                     .DELETE()
                     .build();
