@@ -61,4 +61,3 @@ public class LlibreExtern {
         return title + " (" + year + ") - " + author;
     }
 }
-

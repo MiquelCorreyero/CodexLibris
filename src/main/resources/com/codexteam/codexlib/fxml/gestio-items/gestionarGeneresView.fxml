@@ -18,7 +18,7 @@
             </font>
         </Label>
         <TextField fx:id="nomField" layoutX="91.0" layoutY="101.0" prefHeight="33.0" prefWidth="368.0" promptText="Nom del gènere" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="91.0" AnchorPane.topAnchor="101.0" />
-        <TextArea fx:id="descripcioArea" layoutX="91.0" layoutY="151.0" prefHeight="153.0" prefWidth="368.0" promptText="Descripció del gènere" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="91.0" AnchorPane.topAnchor="151.0" />
+        <TextArea fx:id="descripcioArea" layoutX="91.0" layoutY="151.0" prefHeight="153.0" prefWidth="368.0" promptText="Descripció del gènere" wrapText="true" AnchorPane.leftAnchor="91.0" AnchorPane.rightAnchor="91.0" AnchorPane.topAnchor="151.0" />
         <!-- BOTÓ GUARDAR -->
         <Button fx:id="guardarGenereButton" layoutX="280.0" layoutY="320.0" prefHeight="59.0" prefWidth="179.0" styleClass="button" text=" Guardar" AnchorPane.bottomAnchor="71.0" AnchorPane.rightAnchor="91.0">
             <graphic>

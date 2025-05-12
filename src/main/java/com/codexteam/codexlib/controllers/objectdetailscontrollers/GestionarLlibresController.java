@@ -48,6 +48,7 @@ public class GestionarLlibresController {
     @FXML private Button guardarLlibreButton;
     @FXML private Button eliminarLlibreButton;
     @FXML private Button botoNouAutor;
+    @FXML private Button botoNouGenere;
 
     private Llibre llibreActual;
 
@@ -63,6 +64,7 @@ public class GestionarLlibresController {
         eliminarLlibreButton.setOnAction(e -> eliminarLlibre());
         guardarLlibreButton.setOnAction(e -> guardarLlibre());
         botoNouAutor.setOnAction(e -> obrirFinestraNouAutor());
+        botoNouGenere.setOnAction(e -> obrirFinestraNouGenere());
 
         carregarAutors();
         carregarGeneres();
@@ -289,6 +291,40 @@ public class GestionarLlibresController {
         } catch (IOException e) {
             e.printStackTrace();
             mostrarAlerta("Error", "No s'ha pogut obrir la finestra de creació d'autor.");
+        }
+    }
+
+    /**
+     * Obre una finestra modal per crear un nou gènere.
+     * Mostra un missatge d'error si hi ha problemes en carregar la vista.
+     */
+    private void obrirFinestraNouGenere() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarGeneresView.fxml"));
+            Parent root = loader.load();
+
+            GestionarGeneresController controller = loader.getController();
+            controller.setGenere(null);
+
+            Stage stage = new Stage();
+            stage.setTitle("Nou gènere");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.setOnShown(event -> Platform.runLater(() -> root.requestFocus()));
+            stage.showAndWait();
+
+            carregarGeneres();
+
+            Genere nou = controller.getGenereCreat();
+            if (nou != null) {
+                comboGeneres.getItems().add(nou);
+                comboGeneres.setValue(nou);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarAlerta("Error", "No s'ha pogut obrir la finestra de creació de gènere.");
         }
     }
 

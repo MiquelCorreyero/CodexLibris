@@ -23,10 +23,10 @@
         </Label>
         <TableView fx:id="taulaEsdeveniments" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="65.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
             <columns>
-                <TableColumn fx:id="colId" prefWidth="75.0" text="ID" />
-                <TableColumn fx:id="colTitol" prefWidth="75.0" text="Títol" />
-                <TableColumn fx:id="colContingut" prefWidth="75.0" text="Contingut" />
-                <TableColumn fx:id="colAdreca" prefWidth="75.0" text="Adreça" />
+                <TableColumn fx:id="colId" prefWidth="60.0" text="ID" />
+                <TableColumn fx:id="colTitol" prefWidth="150.0" text="Títol" />
+                <TableColumn fx:id="colContingut" prefWidth="150.0" text="Contingut" />
+                <TableColumn fx:id="colAdreca" prefWidth="150.0" text="Adreça" />
                 <TableColumn fx:id="colData" prefWidth="75.0" text="Data" />
                 <TableColumn fx:id="colHora" prefWidth="75.0" text="Hora" />
             </columns>

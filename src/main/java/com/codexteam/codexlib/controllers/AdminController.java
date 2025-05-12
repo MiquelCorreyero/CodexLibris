@@ -186,7 +186,9 @@ public class AdminController {
 
     }
 
-    // Mostrar el nom de l'usuari que inicia sessió
+    /**
+     * Mostrar el nom de l'usuari que inicia sessió
+     */
     private String formatNomUsuari(String nomUsuari) {
         return (nomUsuari != null && !nomUsuari.trim().isEmpty()) ? ", " + nomUsuari : ".";
     }
@@ -262,6 +264,7 @@ public class AdminController {
         return result.isPresent() && result.get() == ButtonType.OK;
     }
 
+    /** Llença peticions als principals endpoints i mostra el recompte a les etiquetes del dashboard. */
     private void carregarEstadistiques() {
         obtenirEstadistica("https://localhost/books", labelTotalLlibres);
         obtenirEstadistica("https://localhost/users", labelTotalUsuaris);
@@ -269,6 +272,7 @@ public class AdminController {
         obtenirEstadistica("https://localhost/loans", labelTotalReserves);
     }
 
+    /** Fa una crida GET asíncrona a l’endpoint i posa al label la mida de la llista retornada. */
     private void obtenirEstadistica(String endpoint, Label label) {
         try {
             HttpClient client = ClientFactory.getClient();

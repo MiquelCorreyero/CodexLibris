@@ -33,6 +33,7 @@ public class GestionarGeneresController {
     @FXML private Button eliminarGenereButton;
 
     private Genere genereActual;
+    private Genere genereCreat;
 
     /**
      * Mètode que s’executa després de carregar l’FXML.
@@ -157,6 +158,15 @@ public class GestionarGeneresController {
                     Platform.runLater(() -> mostrarMissatge("Error", "Error inesperat en eliminar el gènere."));
                     return null;
                 });
+    }
+
+    /**
+     * Retorna el gènere acabat de crear després de tancar la finestra.
+     *
+     * @return Gènere creat o null si no s'ha creat cap.
+     */
+    public Genere getGenereCreat() {
+        return genereCreat;
     }
 
     /**

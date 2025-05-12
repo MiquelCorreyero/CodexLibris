@@ -45,6 +45,7 @@ public class GestionarReservesController {
     @FXML private ComboBox<Llibre> comboLlibres;
 
     private Reserva reservaActual;
+    private Llibre llibrePreseleccionat = null;
 
     @FXML
     public void initialize() {
@@ -63,6 +64,10 @@ public class GestionarReservesController {
 
         carregarLlibres();
         carregarUsuaris();
+    }
+
+    public void setLlibreSeleccionat(Llibre llibre) {
+        this.llibrePreseleccionat = llibre;
     }
 
     /**
@@ -244,6 +249,7 @@ public class GestionarReservesController {
                         List<Llibre> llibres = mapper.readValue(response, new TypeReference<List<Llibre>>() {});
                         Platform.runLater(() -> {
                             comboLlibres.getItems().setAll(llibres);
+
                             if (reservaActual != null) {
                                 for (Llibre llibre : llibres) {
                                     if (llibre.getId() == reservaActual.getBook_id()) {
@@ -251,6 +257,14 @@ public class GestionarReservesController {
                                         break;
                                     }
                                 }
+                            } else if (llibrePreseleccionat != null) {
+                                for (Llibre llibre : llibres) {
+                                    if (llibre.getId() == llibrePreseleccionat.getId()) {
+                                        comboLlibres.setValue(llibre);
+                                        break;
+                                    }
+                                }
+                                llibrePreseleccionat = null;
                             }
                         });
                     } catch (Exception e) {
@@ -280,11 +294,22 @@ public class GestionarReservesController {
                         List<Usuari> usuaris = mapper.readValue(response, new TypeReference<List<Usuari>>() {});
                         Platform.runLater(() -> {
                             comboUsuaris.getItems().setAll(usuaris);
+
                             if (reservaActual != null) {
                                 for (Usuari usuari : usuaris) {
                                     if (usuari.getId() == reservaActual.getUser_id()) {
                                         comboUsuaris.setValue(usuari);
                                         break;
+                                    }
+                                }
+                            } else {
+                                Usuari usuariSessio = ConnexioServidor.getUsuariActual();
+                                if (usuariSessio != null) {
+                                    for (Usuari usuari : usuaris) {
+                                        if (usuari.getId() == usuariSessio.getId()) {
+                                            comboUsuaris.setValue(usuari);
+                                            break;
+                                        }
                                     }
                                 }
                             }
@@ -425,4 +450,5 @@ public class GestionarReservesController {
         Stage stage = (Stage) guardarReservaButton.getScene().getWindow();
         stage.close();
     }
+
 }

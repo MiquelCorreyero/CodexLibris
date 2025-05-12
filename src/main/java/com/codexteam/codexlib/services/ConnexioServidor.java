@@ -8,6 +8,8 @@ import java.util.Scanner;
 import javax.net.ssl.*;
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import com.codexteam.codexlib.models.Usuari;
+
 
 
 /**
@@ -15,6 +17,8 @@ import java.security.cert.X509Certificate;
  * incloent l'autenticació mitjançant login i l'emmagatzematge del token JWT.
  */
 public class ConnexioServidor {
+
+    private static Usuari usuariActual;
 
     /** Token JWT obtingut després de fer login. */
     private static String tokenSessio = null;
@@ -94,6 +98,25 @@ public class ConnexioServidor {
                     nomUsuariActual = jsonObject.getString("username");
                     tipusUsuari = jsonObject.getInt("roleId");
 
+                    // Obtenir les dades completes de l'usuari
+                    URL urlUsuari = new URL("https://localhost/users/me");
+                    HttpURLConnection connUsuari = (HttpURLConnection) urlUsuari.openConnection();
+                    connUsuari.setRequestMethod("GET");
+                    connUsuari.setRequestProperty("Authorization", "Bearer " + tokenSessio);
+                    connUsuari.setRequestProperty("Content-Type", "application/json");
+
+                    if (connUsuari.getResponseCode() == 200) {
+                        try (Scanner userScanner = new Scanner(connUsuari.getInputStream(), "utf-8")) {
+                            String userJson = userScanner.useDelimiter("\\A").next();
+
+                            // Convertim a objecte Usuari
+                            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+                            Usuari usuari = mapper.readValue(userJson, Usuari.class);
+
+                            setUsuariActual(usuari); // Guardar usuari a la sessió
+                        }
+                    }
+
                     return true;
                 }
             }
@@ -139,4 +162,13 @@ public class ConnexioServidor {
         nomUsuariActual = null;
         tipusUsuari = -1;
     }
+
+    public static void setUsuariActual(Usuari usuari) {
+        usuariActual = usuari;
+    }
+
+    public static Usuari getUsuariActual() {
+        return usuariActual;
+    }
+
 }

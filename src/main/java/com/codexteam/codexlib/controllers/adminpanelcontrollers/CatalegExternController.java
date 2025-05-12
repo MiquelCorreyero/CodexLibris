@@ -2,9 +2,11 @@ package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarLlibresController;
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.IntroduirApiKeyAIController;
+import com.codexteam.codexlib.controllers.objectdetailscontrollers.ResultatIAController;
 import com.codexteam.codexlib.models.LlibreExtern;
 import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -19,8 +21,16 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import com.codexteam.codexlib.models.RespostaExtern;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+
 
 /**
  * Controlador per gestionar la cerca de llibres externs mitjançant l'API d'Open Library.
@@ -33,6 +43,7 @@ public class CatalegExternController {
     @FXML private Button netejaExternButton;
     @FXML private Button importarLlibreButton;
     @FXML private Button importarIAButton;
+    @FXML private ImageView gifCargando;
 
     @FXML private TableView<LlibreExtern> taulaExtern;
     @FXML private TableColumn<LlibreExtern, String> colTitolExtern;
@@ -55,6 +66,10 @@ public class CatalegExternController {
 
         // Botó de cerca
         botoCercaExtern.setOnAction(e -> ferCercaExtern());
+
+        // GIF amb animació de càrrega
+        gifCargando.setImage(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/spinner.gif")));
+        gifCargando.setVisible(false);
 
         // Botó de neteja
         netejaExternButton.setOnAction(e -> {
@@ -100,6 +115,11 @@ public class CatalegExternController {
             mostrarFinestraApiKey();
         });
 
+        // Oculta els botons si l'usuari no és admin
+        if (ConnexioServidor.getTipusUsuari() != 1) {
+            importarLlibreButton.setVisible(false);
+        }
+
     }
 
     /**
@@ -113,6 +133,8 @@ public class CatalegExternController {
             return;
         }
 
+        Platform.runLater(() -> gifCargando.setVisible(true));
+
         String url = "https://localhost/external-books/search?q=" + query.replace(" ", "%20");
 
         HttpClient client = ClientFactory.getClient();
@@ -124,8 +146,11 @@ public class CatalegExternController {
 
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenAccept(response -> {
+
                     try {
                         int status = response.statusCode();
+
+                        Platform.runLater(() -> gifCargando.setVisible(false));
 
                         if (status < 200 || status >= 300) {
                             System.err.println("Error " + status + ": El servidor ha retornat un error durant la cerca.");
@@ -153,6 +178,10 @@ public class CatalegExternController {
                 });
     }
 
+    /**
+     * Obre una finestra modal (FXML) perquè l’usuari introdueixi la seva API Key d’OpenAI
+     * i recupera el valor introduït un cop la finestra es tanca.
+     */
     private void mostrarFinestraApiKey() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/introduirApiKeyAIView.fxml"));
@@ -165,14 +194,18 @@ public class CatalegExternController {
             stage.setScene(new Scene(root));
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setResizable(false);
-
-            stage.setOnShown(event -> Platform.runLater(() -> root.requestFocus()));
             stage.showAndWait();
 
-            // Recollim la clau un cop es tanca la finestra
             String apiKey = controller.getApiKey();
+
             if (apiKey != null && !apiKey.isBlank()) {
-                System.out.println("API KEY introduïda: " + apiKey);
+                LlibreExtern seleccionat = taulaExtern.getSelectionModel().getSelectedItem();
+                if (seleccionat == null) {
+                    mostrarMissatge("Error", "Has de seleccionar un llibre abans.");
+                    return;
+                }
+
+                generarDadesIA(seleccionat, apiKey); // << Aquí llamamos a OpenAI
             } else {
                 System.out.println("No s’ha introduït cap clau d’API.");
             }
@@ -180,6 +213,150 @@ public class CatalegExternController {
         } catch (IOException e) {
             e.printStackTrace();
             mostrarMissatge("Error", "No s'ha pogut obrir la finestra per introduir la clau API.");
+        }
+    }
+
+    /**
+     * Mostra una finestra modal amb els resultats generats per la IA sobre un llibre seleccionat.
+     * <p>
+     * El text rebut de la IA es divideix en tres seccions:
+     * <ul>
+     *     <li>Llibres similars recomanats.</li>
+     *     <li>Altres llibres de l’autor.</li>
+     *     <li>Un breu resum del perfil de l’autor.</li>
+     * </ul>
+     * Aquestes dades s’assignen als camps corresponents en el controlador de la vista {@code resultatIAView.fxml}.
+     * </p>
+     *
+     * @param llibre      El llibre del qual s'han generat dades addicionals amb IA.
+     * @param respostaIA  El text complet retornat per OpenAI amb les recomanacions i resum de l’autor.
+     */
+    private void mostrarFinestraResultatIA(LlibreExtern llibre, String respostaIA) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/resultatIAView.fxml"));
+            Parent root = loader.load();
+
+            ResultatIAController controller = loader.getController();
+
+            // Procesamos el texto en secciones (asumiendo separación por doble salto de línea)
+            String similars = "", altres = "", resum = "";
+            String[] seccions = respostaIA.split("\n\n");
+            if (seccions.length >= 3) {
+                similars = seccions[0].trim();
+                altres = seccions[1].trim();
+                resum = seccions[2].trim();
+            } else {
+                similars = respostaIA;
+            }
+
+            controller.inicialitzarDades(
+                    llibre.getTitle(),
+                    llibre.getAuthor(),
+                    similars,
+                    altres,
+                    resum
+            );
+
+            Stage stage = new Stage();
+            stage.setTitle("Resultat IA per \"" + llibre.getTitle() + "\"");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setResizable(false);
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarMissatge("Error", "No s'ha pogut mostrar el resultat IA.");
+        }
+    }
+
+    /**
+     * Genera una petició a l'API de OpenAI per obtenir informació addicional sobre un llibre seleccionat.
+     * <p>
+     * Envia un prompt amb el títol i l'autor del llibre, i sol·licita:
+     * <ul>
+     *     <li>Una llista de llibres similars recomanats.</li>
+     *     <li>Altres llibres recomanats del mateix autor.</li>
+     *     <li>Un breu resum del perfil de l’autor.</li>
+     * </ul>
+     * La resposta es mostra en una finestra modal amb els camps corresponents.
+     * </p>
+     *
+     * @param llibre Llibre seleccionat des del catàleg extern.
+     * @param apiKey Clau d'accés personal de l'usuari per a utilitzar l'API de OpenAI.
+     */
+    private void generarDadesIA(LlibreExtern llibre, String apiKey) {
+        String prompt = String.format("""
+        Dona'm la següent informació sobre aquest llibre:
+        Títol: %s
+        Autor: %s
+
+        Vull que em donis:
+        1. Una llista de llibres similars recomanats (5).
+        2. Una llista d'altres llibres recomanats del mateix autor (3).
+        3. Un breu resum del perfil del seu autor (max. 300 caràcters).
+        El format ha de ser clar i fàcil de parsejar.
+    """, llibre.getTitle(), llibre.getAuthor());
+
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+
+            ObjectNode root = mapper.createObjectNode();
+            root.put("model", "gpt-4");
+
+            ArrayNode messages = mapper.createArrayNode();
+
+            ObjectNode systemMsg = mapper.createObjectNode();
+            systemMsg.put("role", "system");
+            systemMsg.put("content", "Ets un expert en literatura.");
+            messages.add(systemMsg);
+
+            ObjectNode userMsg = mapper.createObjectNode();
+            userMsg.put("role", "user");
+            userMsg.put("content", prompt);
+            messages.add(userMsg);
+
+            root.set("messages", messages);
+
+            String jsonRequest = mapper.writeValueAsString(root);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api.openai.com/v1/chat/completions"))
+                    .header("Authorization", "Bearer " + apiKey)
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
+                    .build();
+
+            HttpClient client = HttpClient.newHttpClient();
+
+            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                    .thenAccept(response -> {
+                        if (response.statusCode() == 200) {
+                            try {
+                                JsonNode json = mapper.readTree(response.body());
+                                String resposta = json.get("choices").get(0).get("message").get("content").asText();
+
+                                Platform.runLater(() -> mostrarFinestraResultatIA(llibre, resposta));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Platform.runLater(() -> mostrarMissatge("Error", "No s'han pogut analitzar les dades de la IA."));
+                            }
+                        } else {
+                            Platform.runLater(() -> mostrarMissatge(
+                                    "Error a OpenAI",
+                                    "Codi: " + response.statusCode() + "\nResposta: " + response.body()
+                            ));
+                        }
+                    })
+                    .exceptionally(e -> {
+                        e.printStackTrace();
+                        Platform.runLater(() -> mostrarMissatge("Error", "Error de connexió amb OpenAI."));
+                        return null;
+                    });
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarMissatge("Error", "No s'ha pogut preparar la petició per a OpenAI.");
         }
     }
 

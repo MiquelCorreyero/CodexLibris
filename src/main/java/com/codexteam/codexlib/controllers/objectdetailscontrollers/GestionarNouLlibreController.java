@@ -66,6 +66,7 @@ public class GestionarNouLlibreController {
         });
 
         botoNouAutorLlibre.setOnAction(e -> obrirFinestraNouAutor());
+        botoNouGenereLLibre.setOnAction(e -> obrirFinestraNouGenere());
 
     }
 
@@ -206,6 +207,41 @@ public class GestionarNouLlibreController {
         } catch (IOException e) {
             e.printStackTrace();
             mostrarMissatge("Error", "No s'ha pogut obrir la finestra de creació d'autor.");
+        }
+    }
+
+    /**
+     * Obre una finestra modal per crear un nou gènere.
+     * Mostra un missatge d'error si hi ha problemes en carregar la vista.
+     */
+    private void obrirFinestraNouGenere() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarGeneresView.fxml"));
+            Parent root = loader.load();
+
+            GestionarGeneresController controller = loader.getController();
+            controller.setGenere(null); // Creació de nou gènere
+
+            Stage stage = new Stage();
+            stage.setTitle("Nou gènere");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+
+            stage.setOnShown(event -> Platform.runLater(() -> root.requestFocus()));
+            stage.showAndWait();
+
+            // Refresca la llista de gèneres
+            carregarGeneres();
+
+            Genere nou = controller.getGenereCreat();
+            if (nou != null) {
+                comboGeneres.getItems().add(nou);
+                comboGeneres.setValue(nou);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            mostrarMissatge("Error", "No s'ha pogut obrir la finestra de creació de gènere.");
         }
     }
 

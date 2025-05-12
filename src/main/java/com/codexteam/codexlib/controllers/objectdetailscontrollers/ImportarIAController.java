@@ -29,6 +29,7 @@ public class ImportarIAController {
         guardarButton.setOnAction(e -> guardarDades());
     }
 
+    /** Omple els camps del formulari amb les dades d’un llibre extern. */
     public void setDadesLlibre(LlibreExtern llibre) {
         this.llibreExtern = llibre;
         titolField.setText(llibre.getTitle());
@@ -36,11 +37,13 @@ public class ImportarIAController {
         anyField.setText(String.valueOf(llibre.getYear()));
     }
 
+    /** Tanca la finestra modal actual. */
     private void tancarFinestra() {
         Stage stage = (Stage) cancelarButton.getScene().getWindow();
         stage.close();
     }
 
+    /** Simula el guardat de dades mostrant-les per consola i després tanca la finestra. */
     private void guardarDades() {
         // En aquesta versió de prova només tanquem la finestra. Aquí s'hauria de guardar a la BD
         System.out.println("Guardar dades:");

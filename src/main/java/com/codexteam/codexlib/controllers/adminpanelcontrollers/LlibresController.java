@@ -1,27 +1,26 @@
 package com.codexteam.codexlib.controllers.adminpanelcontrollers;
 
 import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarLlibresController;
+import com.codexteam.codexlib.controllers.objectdetailscontrollers.GestionarReservesController;
 import com.codexteam.codexlib.models.Llibre;
 import com.codexteam.codexlib.models.ResultatCerca;
+import com.codexteam.codexlib.models.Usuari;
 import com.codexteam.codexlib.services.ClientFactory;
 import com.codexteam.codexlib.services.ConnexioServidor;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableRow;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.scene.control.TextField;
 
 import java.io.IOException;
 import java.net.URI;
@@ -29,6 +28,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
+
 
 /**
  * Controlador del panell d’administració dedicat a la gestió del catàleg de llibres.
@@ -51,6 +51,7 @@ public class LlibresController {
     @FXML private TextField campCerca;
     @FXML private Button botoCerca;
     @FXML private Button netejaButton;
+    @FXML private Button reservarButton;
 
     @FXML
     public void initialize() {
@@ -96,6 +97,14 @@ public class LlibresController {
         campCerca.textProperty().addListener((obs, oldVal, newVal) -> {
             netejaButton.setDisable(newVal.trim().isEmpty());
         });
+
+        // Obre la finestra de reservar llibre
+        reservarButton.setOnAction(event -> obrirFinestraReservaLlibre());
+
+        // Oculta el botó de nou llibre si l'usuari no és admin
+        if (ConnexioServidor.getTipusUsuari() != 1) {
+            inserirNouLlibreButton.setVisible(false);
+        }
 
     }
 
@@ -160,6 +169,51 @@ public class LlibresController {
     }
 
     /**
+     * Obre una finestra modal amb el formulari per reservar un llibre seleccionat de la taula.
+     */
+    private void obrirFinestraReservaLlibre() {
+        Llibre llibreSeleccionat = taulaLlibres.getSelectionModel().getSelectedItem();
+
+        if (llibreSeleccionat == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Cap llibre seleccionat");
+            alert.setHeaderText(null);
+            alert.setContentText("Selecciona un llibre de la taula abans de fer una reserva.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (!llibreSeleccionat.isAvailable()) {
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Llibre no disponible");
+            alerta.setHeaderText(null);
+            alerta.setContentText("Aquest llibre no està disponible per a reserves.");
+            alerta.showAndWait();
+            return;
+        }
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/codexteam/codexlib/fxml/gestio-items/gestionarReservesView.fxml"));
+            Parent root = loader.load();
+
+            GestionarReservesController controller = loader.getController();
+            controller.setLlibreSeleccionat(llibreSeleccionat);
+
+            Stage stage = new Stage();
+            stage.setTitle("Reservar llibre");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.getIcons().add(new Image(getClass().getResourceAsStream("/com/codexteam/codexlib/images/book_w.png")));
+            stage.setOnShown(e -> Platform.runLater(() -> root.requestFocus()));
+            stage.showAndWait();
+
+            carregarLlibres();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Obre una finestra modal per editar un llibre existent.
      *
      * @param llibre Llibre seleccionat per editar.
@@ -187,15 +241,6 @@ public class LlibresController {
 
     /**
      * Realitza una cerca de llibres a la base de dades mitjançant una paraula clau.
-     *
-     * <p>Aquest mètode envia una petició GET a l’endpoint de cerca de l’API REST
-     * amb la paraula clau introduïda per l’usuari. Si el camp de text és buit,
-     * es recarrega el catàleg complet de llibres. En cas contrari, es mostren
-     * només els llibres que coincideixen amb el criteri de cerca (paraula clau).</p>
-     *
-     * <p>Els resultats obtinguts substitueixen el contingut actual de la taula.</p>
-     *
-     * <p>Es mostra una alerta d'error si hi ha algun problema amb la petició o la resposta.</p>
      */
     private void ferCerca() {
         String paraulaClau = campCerca.getText().trim();
